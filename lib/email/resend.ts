@@ -23,6 +23,12 @@ export const resend = {
   },
   get audiences() {
     return getResend().audiences;
+  },
+  get batch() {
+    return getResend().batch;
+  },
+  get domains() {
+    return getResend().domains;
   }
 };
 

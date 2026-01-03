@@ -53,11 +53,43 @@ export async function POST(req: Request) {
     });
   }
 
-  // For now, Mux integration requires installing @mux/mux-node
-  // Return instructions to set it up
-  return NextResponse.json({
-    error: "Mux not fully configured. Install @mux/mux-node to enable video uploads.",
-    instructions: "npm install @mux/mux-node --legacy-peer-deps",
-    provider: "mux",
-  }, { status: 501 });
+  // Use Mux SDK for video uploads
+  try {
+    const Mux = (await import("@mux/mux-node")).default;
+    
+    const mux = new Mux({
+      tokenId: muxTokenId,
+      tokenSecret: muxTokenSecret,
+    });
+
+    // Create direct upload
+    const upload = await mux.video.uploads.create({
+      cors_origin: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:2828",
+      new_asset_settings: {
+        playback_policy: ["public"],
+        encoding_tier: "baseline",
+      },
+    });
+
+    // Upsert media row (status uploading)
+    await sb.from("lesson_media").upsert({
+      lesson_id: parsed.data.lessonId,
+      provider: "mux",
+      source: "upload",
+      upload_id: upload.id,
+      status: "uploading",
+    }, { onConflict: "lesson_id" });
+
+    return NextResponse.json({
+      uploadId: upload.id,
+      uploadUrl: upload.url,
+      provider: "mux",
+    });
+  } catch (error) {
+    console.error("Mux upload error:", error);
+    return NextResponse.json(
+      { error: "Failed to create video upload" },
+      { status: 500 }
+    );
+  }
 }
