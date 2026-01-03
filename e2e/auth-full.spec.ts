@@ -33,13 +33,13 @@ test.describe("Authentication - Login Page", () => {
 
   test("should switch to magic link mode", async ({ page }) => {
     await page.goto("/login");
-    await page.getByRole("button", { name: /magic link/i }).click();
-    await expect(page.getByRole("button", { name: /send.*link/i })).toBeVisible();
+    await page.getByRole("button", { name: /sign in with magic link/i }).click();
+    await expect(page.getByRole("button", { name: /send login link/i })).toBeVisible();
   });
 
   test("should switch back to password mode from magic link", async ({ page }) => {
     await page.goto("/login");
-    await page.getByRole("button", { name: /magic link/i }).click();
+    await page.getByRole("button", { name: /sign in with magic link/i }).click();
     await page.getByRole("button", { name: /sign in with password/i }).click();
     await expect(page.getByPlaceholder("••••••••")).toBeVisible();
   });

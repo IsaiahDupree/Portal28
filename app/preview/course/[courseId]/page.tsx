@@ -46,14 +46,23 @@ export default async function CoursePreviewPage({ params, searchParams }: Props)
   }
 
   // Validate preview token
-  const { data: previewToken, error: tokenError } = await supabaseAdmin
-    .from("course_preview_tokens")
-    .select("*")
-    .eq("course_id", courseId)
-    .eq("token", token)
-    .single();
+  let previewToken = null;
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("course_preview_tokens")
+      .select("*")
+      .eq("course_id", courseId)
+      .eq("token", token)
+      .single();
+    
+    if (!error) {
+      previewToken = data;
+    }
+  } catch (e) {
+    // Table might not exist or other DB error - treat as invalid token
+  }
 
-  if (tokenError || !previewToken) {
+  if (!previewToken) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <Card className="max-w-md">

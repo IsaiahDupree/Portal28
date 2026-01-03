@@ -27,11 +27,11 @@ test.describe("Authentication", () => {
   test("should switch to magic link mode", async ({ page }) => {
     await page.goto("/login");
 
-    // Click the magic link option
-    await page.getByRole("button", { name: /magic link/i }).click();
+    // Click the magic link option - button text is "Sign in with magic link"
+    await page.getByRole("button", { name: /sign in with magic link/i }).click();
 
-    // Should show magic link form
-    await expect(page.getByRole("button", { name: /send.*link/i })).toBeVisible();
+    // Should show magic link form with "Send login link" button
+    await expect(page.getByRole("button", { name: /send login link/i })).toBeVisible();
   });
 
   test("should redirect unauthenticated users from /app to login", async ({ page }) => {

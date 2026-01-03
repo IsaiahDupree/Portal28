@@ -25,7 +25,9 @@
     "db:push": "supabase db push",
     "db:diff": "supabase db diff",
     "db:studio": "open http://localhost:54323",
-    "stripe:listen": "stripe listen --forward-to localhost:2828/api/stripe/webhook"
+    "stripe:listen": "stripe listen --forward-to localhost:2828/api/stripe/webhook",
+    "health-check": "npx ts-node scripts/health-check.ts",
+    "predev": "npx ts-node scripts/health-check.ts || true"
   },
   "dependencies": {
     "@mux/mux-node": "^12.8.1",

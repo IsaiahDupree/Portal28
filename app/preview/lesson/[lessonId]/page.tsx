@@ -38,23 +38,32 @@ export default async function LessonPreviewPage({ params, searchParams }: Props)
   }
 
   // Fetch lesson with media
-  const { data: lesson, error: lessonError } = await supabaseAdmin
-    .from("lessons")
-    .select(`
-      *,
-      chapter:chapters(
-        id,
-        title,
-        course_id,
-        course:courses(id, title, slug)
-      ),
-      media:lesson_media(*),
-      files:lesson_files(*)
-    `)
-    .eq("id", lessonId)
-    .single();
+  let lesson = null;
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("lessons")
+      .select(`
+        *,
+        chapter:chapters(
+          id,
+          title,
+          course_id,
+          course:courses(id, title, slug)
+        ),
+        media:lesson_media(*),
+        files:lesson_files(*)
+      `)
+      .eq("id", lessonId)
+      .single();
 
-  if (lessonError || !lesson) {
+    if (!error) {
+      lesson = data;
+    }
+  } catch (e) {
+    // Database error - treat as not found
+  }
+
+  if (!lesson) {
     notFound();
   }
 
@@ -62,14 +71,23 @@ export default async function LessonPreviewPage({ params, searchParams }: Props)
   const courseId = course?.id;
 
   // Validate preview token against the course
-  const { data: previewToken, error: tokenError } = await supabaseAdmin
-    .from("course_preview_tokens")
-    .select("*")
-    .eq("course_id", courseId)
-    .eq("token", token)
-    .single();
+  let previewToken = null;
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("course_preview_tokens")
+      .select("*")
+      .eq("course_id", courseId)
+      .eq("token", token)
+      .single();
 
-  if (tokenError || !previewToken) {
+    if (!error) {
+      previewToken = data;
+    }
+  } catch (e) {
+    // Database error - treat as invalid token
+  }
+
+  if (!previewToken) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <Card className="max-w-md">
