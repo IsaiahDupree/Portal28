@@ -120,12 +120,12 @@ console.log("\n🌐 Services\n");
 
 check("Supabase Local", () => {
   try {
-    const result = execSync("curl -s http://127.0.0.1:54321/rest/v1/ -o /dev/null -w '%{http_code}'", {
+    const result = execSync("curl -s http://127.0.0.1:28321/rest/v1/ -o /dev/null -w '%{http_code}'", {
       encoding: "utf-8",
       timeout: 5000,
     }).trim();
     if (result === "200" || result === "401") {
-      return { status: "pass", message: "Running on http://127.0.0.1:54321" };
+      return { status: "pass", message: "Running on http://127.0.0.1:28321" };
     }
     return { status: "fail", message: `Unexpected status: ${result}` };
   } catch {
@@ -135,12 +135,12 @@ check("Supabase Local", () => {
 
 check("Mailpit (Email)", () => {
   try {
-    const result = execSync("curl -s http://127.0.0.1:54324/api/v1/messages -o /dev/null -w '%{http_code}'", {
+    const result = execSync("curl -s http://127.0.0.1:28324/api/v1/messages -o /dev/null -w '%{http_code}'", {
       encoding: "utf-8",
       timeout: 5000,
     }).trim();
     if (result === "200") {
-      return { status: "pass", message: "Running on http://127.0.0.1:54324" };
+      return { status: "pass", message: "Running on http://127.0.0.1:28324" };
     }
     return { status: "fail", message: `Unexpected status: ${result}` };
   } catch {
@@ -171,7 +171,7 @@ console.log("\n🗄️  Database\n");
 check("Database Tables", () => {
   try {
     const result = execSync(
-      `curl -s "http://127.0.0.1:54321/rest/v1/" -H "apikey: ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}" -H "Authorization: Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}"`,
+      `curl -s "http://127.0.0.1:28321/rest/v1/" -H "apikey: ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}" -H "Authorization: Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}"`,
       { encoding: "utf-8", timeout: 5000 }
     );
     const tables = JSON.parse(result);

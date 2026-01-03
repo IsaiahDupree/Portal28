@@ -12,10 +12,19 @@ export function supabaseServer() {
           return cookieStore.get(name)?.value;
         },
         set(name: string, value: string, options: CookieOptions) {
-          cookieStore.set({ name, value, ...options });
+          try {
+            cookieStore.set({ name, value, ...options });
+          } catch {
+            // Cookies can only be modified in Server Actions or Route Handlers
+            // This is expected in Server Components - the middleware handles cookie refresh
+          }
         },
         remove(name: string, options: CookieOptions) {
-          cookieStore.set({ name, value: "", ...options });
+          try {
+            cookieStore.set({ name, value: "", ...options });
+          } catch {
+            // Cookies can only be modified in Server Actions or Route Handlers
+          }
         }
       }
     }

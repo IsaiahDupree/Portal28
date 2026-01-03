@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { GraduationCap, ShoppingCart, Users, DollarSign, TrendingUp, Plus } from "lucide-react";
+import { GraduationCap, ShoppingCart, Users, DollarSign, TrendingUp, Plus, Shield, BarChart3, Crown } from "lucide-react";
 
 export default async function AdminPage() {
   const supabase = supabaseServer();
@@ -118,6 +118,51 @@ export default async function AdminPage() {
               Recent transactions
             </p>
           </CardContent>
+        </Card>
+      </div>
+
+      {/* Quick Actions */}
+      <div className="grid gap-4 md:grid-cols-3">
+        <Card className="hover:border-primary/50 transition-colors">
+          <Link href="/admin/analytics/enrollments">
+            <CardHeader className="flex flex-row items-center gap-3">
+              <div className="p-2 rounded-lg bg-green-100">
+                <Crown className="h-5 w-5 text-green-600" />
+              </div>
+              <div>
+                <CardTitle className="text-base">Enrollment Analytics</CardTitle>
+                <CardDescription>Course & membership stats, MRR</CardDescription>
+              </div>
+            </CardHeader>
+          </Link>
+        </Card>
+
+        <Card className="hover:border-primary/50 transition-colors">
+          <Link href="/admin/moderation">
+            <CardHeader className="flex flex-row items-center gap-3">
+              <div className="p-2 rounded-lg bg-orange-100">
+                <Shield className="h-5 w-5 text-orange-600" />
+              </div>
+              <div>
+                <CardTitle className="text-base">Content Moderation</CardTitle>
+                <CardDescription>Review & manage posts</CardDescription>
+              </div>
+            </CardHeader>
+          </Link>
+        </Card>
+
+        <Card className="hover:border-primary/50 transition-colors">
+          <Link href="/admin/analytics">
+            <CardHeader className="flex flex-row items-center gap-3">
+              <div className="p-2 rounded-lg bg-blue-100">
+                <BarChart3 className="h-5 w-5 text-blue-600" />
+              </div>
+              <div>
+                <CardTitle className="text-base">Sales Analytics</CardTitle>
+                <CardDescription>Offers, checkouts, conversions</CardDescription>
+              </div>
+            </CardHeader>
+          </Link>
         </Card>
       </div>
 
