@@ -1,0 +1,1163 @@
+{
+  "project": "Portal28",
+  "version": "1.0",
+  "created": "2026-01-13",
+  "total_features": 55,
+  "total_tests": 300,
+  "features": [
+    {
+      "id": "feat-001",
+      "epic": "Phase 0: MVP",
+      "category": "critical",
+      "priority": 1,
+      "description": "Authentication - Magic link login flow",
+      "test_ids": ["MVP-AUTH-001", "MVP-AUTH-002", "MVP-AUTH-003", "MVP-AUTH-004", "MVP-AUTH-005", "MVP-AUTH-006", "MVP-AUTH-007", "MVP-AUTH-008", "MVP-AUTH-009", "MVP-AUTH-010"],
+      "steps": [
+        "Implement magic link token generation",
+        "Create email validation for magic link",
+        "Set up Supabase magic link sending",
+        "Implement token verification and session creation",
+        "Create login page UI at /login",
+        "Handle session refresh and logout"
+      ],
+      "acceptance_criteria": [
+        "User can request magic link via email",
+        "Valid tokens grant session within 1 hour",
+        "Expired tokens are rejected",
+        "Logout clears session and redirects"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-002",
+      "epic": "Phase 0: MVP",
+      "category": "critical",
+      "priority": 2,
+      "description": "Middleware & Route Protection",
+      "test_ids": ["MVP-MID-001", "MVP-MID-002", "MVP-MID-003", "MVP-MID-004", "MVP-MID-005", "MVP-MID-006"],
+      "steps": [
+        "Configure middleware for /app/* protection",
+        "Configure middleware for /admin/* admin-only",
+        "Implement unauthenticated redirect to /login",
+        "Block non-admin users from /admin routes"
+      ],
+      "acceptance_criteria": [
+        "/app/* routes require authentication",
+        "/admin/* routes require admin role",
+        "Unauthenticated users redirected to login",
+        "Non-admins get 403 on admin routes"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-003",
+      "epic": "Phase 0: MVP",
+      "category": "critical",
+      "priority": 3,
+      "description": "Public Pages - Home, About, FAQ, Legal",
+      "test_ids": ["MVP-PUB-001", "MVP-PUB-002", "MVP-PUB-003", "MVP-PUB-004", "MVP-PUB-005", "MVP-PUB-006", "MVP-PUB-007", "MVP-PUB-008", "MVP-PUB-009", "MVP-PUB-010", "MVP-PUB-011", "MVP-PUB-012"],
+      "steps": [
+        "Create home page with hero and CTA",
+        "Add SEO meta tags and OG tags",
+        "Create course catalog page",
+        "Create course sales pages with curriculum",
+        "Create About, FAQ, Terms, Privacy pages"
+      ],
+      "acceptance_criteria": [
+        "Home page renders with hero section",
+        "Course catalog shows published courses",
+        "Sales pages show details and price",
+        "All pages have proper SEO meta"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-004",
+      "epic": "Phase 0: MVP",
+      "category": "critical",
+      "priority": 4,
+      "description": "Stripe Payments - Checkout Sessions",
+      "test_ids": ["MVP-PAY-001", "MVP-PAY-002", "MVP-PAY-003", "MVP-PAY-004", "MVP-PAY-005", "MVP-PAY-006", "MVP-PAY-007", "MVP-PAY-008", "MVP-PAY-009", "MVP-PAY-010"],
+      "steps": [
+        "Initialize Stripe client",
+        "Create checkout session API endpoint",
+        "Generate valid checkout URLs with price_id",
+        "Include success and cancel URLs",
+        "Attach customer email to session"
+      ],
+      "acceptance_criteria": [
+        "Checkout session created with valid price",
+        "Buy button redirects to Stripe",
+        "Success URL returns to /app",
+        "Invalid price_id returns 400"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-005",
+      "epic": "Phase 0: MVP",
+      "category": "critical",
+      "priority": 5,
+      "description": "Stripe Webhooks - Payment Processing",
+      "test_ids": ["MVP-WHK-001", "MVP-WHK-002", "MVP-WHK-003", "MVP-WHK-004", "MVP-WHK-005", "MVP-WHK-006", "MVP-WHK-007", "MVP-WHK-008", "MVP-WHK-009", "MVP-WHK-010"],
+      "steps": [
+        "Implement webhook signature verification",
+        "Handle checkout.session.completed event",
+        "Handle payment_intent.succeeded event",
+        "Handle charge.refunded event",
+        "Create order records and grant entitlements",
+        "Trigger welcome email on purchase"
+      ],
+      "acceptance_criteria": [
+        "Valid signatures accepted, invalid rejected",
+        "Completed checkout creates order + entitlement",
+        "Refunds revoke entitlements",
+        "Idempotent handling prevents duplicates"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-006",
+      "epic": "Phase 0: MVP",
+      "category": "critical",
+      "priority": 6,
+      "description": "Entitlements & Access Control",
+      "test_ids": ["MVP-ENT-001", "MVP-ENT-002", "MVP-ENT-003", "MVP-ENT-004", "MVP-ENT-005", "MVP-ENT-006", "MVP-ENT-007", "MVP-ENT-008"],
+      "steps": [
+        "Implement hasAccess function",
+        "Create grant entitlement logic",
+        "Create revoke entitlement logic",
+        "Link entitlements by email for pre-purchases",
+        "Show paywall for users without access"
+      ],
+      "acceptance_criteria": [
+        "hasAccess returns true for granted users",
+        "hasAccess returns false for revoked/no access",
+        "Users with access see all lessons",
+        "Users without access see paywall"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-007",
+      "epic": "Phase 0: MVP",
+      "category": "critical",
+      "priority": 7,
+      "description": "Course Delivery - Player & Navigation",
+      "test_ids": ["MVP-CRS-001", "MVP-CRS-002", "MVP-CRS-003", "MVP-CRS-004", "MVP-CRS-005", "MVP-CRS-006", "MVP-CRS-007", "MVP-CRS-008", "MVP-CRS-009", "MVP-CRS-010"],
+      "steps": [
+        "Create dashboard showing enrolled courses",
+        "Create course outline view with modules/lessons",
+        "Create lesson page with video embed",
+        "Add download links for resources",
+        "Implement next/prev navigation",
+        "Ensure mobile responsiveness"
+      ],
+      "acceptance_criteria": [
+        "Dashboard shows enrolled courses",
+        "Course outline displays modules and lessons",
+        "Video player works on lesson pages",
+        "Downloads work, navigation works"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-008",
+      "epic": "Phase 0: MVP",
+      "category": "critical",
+      "priority": 8,
+      "description": "Admin CMS - Course Management",
+      "test_ids": ["MVP-ADM-C-001", "MVP-ADM-C-002", "MVP-ADM-C-003", "MVP-ADM-C-004", "MVP-ADM-C-005", "MVP-ADM-C-006", "MVP-ADM-C-007", "MVP-ADM-C-008", "MVP-ADM-C-009", "MVP-ADM-C-010"],
+      "steps": [
+        "Create admin dashboard with stats",
+        "Implement course CRUD operations",
+        "Add publish/unpublish toggle",
+        "Create course API endpoints",
+        "Block non-admin access to APIs"
+      ],
+      "acceptance_criteria": [
+        "Admin can create, edit, delete courses",
+        "Publish toggle works",
+        "API returns proper status codes",
+        "Non-admins get 403"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-009",
+      "epic": "Phase 0: MVP",
+      "category": "high",
+      "priority": 9,
+      "description": "Admin CMS - Module Management",
+      "test_ids": ["MVP-ADM-M-001", "MVP-ADM-M-002", "MVP-ADM-M-003", "MVP-ADM-M-004", "MVP-ADM-M-005", "MVP-ADM-M-006", "MVP-ADM-M-007", "MVP-ADM-M-008"],
+      "steps": [
+        "Implement module CRUD operations",
+        "Add drag-drop reordering",
+        "Create module API endpoints",
+        "Handle cascade delete with lessons"
+      ],
+      "acceptance_criteria": [
+        "Modules can be created/edited/deleted",
+        "Drag-drop reordering works",
+        "Delete cascades to lessons"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-010",
+      "epic": "Phase 0: MVP",
+      "category": "high",
+      "priority": 10,
+      "description": "Admin CMS - Lesson Management",
+      "test_ids": ["MVP-ADM-L-001", "MVP-ADM-L-002", "MVP-ADM-L-003", "MVP-ADM-L-004", "MVP-ADM-L-005", "MVP-ADM-L-006", "MVP-ADM-L-007", "MVP-ADM-L-008", "MVP-ADM-L-009", "MVP-ADM-L-010"],
+      "steps": [
+        "Implement lesson CRUD operations",
+        "Add rich text content editor",
+        "Add video URL field with embed preview",
+        "Add downloads attachment",
+        "Implement lesson reordering"
+      ],
+      "acceptance_criteria": [
+        "Lessons can be created/edited/deleted",
+        "Video embeds work",
+        "Downloads can be attached",
+        "Reordering works"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-011",
+      "epic": "Phase 0: MVP",
+      "category": "critical",
+      "priority": 11,
+      "description": "Meta Pixel - Client-side Tracking",
+      "test_ids": ["MVP-PIX-001", "MVP-PIX-002", "MVP-PIX-003", "MVP-PIX-004", "MVP-PIX-005", "MVP-PIX-006", "MVP-PIX-007", "MVP-PIX-008"],
+      "steps": [
+        "Inject Meta Pixel script",
+        "Fire PageView on all pages",
+        "Fire ViewContent on course pages",
+        "Fire Lead on newsletter signup",
+        "Fire InitiateCheckout on buy click",
+        "Generate unique event_id for dedup"
+      ],
+      "acceptance_criteria": [
+        "Pixel script loads on all pages",
+        "PageView fires on navigation",
+        "ViewContent fires with content_id",
+        "Event IDs generated for dedup"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-012",
+      "epic": "Phase 0: MVP",
+      "category": "critical",
+      "priority": 12,
+      "description": "Meta CAPI - Server-side Tracking",
+      "test_ids": ["MVP-CAPI-001", "MVP-CAPI-002", "MVP-CAPI-003", "MVP-CAPI-004", "MVP-CAPI-005", "MVP-CAPI-006", "MVP-CAPI-007", "MVP-CAPI-008", "MVP-CAPI-009", "MVP-CAPI-010"],
+      "steps": [
+        "Construct CAPI payload with user data",
+        "Hash email with SHA256",
+        "Match event_id with Pixel for dedup",
+        "Send Purchase event from webhook",
+        "Send Lead event from server",
+        "Include IP, user agent, fbp/fbc cookies"
+      ],
+      "acceptance_criteria": [
+        "CAPI payloads accepted by Meta",
+        "Event IDs match Pixel events",
+        "Purchase fires on checkout complete",
+        "Errors logged but don't throw"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-013",
+      "epic": "Phase 0: MVP",
+      "category": "high",
+      "priority": 13,
+      "description": "Attribution Tracking - UTM & fbclid",
+      "test_ids": ["MVP-ATR-001", "MVP-ATR-002", "MVP-ATR-003", "MVP-ATR-004", "MVP-ATR-005", "MVP-ATR-006", "MVP-ATR-007", "MVP-ATR-008"],
+      "steps": [
+        "Parse UTM parameters from URL",
+        "Extract fbclid from URL",
+        "Store attribution in first-party cookie",
+        "Persist attribution to database",
+        "Link attribution to user on login",
+        "Attach attribution to orders"
+      ],
+      "acceptance_criteria": [
+        "UTMs captured from landing",
+        "fbclid extracted and stored",
+        "Attribution persists to checkout",
+        "Orders have attribution data"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-014",
+      "epic": "Phase 0: MVP",
+      "category": "critical",
+      "priority": 14,
+      "description": "Email Integration - Resend",
+      "test_ids": ["MVP-EML-001", "MVP-EML-002", "MVP-EML-003", "MVP-EML-004", "MVP-EML-005", "MVP-EML-006", "MVP-EML-007", "MVP-EML-008", "MVP-EML-009", "MVP-EML-010"],
+      "steps": [
+        "Initialize Resend client",
+        "Create welcome email template",
+        "Create course access email template",
+        "Implement newsletter API",
+        "Handle webhooks for delivered/bounced/complained",
+        "Log email sends to database"
+      ],
+      "acceptance_criteria": [
+        "Welcome email sent on purchase",
+        "Templates render with variables",
+        "Webhooks update contact status",
+        "Sends logged to database"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-015",
+      "epic": "Phase 0: MVP",
+      "category": "critical",
+      "priority": 15,
+      "description": "Database Schema & RLS Policies",
+      "test_ids": ["MVP-DB-001", "MVP-DB-002", "MVP-DB-003", "MVP-DB-004", "MVP-DB-005", "MVP-DB-006", "MVP-DB-007", "MVP-DB-008"],
+      "steps": [
+        "Create all MVP tables",
+        "Implement RLS for users table",
+        "Implement RLS for courses table",
+        "Implement RLS for orders table",
+        "Implement RLS for entitlements table",
+        "Allow admin bypass for RLS"
+      ],
+      "acceptance_criteria": [
+        "Users can only see own data",
+        "Published courses are public",
+        "Orders restricted to owner",
+        "Admin has full access"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-016",
+      "epic": "Phase 1: Growth",
+      "category": "high",
+      "priority": 16,
+      "description": "Offers System - Multi-product Sales",
+      "test_ids": ["GRO-OFR-001", "GRO-OFR-002", "GRO-OFR-003", "GRO-OFR-004", "GRO-OFR-005", "GRO-OFR-006", "GRO-OFR-007", "GRO-OFR-008", "GRO-OFR-009", "GRO-OFR-010"],
+      "steps": [
+        "Create offers table and API",
+        "Implement getOffers function",
+        "Create offer checkout API",
+        "Support bundles and memberships",
+        "Create offer card component",
+        "Track impressions and checkout attempts"
+      ],
+      "acceptance_criteria": [
+        "Offers retrieved and displayed",
+        "Offer checkout creates Stripe session",
+        "Bundles grant multiple entitlements",
+        "Impressions logged"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-017",
+      "epic": "Phase 1: Growth",
+      "category": "medium",
+      "priority": 17,
+      "description": "Offer Placements - Widget Positioning",
+      "test_ids": ["GRO-PLC-001", "GRO-PLC-002", "GRO-PLC-003", "GRO-PLC-004", "GRO-PLC-005", "GRO-PLC-006"],
+      "steps": [
+        "Create offer placements system",
+        "Implement get by placement",
+        "Allow admin to reorder offers",
+        "Display offers in sidebar widget"
+      ],
+      "acceptance_criteria": [
+        "Placements return ordered offers",
+        "Admin can drag-drop reorder",
+        "Widget displays offers"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-018",
+      "epic": "Phase 1: Growth",
+      "category": "high",
+      "priority": 18,
+      "description": "Membership Subscriptions",
+      "test_ids": ["GRO-MEM-001", "GRO-MEM-002", "GRO-MEM-003", "GRO-MEM-004", "GRO-MEM-005", "GRO-MEM-006", "GRO-MEM-007", "GRO-MEM-008"],
+      "steps": [
+        "Create subscription checkout API",
+        "Handle subscription webhooks",
+        "Implement renewal logic",
+        "Handle cancellation and grace period",
+        "Create customer portal link"
+      ],
+      "acceptance_criteria": [
+        "Subscription checkout works",
+        "Renewals extend access",
+        "Cancellation revokes at period end",
+        "Customer portal opens"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-019",
+      "epic": "Phase 1: Growth",
+      "category": "medium",
+      "priority": 19,
+      "description": "Admin Offers CRUD",
+      "test_ids": ["GRO-ADM-O-001", "GRO-ADM-O-002", "GRO-ADM-O-003", "GRO-ADM-O-004", "GRO-ADM-O-005", "GRO-ADM-O-006"],
+      "steps": [
+        "Create admin offers list page",
+        "Implement create/edit offer forms",
+        "Add active toggle",
+        "Support JSON payload configuration"
+      ],
+      "acceptance_criteria": [
+        "Admin can CRUD offers",
+        "Active toggle works",
+        "JSON payload saves"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-020",
+      "epic": "Phase 1: Growth",
+      "category": "medium",
+      "priority": 20,
+      "description": "Analytics Dashboard",
+      "test_ids": ["GRO-ANA-001", "GRO-ANA-002", "GRO-ANA-003", "GRO-ANA-004", "GRO-ANA-005", "GRO-ANA-006", "GRO-ANA-007", "GRO-ANA-008"],
+      "steps": [
+        "Create analytics dashboard page",
+        "Add revenue chart with time filters",
+        "Add conversion funnel visualization",
+        "Show top courses by revenue",
+        "Implement daily metrics cron",
+        "Add CSV export"
+      ],
+      "acceptance_criteria": [
+        "Dashboard shows charts",
+        "Revenue displays correctly",
+        "Funnel shows LP to Purchase",
+        "Export works"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-021",
+      "epic": "Phase 1: Growth",
+      "category": "high",
+      "priority": 21,
+      "description": "Email Programs - Drip Sequences",
+      "test_ids": ["GRO-EPG-001", "GRO-EPG-002", "GRO-EPG-003", "GRO-EPG-004", "GRO-EPG-005", "GRO-EPG-006", "GRO-EPG-007", "GRO-EPG-008", "GRO-EPG-009", "GRO-EPG-010"],
+      "steps": [
+        "Create email programs admin UI",
+        "Implement program CRUD",
+        "Add email step creation with delays",
+        "Build scheduler for sending due emails",
+        "Enroll users in programs",
+        "Show program analytics"
+      ],
+      "acceptance_criteria": [
+        "Programs can be created/activated",
+        "Steps with delays configured",
+        "Scheduler sends due emails",
+        "No duplicate sends"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-022",
+      "epic": "Phase 1: Growth",
+      "category": "medium",
+      "priority": 22,
+      "description": "Email Analytics",
+      "test_ids": ["GRO-EAN-001", "GRO-EAN-002", "GRO-EAN-003", "GRO-EAN-004", "GRO-EAN-005", "GRO-EAN-006"],
+      "steps": [
+        "Create email analytics page",
+        "Show open/click/bounce rates",
+        "Aggregate stats by template",
+        "Add date filter"
+      ],
+      "acceptance_criteria": [
+        "Analytics page shows metrics",
+        "Rates calculated correctly",
+        "Filter by template works"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-023",
+      "epic": "Phase 1: Growth",
+      "category": "medium",
+      "priority": 23,
+      "description": "Coupons & Promo Codes",
+      "test_ids": ["GRO-CPN-001", "GRO-CPN-002", "GRO-CPN-003", "GRO-CPN-004"],
+      "steps": [
+        "Integrate Stripe promo codes",
+        "Validate codes at checkout",
+        "Show discount in checkout",
+        "Track usage"
+      ],
+      "acceptance_criteria": [
+        "Valid codes apply discount",
+        "Invalid codes show error",
+        "Usage tracked in Stripe"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-024",
+      "epic": "Phase 1: Growth",
+      "category": "medium",
+      "priority": 24,
+      "description": "MRR & Subscription Metrics",
+      "test_ids": ["GRO-MRR-001", "GRO-MRR-002", "GRO-MRR-003", "GRO-MRR-004", "GRO-MRR-005", "GRO-MRR-006"],
+      "steps": [
+        "Calculate MRR from active subscriptions",
+        "Create MRR widget for dashboard",
+        "Calculate churn rate",
+        "Show subscriber list",
+        "Track subscription history"
+      ],
+      "acceptance_criteria": [
+        "MRR calculated correctly",
+        "Widget shows current MRR",
+        "Churn rate displayed",
+        "Revenue breakdown by plan"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-025",
+      "epic": "Phase 2: Platform",
+      "category": "high",
+      "priority": 25,
+      "description": "Widget System - Modular Apps",
+      "test_ids": ["PLT-WDG-001", "PLT-WDG-002", "PLT-WDG-003", "PLT-WDG-004", "PLT-WDG-005", "PLT-WDG-006"],
+      "steps": [
+        "Create widget system architecture",
+        "Implement getWidgets function",
+        "Add access check per widget",
+        "Render widgets in sidebar",
+        "Show paywall for locked widgets"
+      ],
+      "acceptance_criteria": [
+        "Widgets retrieved and displayed",
+        "Access checked per membership",
+        "Paywall shows upgrade option"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-026",
+      "epic": "Phase 2: Platform",
+      "category": "high",
+      "priority": 26,
+      "description": "Community Spaces",
+      "test_ids": ["PLT-SPC-001", "PLT-SPC-002", "PLT-SPC-003", "PLT-SPC-004", "PLT-SPC-005", "PLT-SPC-006"],
+      "steps": [
+        "Create spaces table and API",
+        "Implement space creation",
+        "Get space by slug",
+        "List user's accessible spaces",
+        "Create community home page"
+      ],
+      "acceptance_criteria": [
+        "Spaces can be created",
+        "Users see accessible spaces",
+        "Community home renders"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-027",
+      "epic": "Phase 2: Platform",
+      "category": "high",
+      "priority": 27,
+      "description": "Forums - Categories",
+      "test_ids": ["PLT-FOR-C-001", "PLT-FOR-C-002", "PLT-FOR-C-003", "PLT-FOR-C-004", "PLT-FOR-C-005"],
+      "steps": [
+        "Create forum categories page",
+        "Show thread count per category",
+        "Navigate to category threads",
+        "Admin create category API"
+      ],
+      "acceptance_criteria": [
+        "Categories listed with thread counts",
+        "Click opens threads",
+        "Admin can create categories"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-028",
+      "epic": "Phase 2: Platform",
+      "category": "high",
+      "priority": 28,
+      "description": "Forums - Threads",
+      "test_ids": ["PLT-FOR-T-001", "PLT-FOR-T-002", "PLT-FOR-T-003", "PLT-FOR-T-004", "PLT-FOR-T-005", "PLT-FOR-T-006", "PLT-FOR-T-007", "PLT-FOR-T-008"],
+      "steps": [
+        "Create thread list page",
+        "Implement create thread form",
+        "Show thread detail with posts",
+        "Pin threads to top",
+        "Add RLS for members only",
+        "Add pagination and search"
+      ],
+      "acceptance_criteria": [
+        "Threads listed in category",
+        "Users can create threads",
+        "Pinned threads appear first",
+        "RLS blocks non-members"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-029",
+      "epic": "Phase 2: Platform",
+      "category": "high",
+      "priority": 29,
+      "description": "Forums - Posts/Replies",
+      "test_ids": ["PLT-FOR-P-001", "PLT-FOR-P-002", "PLT-FOR-P-003", "PLT-FOR-P-004", "PLT-FOR-P-005", "PLT-FOR-P-006", "PLT-FOR-P-007", "PLT-FOR-P-008"],
+      "steps": [
+        "Implement reply to thread",
+        "Allow edit/delete own posts",
+        "Include author data in posts",
+        "Add quote reply feature",
+        "Add rich text formatting"
+      ],
+      "acceptance_criteria": [
+        "Users can reply to threads",
+        "Edit/delete own posts works",
+        "Rich text formatting works"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-030",
+      "epic": "Phase 2: Platform",
+      "category": "medium",
+      "priority": 30,
+      "description": "Announcements Feed",
+      "test_ids": ["PLT-ANN-001", "PLT-ANN-002", "PLT-ANN-003", "PLT-ANN-004", "PLT-ANN-005", "PLT-ANN-006"],
+      "steps": [
+        "Create announcements feed page",
+        "Show single announcement view",
+        "Pin important announcements",
+        "Filter by tags",
+        "Admin create announcement API"
+      ],
+      "acceptance_criteria": [
+        "Feed shows announcements",
+        "Pinned at top",
+        "Tag filter works",
+        "RLS blocks non-members"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-031",
+      "epic": "Phase 2: Platform",
+      "category": "medium",
+      "priority": 31,
+      "description": "Resources Library",
+      "test_ids": ["PLT-RES-001", "PLT-RES-002", "PLT-RES-003", "PLT-RES-004", "PLT-RES-005", "PLT-RES-006", "PLT-RES-007", "PLT-RES-008"],
+      "steps": [
+        "Create resources page with folder tree",
+        "Navigate through folders",
+        "Download files",
+        "Open links in new tab",
+        "View note content",
+        "Admin create folder/item APIs"
+      ],
+      "acceptance_criteria": [
+        "Folder tree renders",
+        "Downloads work",
+        "Links open in new tab",
+        "RLS blocks non-members"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-032",
+      "epic": "Phase 2: Platform",
+      "category": "high",
+      "priority": 32,
+      "description": "Realtime Chat",
+      "test_ids": ["PLT-CHT-001", "PLT-CHT-002", "PLT-CHT-003", "PLT-CHT-004", "PLT-CHT-005", "PLT-CHT-006", "PLT-CHT-007", "PLT-CHT-008", "PLT-CHT-009", "PLT-CHT-010"],
+      "steps": [
+        "Create chat channel component",
+        "Implement send message",
+        "Add realtime subscriptions",
+        "Show timestamps and avatars",
+        "Implement scroll history",
+        "Add typing indicator and reactions"
+      ],
+      "acceptance_criteria": [
+        "Messages appear in realtime",
+        "Send works immediately",
+        "History loads on scroll",
+        "RLS blocks non-members"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-033",
+      "epic": "Phase 2: Platform",
+      "category": "medium",
+      "priority": 33,
+      "description": "Community Admin Panel",
+      "test_ids": ["PLT-CAD-001", "PLT-CAD-002", "PLT-CAD-003", "PLT-CAD-004", "PLT-CAD-005", "PLT-CAD-006"],
+      "steps": [
+        "Create community admin page",
+        "Manage forum categories",
+        "Create announcements",
+        "Manage resource folders",
+        "Configure chat channels"
+      ],
+      "acceptance_criteria": [
+        "Admin page loads",
+        "CRUD operations work",
+        "Settings save"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-034",
+      "epic": "Phase 2: Platform",
+      "category": "medium",
+      "priority": 34,
+      "description": "Moderation Tools",
+      "test_ids": ["PLT-MOD-001", "PLT-MOD-002", "PLT-MOD-003", "PLT-MOD-004", "PLT-MOD-005", "PLT-MOD-006"],
+      "steps": [
+        "Implement pin/unpin thread",
+        "Implement lock thread",
+        "Implement delete thread/post",
+        "Add user warning system"
+      ],
+      "acceptance_criteria": [
+        "Pin/lock/delete work",
+        "Locked threads block replies",
+        "Warnings tracked"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-035",
+      "epic": "Phase 2: Platform",
+      "category": "high",
+      "priority": 35,
+      "description": "Course Studio Editor",
+      "test_ids": ["PLT-STU-001", "PLT-STU-002", "PLT-STU-003", "PLT-STU-004", "PLT-STU-005", "PLT-STU-006"],
+      "steps": [
+        "Create course editor page",
+        "Implement inline editing",
+        "Add drag-drop module/lesson reorder",
+        "Add autosave",
+        "Preview course as student"
+      ],
+      "acceptance_criteria": [
+        "Editor loads course",
+        "Inline editing works",
+        "Drag-drop reorders",
+        "Autosave works"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-036",
+      "epic": "Phase 2: Platform",
+      "category": "medium",
+      "priority": 36,
+      "description": "Progress Tracking",
+      "test_ids": ["PLT-PRG-001", "PLT-PRG-002", "PLT-PRG-003", "PLT-PRG-004", "PLT-PRG-005"],
+      "steps": [
+        "Track lesson completion",
+        "Calculate course progress %",
+        "Show progress bar in UI",
+        "Store completion timestamps"
+      ],
+      "acceptance_criteria": [
+        "Lessons can be marked complete",
+        "Progress % calculated",
+        "Progress bar accurate"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-037",
+      "epic": "Phase 2: Platform",
+      "category": "low",
+      "priority": 37,
+      "description": "Lesson Notes",
+      "test_ids": ["PLT-NOT-001", "PLT-NOT-002", "PLT-NOT-003", "PLT-NOT-004"],
+      "steps": [
+        "Add notes panel to lesson page",
+        "Save notes per user per lesson",
+        "Autosave notes",
+        "List all notes in dashboard"
+      ],
+      "acceptance_criteria": [
+        "Notes save and persist",
+        "Autosave works",
+        "Notes searchable"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-038",
+      "epic": "Phase 2: Platform",
+      "category": "low",
+      "priority": 38,
+      "description": "Lesson Comments",
+      "test_ids": ["PLT-CMT-001", "PLT-CMT-002", "PLT-CMT-003", "PLT-CMT-004"],
+      "steps": [
+        "Add comments section to lessons",
+        "Allow nested replies",
+        "Admin can delete comments",
+        "Notify on new comments"
+      ],
+      "acceptance_criteria": [
+        "Comments display on lessons",
+        "Replies work",
+        "Admin can moderate"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-039",
+      "epic": "Phase 2: Platform",
+      "category": "medium",
+      "priority": 39,
+      "description": "Certificates",
+      "test_ids": ["PLT-CRT-001", "PLT-CRT-002", "PLT-CRT-003", "PLT-CRT-004"],
+      "steps": [
+        "Generate certificate on completion",
+        "Create PDF certificate",
+        "Add verification URL",
+        "Email certificate to user"
+      ],
+      "acceptance_criteria": [
+        "Certificate generated on 100%",
+        "PDF downloads",
+        "Verification works"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-040",
+      "epic": "Phase 2: Platform",
+      "category": "low",
+      "priority": 40,
+      "description": "Quizzes",
+      "test_ids": ["PLT-QIZ-001", "PLT-QIZ-002", "PLT-QIZ-003", "PLT-QIZ-004"],
+      "steps": [
+        "Create quiz builder for lessons",
+        "Support multiple choice questions",
+        "Grade quizzes automatically",
+        "Show quiz results"
+      ],
+      "acceptance_criteria": [
+        "Quizzes can be created",
+        "Questions display",
+        "Grading works",
+        "Results shown"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-041",
+      "epic": "Phase 2: Platform",
+      "category": "medium",
+      "priority": 41,
+      "description": "Video Player - Mux Integration",
+      "test_ids": ["PLT-MUX-001", "PLT-MUX-002", "PLT-MUX-003", "PLT-MUX-004"],
+      "steps": [
+        "Integrate Mux player",
+        "Add signed URLs for security",
+        "Track video progress",
+        "Support subtitles"
+      ],
+      "acceptance_criteria": [
+        "Mux videos play",
+        "URLs are signed",
+        "Progress tracked"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-042",
+      "epic": "Phase 2: Platform",
+      "category": "medium",
+      "priority": 42,
+      "description": "File Storage - R2 Integration",
+      "test_ids": ["PLT-R2-001", "PLT-R2-002", "PLT-R2-003", "PLT-R2-004"],
+      "steps": [
+        "Configure Cloudflare R2",
+        "Implement file upload",
+        "Generate signed download URLs",
+        "Set expiry on URLs"
+      ],
+      "acceptance_criteria": [
+        "Files upload to R2",
+        "Downloads work",
+        "URLs expire"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-043",
+      "epic": "Phase 2: Platform",
+      "category": "high",
+      "priority": 43,
+      "description": "Notifications System",
+      "test_ids": ["PLT-NTF-001", "PLT-NTF-002", "PLT-NTF-003", "PLT-NTF-004", "PLT-NTF-005"],
+      "steps": [
+        "Create notifications table",
+        "Generate notifications for events",
+        "Show notification bell with count",
+        "Mark as read",
+        "Notification preferences"
+      ],
+      "acceptance_criteria": [
+        "Notifications generated",
+        "Bell shows unread count",
+        "Mark as read works"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-044",
+      "epic": "Phase 2: Platform",
+      "category": "medium",
+      "priority": 44,
+      "description": "User Profile",
+      "test_ids": ["PLT-PRF-001", "PLT-PRF-002", "PLT-PRF-003", "PLT-PRF-004"],
+      "steps": [
+        "Create profile settings page",
+        "Allow avatar upload",
+        "Edit display name and bio",
+        "View public profile"
+      ],
+      "acceptance_criteria": [
+        "Profile page loads",
+        "Avatar uploads",
+        "Changes save"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-045",
+      "epic": "Phase 2: Platform",
+      "category": "medium",
+      "priority": 45,
+      "description": "Search",
+      "test_ids": ["PLT-SRC-001", "PLT-SRC-002", "PLT-SRC-003", "PLT-SRC-004"],
+      "steps": [
+        "Create global search UI",
+        "Search courses and lessons",
+        "Search community content",
+        "Show results with highlights"
+      ],
+      "acceptance_criteria": [
+        "Search returns results",
+        "Courses and lessons found",
+        "Community content searchable"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-046",
+      "epic": "Phase 2: Platform",
+      "category": "critical",
+      "priority": 46,
+      "description": "Security - CSRF Protection",
+      "test_ids": ["PLT-SEC-001", "PLT-SEC-002"],
+      "steps": [
+        "Implement CSRF tokens",
+        "Validate on mutations",
+        "Reject invalid tokens"
+      ],
+      "acceptance_criteria": [
+        "CSRF tokens validated",
+        "Invalid tokens rejected"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-047",
+      "epic": "Phase 2: Platform",
+      "category": "critical",
+      "priority": 47,
+      "description": "Security - XSS Prevention",
+      "test_ids": ["PLT-SEC-003", "PLT-SEC-004"],
+      "steps": [
+        "Sanitize user input",
+        "Escape output in templates",
+        "Content Security Policy"
+      ],
+      "acceptance_criteria": [
+        "Scripts in input sanitized",
+        "Output properly escaped",
+        "CSP headers set"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-048",
+      "epic": "Phase 2: Platform",
+      "category": "critical",
+      "priority": 48,
+      "description": "Security - Webhook Signatures",
+      "test_ids": ["PLT-SEC-005", "PLT-SEC-006"],
+      "steps": [
+        "Validate all webhook signatures",
+        "Reject invalid signatures",
+        "Log signature failures"
+      ],
+      "acceptance_criteria": [
+        "Valid signatures accepted",
+        "Invalid signatures rejected and logged"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-049",
+      "epic": "Phase 2: Platform",
+      "category": "high",
+      "priority": 49,
+      "description": "Error Handling & Logging",
+      "test_ids": ["PLT-ERR-001", "PLT-ERR-002", "PLT-ERR-003"],
+      "steps": [
+        "Implement error boundary",
+        "Structured logging",
+        "Error reporting service"
+      ],
+      "acceptance_criteria": [
+        "Errors caught by boundary",
+        "Logs are structured",
+        "Errors reported"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-050",
+      "epic": "Phase 2: Platform",
+      "category": "medium",
+      "priority": 50,
+      "description": "Performance - Caching",
+      "test_ids": ["PLT-PER-001", "PLT-PER-002"],
+      "steps": [
+        "Implement query caching",
+        "Cache static assets",
+        "Invalidate on updates"
+      ],
+      "acceptance_criteria": [
+        "Queries cached",
+        "Cache invalidated properly"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-051",
+      "epic": "Phase 2: Platform",
+      "category": "medium",
+      "priority": 51,
+      "description": "SEO & Performance",
+      "test_ids": ["PLT-SEO-001", "PLT-SEO-002", "PLT-SEO-003"],
+      "steps": [
+        "Implement meta tags",
+        "Generate sitemap",
+        "Optimize images"
+      ],
+      "acceptance_criteria": [
+        "Meta tags on all pages",
+        "Sitemap generated",
+        "Images optimized"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-052",
+      "epic": "Phase 2: Platform",
+      "category": "medium",
+      "priority": 52,
+      "description": "Mobile Responsiveness",
+      "test_ids": ["PLT-MOB-001", "PLT-MOB-002", "PLT-MOB-003"],
+      "steps": [
+        "Test all pages on mobile",
+        "Fix mobile navigation",
+        "Ensure touch targets"
+      ],
+      "acceptance_criteria": [
+        "All pages render on mobile",
+        "Navigation works",
+        "Touch targets adequate"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-053",
+      "epic": "Phase 2: Platform",
+      "category": "high",
+      "priority": 53,
+      "description": "Deployment & CI/CD",
+      "test_ids": ["PLT-DEP-001", "PLT-DEP-002"],
+      "steps": [
+        "Configure Vercel deployment",
+        "Set up preview deployments",
+        "Configure environment variables"
+      ],
+      "acceptance_criteria": [
+        "Deploys to Vercel",
+        "Preview deployments work",
+        "Env vars configured"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-054",
+      "epic": "Phase 2: Platform",
+      "category": "high",
+      "priority": 54,
+      "description": "Database Migrations",
+      "test_ids": ["PLT-MIG-001", "PLT-MIG-002"],
+      "steps": [
+        "Apply all pending migrations",
+        "Verify table creation",
+        "Test RLS policies"
+      ],
+      "acceptance_criteria": [
+        "All migrations applied",
+        "Tables exist",
+        "RLS works"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-055",
+      "epic": "Phase 2: Platform",
+      "category": "medium",
+      "priority": 55,
+      "description": "Documentation",
+      "test_ids": ["PLT-DOC-001", "PLT-DOC-002"],
+      "steps": [
+        "Complete API documentation",
+        "Update README",
+        "Create deployment guide"
+      ],
+      "acceptance_criteria": [
+        "API docs complete",
+        "README updated",
+        "Deployment guide exists"
+      ],
+      "passes": false
+    }
+  ]
+}
