@@ -66,3 +66,30 @@ export async function POST(req: NextRequest) {
 
   return NextResponse.json({ note });
 }
+
+export async function DELETE(req: NextRequest) {
+  const supabase = supabaseServer();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const lessonId = req.nextUrl.searchParams.get("lessonId");
+
+  if (!lessonId) {
+    return NextResponse.json({ error: "lessonId required" }, { status: 400 });
+  }
+
+  const { error } = await supabase
+    .from("lesson_notes")
+    .delete()
+    .eq("user_id", user.id)
+    .eq("lesson_id", lessonId);
+
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+
+  return NextResponse.json({ success: true });
+}

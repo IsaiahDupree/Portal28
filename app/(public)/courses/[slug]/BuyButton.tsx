@@ -9,7 +9,17 @@ function makeEventId() {
   return `p28_${crypto.randomUUID()}`;
 }
 
-export function BuyButton({ courseId, price, className }: { courseId: string; price?: string; className?: string }) {
+export function BuyButton({
+  courseId,
+  price,
+  className,
+  variant = "default"
+}: {
+  courseId: string;
+  price?: string;
+  className?: string;
+  variant?: "default" | "secondary" | "outline" | "ghost" | "link" | "destructive";
+}) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -47,10 +57,11 @@ export function BuyButton({ courseId, price, className }: { courseId: string; pr
 
   return (
     <div className="flex flex-col gap-2">
-      <Button 
-        onClick={startCheckout} 
-        disabled={loading} 
+      <Button
+        onClick={startCheckout}
+        disabled={loading}
         size="lg"
+        variant={variant}
         className={className}
       >
         {loading ? (

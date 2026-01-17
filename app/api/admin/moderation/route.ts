@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
             .eq("id", id);
         } else if (type === "reply") {
           await supabaseAdmin
-            .from("forum_replies")
+            .from("forum_posts")
             .update({ is_hidden: true })
             .eq("id", id);
         }
@@ -55,7 +55,7 @@ export async function POST(req: NextRequest) {
             .eq("id", id);
         } else if (type === "reply") {
           await supabaseAdmin
-            .from("forum_replies")
+            .from("forum_posts")
             .update({ is_hidden: false })
             .eq("id", id);
         }
@@ -99,9 +99,9 @@ export async function POST(req: NextRequest) {
 
       case "delete":
         if (type === "thread") {
-          // Delete all replies first
+          // Delete all posts first
           await supabaseAdmin
-            .from("forum_replies")
+            .from("forum_posts")
             .delete()
             .eq("thread_id", id);
           // Then delete the thread
@@ -111,7 +111,7 @@ export async function POST(req: NextRequest) {
             .eq("id", id);
         } else if (type === "reply") {
           await supabaseAdmin
-            .from("forum_replies")
+            .from("forum_posts")
             .delete()
             .eq("id", id);
         }
@@ -136,7 +136,7 @@ export async function POST(req: NextRequest) {
               .eq("id", contentId);
           } else if (contentType === "reply") {
             await supabaseAdmin
-              .from("forum_replies")
+              .from("forum_posts")
               .update({ is_hidden: true })
               .eq("id", contentId);
           }

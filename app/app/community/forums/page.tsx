@@ -35,15 +35,7 @@ export default async function ForumsPage() {
 
   const categories = await getForumCategories(space.id);
 
-  // Default categories if none exist
-  const defaultCategories = [
-    { id: "general", slug: "general", name: "General Discussion", description: "Talk about anything related to the courses", icon: "💬", threadCount: 0 },
-    { id: "help", slug: "help", name: "Help & Support", description: "Get help with course content or technical issues", icon: "🙋", threadCount: 0 },
-    { id: "wins", slug: "wins", name: "Wins & Success Stories", description: "Share your achievements and celebrate wins", icon: "🎉", threadCount: 0 },
-    { id: "feedback", slug: "feedback", name: "Feedback & Suggestions", description: "Share your ideas for improving the courses", icon: "💡", threadCount: 0 },
-  ];
-
-  const displayCategories = categories.length > 0 ? categories : defaultCategories;
+  const displayCategories = categories;
 
   return (
     <main className="container max-w-4xl mx-auto py-6 px-4 space-y-6">
@@ -92,7 +84,7 @@ export default async function ForumsPage() {
                 <div className="flex items-center gap-4 text-sm text-muted-foreground">
                   <div className="flex items-center gap-1">
                     <MessageSquare className="h-4 w-4" />
-                    <span>{category.threadCount || 0} threads</span>
+                    <span>{category.thread_count || 0} threads</span>
                   </div>
                 </div>
               </CardContent>

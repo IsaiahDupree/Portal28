@@ -1,8 +1,16 @@
 import Link from "next/link";
 import { supabaseServer } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { getEmailStats, getEmailTemplates } from "@/lib/email/analytics";
+import { TemplateFilter } from "./TemplateFilter";
 
-export default async function EmailAnalyticsPage() {
+export default async function EmailAnalyticsPage({
+  searchParams
+}: {
+  searchParams: { template?: string };
+}) {
   const supabase = supabaseServer();
   const { data: { user } } = await supabase.auth.getUser();
 
@@ -15,6 +23,15 @@ export default async function EmailAnalyticsPage() {
     .single();
 
   if (profile?.role !== "admin") redirect("/app");
+
+  // Get template filter from query params
+  const templateFilter = searchParams.template || "all";
+
+  // Get overall aggregate stats (filtered by template if specified)
+  const aggregateStats = await getEmailStats(templateFilter);
+
+  // Get list of all templates for filter dropdown
+  const templates = await getEmailTemplates();
 
   // Get program stats
   const { data: programs } = await supabase
@@ -45,192 +62,272 @@ export default async function EmailAnalyticsPage() {
     .limit(10);
 
   return (
-    <main style={{ maxWidth: 1200, margin: "0 auto", padding: 24 }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
-        <h1>Email Analytics</h1>
-        <div style={{ display: "flex", gap: 12 }}>
-          <Link href="/admin/email-programs">Email Programs</Link>
-          <Link href="/admin">← Admin</Link>
+    <div className="space-y-6">
+      {/* Page Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">Email Analytics</h1>
+          <p className="text-muted-foreground">
+            Track email performance, engagement, and deliverability
+          </p>
+        </div>
+        <div className="flex gap-3">
+          <Button variant="outline" asChild>
+            <Link href="/admin/email-programs">Email Programs</Link>
+          </Button>
+          <Button variant="outline" asChild>
+            <Link href="/admin">← Admin</Link>
+          </Button>
         </div>
       </div>
 
-      {/* Overview Stats */}
-      <section style={{ marginBottom: 32 }}>
-        <h2>Program Performance</h2>
-        {!programs || programs.length === 0 ? (
-          <p style={{ color: "#666" }}>No programs yet. <Link href="/admin/email-programs/new">Create one</Link></p>
-        ) : (
-          <table style={{ width: "100%", borderCollapse: "collapse" }}>
-            <thead>
-              <tr style={{ backgroundColor: "#f5f5f5" }}>
-                <th style={{ textAlign: "left", padding: 12, borderBottom: "2px solid #ddd" }}>Program</th>
-                <th style={{ textAlign: "right", padding: 12, borderBottom: "2px solid #ddd" }}>Delivered</th>
-                <th style={{ textAlign: "right", padding: 12, borderBottom: "2px solid #ddd" }}>Open Rate</th>
-                <th style={{ textAlign: "right", padding: 12, borderBottom: "2px solid #ddd" }}>Click Rate</th>
-                <th style={{ textAlign: "right", padding: 12, borderBottom: "2px solid #ddd" }}>Human Clicks</th>
-                <th style={{ textAlign: "right", padding: 12, borderBottom: "2px solid #ddd" }}>Reply Rate</th>
-                <th style={{ textAlign: "right", padding: 12, borderBottom: "2px solid #ddd" }}>Revenue</th>
-              </tr>
-            </thead>
-            <tbody>
-              {programs.map((program) => {
-                const stats = Array.isArray(program.email_program_stats)
-                  ? program.email_program_stats[0]
-                  : program.email_program_stats;
-                return (
-                  <tr key={program.id}>
-                    <td style={{ padding: 12, borderBottom: "1px solid #eee" }}>
-                      <Link href={`/admin/email-analytics/programs/${program.id}`} style={{ fontWeight: 500 }}>
-                        {program.name}
-                      </Link>
-                      <span style={{
-                        marginLeft: 8,
-                        padding: "2px 6px",
-                        borderRadius: 3,
-                        fontSize: 11,
-                        backgroundColor: program.status === "active" ? "#d4edda" : "#e2e3e5"
-                      }}>
-                        {program.status}
-                      </span>
-                    </td>
-                    <td style={{ padding: 12, borderBottom: "1px solid #eee", textAlign: "right" }}>
-                      {stats?.total_delivered || 0}
-                    </td>
-                    <td style={{ padding: 12, borderBottom: "1px solid #eee", textAlign: "right" }}>
-                      <span style={{ color: (stats?.open_rate || 0) > 0.2 ? "#28a745" : "#666" }}>
-                        {((stats?.open_rate || 0) * 100).toFixed(1)}%
-                      </span>
-                    </td>
-                    <td style={{ padding: 12, borderBottom: "1px solid #eee", textAlign: "right" }}>
-                      {((stats?.click_rate || 0) * 100).toFixed(1)}%
-                    </td>
-                    <td style={{ padding: 12, borderBottom: "1px solid #eee", textAlign: "right" }}>
-                      <span style={{ color: "#28a745", fontWeight: 500 }}>
-                        {((stats?.human_click_rate || 0) * 100).toFixed(1)}%
-                      </span>
-                    </td>
-                    <td style={{ padding: 12, borderBottom: "1px solid #eee", textAlign: "right" }}>
-                      <span style={{ color: (stats?.reply_rate || 0) > 0 ? "#007bff" : "#666" }}>
-                        {((stats?.reply_rate || 0) * 100).toFixed(1)}%
-                      </span>
-                    </td>
-                    <td style={{ padding: 12, borderBottom: "1px solid #eee", textAlign: "right" }}>
-                      ${((stats?.attributed_revenue_cents || 0) / 100).toFixed(2)}
-                      {stats?.attributed_orders > 0 && (
-                        <span style={{ color: "#666", fontSize: 12 }}> ({stats.attributed_orders} orders)</span>
-                      )}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        )}
-      </section>
+      {/* Template Filter */}
+      <TemplateFilter templates={templates} currentTemplate={templateFilter} />
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 32 }}>
-        {/* Recent Events */}
-        <section>
-          <h2>Recent Activity</h2>
-          {!recentEvents || recentEvents.length === 0 ? (
-            <p style={{ color: "#666" }}>No events yet</p>
+      {/* Aggregate Stats Cards */}
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Sends</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{aggregateStats.total_sends.toLocaleString()}</div>
+            <p className="text-xs text-muted-foreground">
+              {aggregateStats.total_delivered} delivered
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Open Rate</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">
+              {aggregateStats.open_rate.toFixed(1)}%
+            </div>
+            <p className="text-xs text-muted-foreground">
+              {aggregateStats.total_opened} opened
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Click Rate</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">
+              {aggregateStats.click_rate.toFixed(1)}%
+            </div>
+            <p className="text-xs text-muted-foreground">
+              {aggregateStats.total_human_clicked} human clicks
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Bounce Rate</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">
+              {aggregateStats.bounce_rate.toFixed(1)}%
+            </div>
+            <p className="text-xs text-muted-foreground">
+              {aggregateStats.total_bounced} bounced
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Program Performance */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Program Performance</CardTitle>
+          <CardDescription>Detailed metrics for each email program</CardDescription>
+        </CardHeader>
+        <CardContent>
+          {!programs || programs.length === 0 ? (
+            <p className="text-sm text-muted-foreground">
+              No programs yet. <Link href="/admin/email-programs/new" className="text-primary hover:underline">Create one</Link>
+            </p>
           ) : (
-            <div style={{ maxHeight: 400, overflowY: "auto" }}>
-              {recentEvents.map((event) => (
-                <div
-                  key={event.id}
-                  style={{
-                    padding: 12,
-                    marginBottom: 8,
-                    backgroundColor: event.is_suspected_bot ? "#fff3cd" : "#f8f9fa",
-                    borderRadius: 6,
-                    borderLeft: `4px solid ${getEventColor(event.event_type)}`
-                  }}
-                >
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
-                    <div>
-                      <span style={{ fontWeight: 500 }}>{event.event_type}</span>
-                      {event.is_suspected_bot && (
-                        <span style={{ marginLeft: 8, fontSize: 11, color: "#856404" }}>🤖 Bot</span>
-                      )}
-                    </div>
-                    <span style={{ fontSize: 12, color: "#666" }}>
-                      {new Date(event.created_at).toLocaleTimeString()}
-                    </span>
-                  </div>
-                  <Link
-                    href={`/admin/email-analytics/contacts/${encodeURIComponent(event.email)}`}
-                    style={{ fontSize: 13, color: "#007bff" }}
-                  >
-                    {event.email}
-                  </Link>
-                  {event.clicked_link && (
-                    <p style={{ margin: "4px 0 0", fontSize: 12, color: "#666", wordBreak: "break-all" }}>
-                      → {event.clicked_link}
-                    </p>
-                  )}
-                </div>
-              ))}
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b">
+                    <th className="text-left p-3 font-medium">Program</th>
+                    <th className="text-right p-3 font-medium">Delivered</th>
+                    <th className="text-right p-3 font-medium">Open Rate</th>
+                    <th className="text-right p-3 font-medium">Click Rate</th>
+                    <th className="text-right p-3 font-medium">Human Clicks</th>
+                    <th className="text-right p-3 font-medium">Reply Rate</th>
+                    <th className="text-right p-3 font-medium">Revenue</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {programs.map((program) => {
+                    const stats = Array.isArray(program.email_program_stats)
+                      ? program.email_program_stats[0]
+                      : program.email_program_stats;
+                    return (
+                      <tr key={program.id} className="border-b">
+                        <td className="p-3">
+                          <Link
+                            href={`/admin/email-analytics/programs/${program.id}`}
+                            className="font-medium hover:underline"
+                          >
+                            {program.name}
+                          </Link>
+                          <span className={`ml-2 px-2 py-0.5 rounded text-xs ${
+                            program.status === "active" ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800"
+                          }`}>
+                            {program.status}
+                          </span>
+                        </td>
+                        <td className="p-3 text-right">{stats?.total_delivered || 0}</td>
+                        <td className="p-3 text-right">
+                          <span className={(stats?.open_rate || 0) > 0.2 ? "text-green-600 font-medium" : ""}>
+                            {((stats?.open_rate || 0) * 100).toFixed(1)}%
+                          </span>
+                        </td>
+                        <td className="p-3 text-right">
+                          {((stats?.click_rate || 0) * 100).toFixed(1)}%
+                        </td>
+                        <td className="p-3 text-right">
+                          <span className="text-green-600 font-medium">
+                            {((stats?.human_click_rate || 0) * 100).toFixed(1)}%
+                          </span>
+                        </td>
+                        <td className="p-3 text-right">
+                          <span className={(stats?.reply_rate || 0) > 0 ? "text-blue-600" : ""}>
+                            {((stats?.reply_rate || 0) * 100).toFixed(1)}%
+                          </span>
+                        </td>
+                        <td className="p-3 text-right">
+                          ${((stats?.attributed_revenue_cents || 0) / 100).toFixed(2)}
+                          {stats?.attributed_orders > 0 && (
+                            <span className="text-xs text-muted-foreground ml-1">
+                              ({stats.attributed_orders} orders)
+                            </span>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
             </div>
           )}
-        </section>
+        </CardContent>
+      </Card>
+
+      <div className="grid gap-6 md:grid-cols-2">
+        {/* Recent Events */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Recent Activity</CardTitle>
+            <CardDescription>Latest email events and interactions</CardDescription>
+          </CardHeader>
+          <CardContent>
+            {!recentEvents || recentEvents.length === 0 ? (
+              <p className="text-sm text-muted-foreground">No events yet</p>
+            ) : (
+              <div className="max-h-96 overflow-y-auto space-y-2">
+                {recentEvents.map((event) => (
+                  <div
+                    key={event.id}
+                    className={`p-3 rounded-md border-l-4 ${
+                      event.is_suspected_bot ? "bg-yellow-50" : "bg-muted"
+                    }`}
+                    style={{ borderLeftColor: getEventColor(event.event_type) }}
+                  >
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <span className="font-medium capitalize">{event.event_type}</span>
+                        {event.is_suspected_bot && (
+                          <span className="ml-2 text-xs text-yellow-800">🤖 Bot</span>
+                        )}
+                      </div>
+                      <span className="text-xs text-muted-foreground">
+                        {new Date(event.created_at).toLocaleTimeString()}
+                      </span>
+                    </div>
+                    <Link
+                      href={`/admin/email-analytics/contacts/${encodeURIComponent(event.email)}`}
+                      className="text-sm text-primary hover:underline"
+                    >
+                      {event.email}
+                    </Link>
+                    {event.clicked_link && (
+                      <p className="mt-1 text-xs text-muted-foreground break-all">
+                        → {event.clicked_link}
+                      </p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
 
         {/* Top Engaged Contacts */}
-        <section>
-          <h2>Top Engaged Contacts</h2>
-          {!topContacts || topContacts.length === 0 ? (
-            <p style={{ color: "#666" }}>No engagement data yet</p>
-          ) : (
-            <table style={{ width: "100%", borderCollapse: "collapse" }}>
-              <thead>
-                <tr>
-                  <th style={{ textAlign: "left", padding: 8, borderBottom: "1px solid #ddd", fontSize: 13 }}>Contact</th>
-                  <th style={{ textAlign: "right", padding: 8, borderBottom: "1px solid #ddd", fontSize: 13 }}>Score</th>
-                  <th style={{ textAlign: "right", padding: 8, borderBottom: "1px solid #ddd", fontSize: 13 }}>Opens</th>
-                  <th style={{ textAlign: "right", padding: 8, borderBottom: "1px solid #ddd", fontSize: 13 }}>Clicks</th>
-                  <th style={{ textAlign: "right", padding: 8, borderBottom: "1px solid #ddd", fontSize: 13 }}>Replies</th>
-                </tr>
-              </thead>
-              <tbody>
-                {topContacts.map((contact) => (
-                  <tr key={contact.email}>
-                    <td style={{ padding: 8, borderBottom: "1px solid #eee" }}>
-                      <Link
-                        href={`/admin/email-analytics/contacts/${encodeURIComponent(contact.email)}`}
-                        style={{ fontSize: 13 }}
-                      >
-                        {contact.email}
-                      </Link>
-                    </td>
-                    <td style={{ padding: 8, borderBottom: "1px solid #eee", textAlign: "right" }}>
-                      <span style={{
-                        padding: "2px 8px",
-                        borderRadius: 10,
-                        fontSize: 12,
-                        fontWeight: 600,
-                        backgroundColor: contact.engagement_score >= 20 ? "#d4edda" :
-                                        contact.engagement_score >= 10 ? "#fff3cd" : "#e2e3e5"
-                      }}>
-                        {contact.engagement_score}
-                      </span>
-                    </td>
-                    <td style={{ padding: 8, borderBottom: "1px solid #eee", textAlign: "right", fontSize: 13 }}>
-                      {contact.total_opens}
-                    </td>
-                    <td style={{ padding: 8, borderBottom: "1px solid #eee", textAlign: "right", fontSize: 13 }}>
-                      {contact.total_clicks}
-                    </td>
-                    <td style={{ padding: 8, borderBottom: "1px solid #eee", textAlign: "right", fontSize: 13 }}>
-                      {contact.total_replies}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
-        </section>
+        <Card>
+          <CardHeader>
+            <CardTitle>Top Engaged Contacts</CardTitle>
+            <CardDescription>Most active email recipients</CardDescription>
+          </CardHeader>
+          <CardContent>
+            {!topContacts || topContacts.length === 0 ? (
+              <p className="text-sm text-muted-foreground">No engagement data yet</p>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b text-sm">
+                      <th className="text-left p-2 font-medium">Contact</th>
+                      <th className="text-right p-2 font-medium">Score</th>
+                      <th className="text-right p-2 font-medium">Opens</th>
+                      <th className="text-right p-2 font-medium">Clicks</th>
+                      <th className="text-right p-2 font-medium">Replies</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {topContacts.map((contact) => (
+                      <tr key={contact.email} className="border-b">
+                        <td className="p-2">
+                          <Link
+                            href={`/admin/email-analytics/contacts/${encodeURIComponent(contact.email)}`}
+                            className="text-sm hover:underline"
+                          >
+                            {contact.email}
+                          </Link>
+                        </td>
+                        <td className="p-2 text-right">
+                          <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                            contact.engagement_score >= 20
+                              ? "bg-green-100 text-green-800"
+                              : contact.engagement_score >= 10
+                              ? "bg-yellow-100 text-yellow-800"
+                              : "bg-gray-100 text-gray-800"
+                          }`}>
+                            {contact.engagement_score}
+                          </span>
+                        </td>
+                        <td className="p-2 text-right text-sm">{contact.total_opens}</td>
+                        <td className="p-2 text-right text-sm">{contact.total_clicks}</td>
+                        <td className="p-2 text-right text-sm">{contact.total_replies}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </CardContent>
+        </Card>
       </div>
-    </main>
+    </div>
   );
 }
 

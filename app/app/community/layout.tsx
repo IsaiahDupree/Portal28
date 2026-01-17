@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { supabaseServer } from "@/lib/supabase/server";
 import { getCommunityWidgets } from "@/lib/community/community";
+import OffersSidebarWidget from "@/components/offers/OffersSidebarWidget";
 
 export default async function CommunityLayout({
   children,
@@ -36,6 +37,13 @@ export default async function CommunityLayout({
             </Link>
           ))}
         </nav>
+
+        <div className="pt-4 border-t">
+          <OffersSidebarWidget
+            placementKey="widget:community"
+            title="Upgrade Your Access"
+          />
+        </div>
 
         <div className="pt-4 border-t">
           <Link

@@ -1,5 +1,6 @@
 import { supabaseServer } from "@/lib/supabase/server";
 import { computeUnlockedAt, formatTimeUntilUnlock } from "@/lib/drip";
+import { sanitizeHtml } from "@/lib/security/sanitize";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -154,7 +155,7 @@ export default async function LessonLearnPage({
       {lesson.content_html && (
         <div
           className="prose prose-lg max-w-none mb-8"
-          dangerouslySetInnerHTML={{ __html: lesson.content_html }}
+          dangerouslySetInnerHTML={{ __html: sanitizeHtml(lesson.content_html) }}
         />
       )}
 

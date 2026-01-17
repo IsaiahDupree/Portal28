@@ -1,9 +1,11 @@
 import Link from "next/link";
 import { supabaseServer } from "@/lib/supabase/server";
 import { linkEntitlementsToUser } from "@/lib/entitlements/linkEntitlements";
+import { getAllCourseProgress, getCourseProgress } from "@/lib/progress/lessonProgress";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
 import { BookOpen, Users, MessageSquare, Trophy, ArrowRight } from "lucide-react";
 
 export default async function AppHome() {
@@ -29,6 +31,21 @@ export default async function AppHome() {
     .from("courses")
     .select("id,title,slug,description")
     .in("id", courseIds.length ? courseIds : ["00000000-0000-0000-0000-000000000000"]);
+
+  // Get progress for all courses
+  const allProgress = await getAllCourseProgress(user.id);
+
+  // Calculate overall progress
+  let totalLessons = 0;
+  let totalCompleted = 0;
+  allProgress.forEach(p => {
+    totalLessons += p.total_lessons;
+    totalCompleted += p.lessons_completed;
+  });
+  const overallProgress = totalLessons > 0 ? Math.round((totalCompleted / totalLessons) * 100) : 0;
+
+  // Create progress map for courses
+  const progressMap = new Map(allProgress.map(p => [p.course_id, p.completion_percent]));
 
   return (
     <div className="space-y-6">
@@ -81,7 +98,7 @@ export default async function AppHome() {
             <Trophy className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">0%</div>
+            <div className="text-2xl font-bold">{overallProgress}%</div>
             <p className="text-xs text-muted-foreground">Overall completion</p>
           </CardContent>
         </Card>
@@ -112,29 +129,33 @@ export default async function AppHome() {
             </div>
           ) : (
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {courses.map((c) => (
-                <Link key={c.id} href={`/app/courses/${c.slug}`}>
-                  <Card className="hover:border-primary transition-colors cursor-pointer h-full">
-                    <CardHeader>
-                      <div className="flex items-start justify-between">
-                        <CardTitle className="text-lg">{c.title}</CardTitle>
-                        <Badge variant="success">Enrolled</Badge>
-                      </div>
-                      {c.description && (
-                        <CardDescription className="line-clamp-2">
-                          {c.description}
-                        </CardDescription>
-                      )}
-                    </CardHeader>
-                    <CardContent>
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm text-muted-foreground">0% complete</span>
-                        <ArrowRight className="h-4 w-4 text-muted-foreground" />
-                      </div>
-                    </CardContent>
-                  </Card>
-                </Link>
-              ))}
+              {courses.map((c) => {
+                const courseProgress = progressMap.get(c.id) || 0;
+                return (
+                  <Link key={c.id} href={`/app/courses/${c.slug}`}>
+                    <Card className="hover:border-primary transition-colors cursor-pointer h-full">
+                      <CardHeader>
+                        <div className="flex items-start justify-between">
+                          <CardTitle className="text-lg">{c.title}</CardTitle>
+                          <Badge variant="success">Enrolled</Badge>
+                        </div>
+                        {c.description && (
+                          <CardDescription className="line-clamp-2">
+                            {c.description}
+                          </CardDescription>
+                        )}
+                      </CardHeader>
+                      <CardContent className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm text-muted-foreground">{courseProgress}% complete</span>
+                          <ArrowRight className="h-4 w-4 text-muted-foreground" />
+                        </div>
+                        <Progress value={courseProgress} className="h-2" />
+                      </CardContent>
+                    </Card>
+                  </Link>
+                );
+              })}
             </div>
           )}
         </CardContent>

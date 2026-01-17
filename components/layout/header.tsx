@@ -15,6 +15,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { MobileSidebar } from "./sidebar";
+import { NotificationBell } from "@/components/notifications/NotificationBell";
+import { SearchDialog } from "@/components/search/SearchDialog";
 
 interface HeaderProps {
   variant: "admin" | "app" | "public";
@@ -27,6 +29,7 @@ interface HeaderProps {
 
 export function Header({ variant, user }: HeaderProps) {
   const [isDark, setIsDark] = React.useState(false);
+  const [searchOpen, setSearchOpen] = React.useState(false);
 
   const toggleTheme = () => {
     setIsDark(!isDark);
@@ -48,14 +51,19 @@ export function Header({ variant, user }: HeaderProps) {
       {/* Search - hidden on small mobile, visible on larger screens */}
       <div className="flex-1">
         <div className="relative hidden sm:block max-w-md">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground pointer-events-none" />
           <Input
             type="search"
             placeholder="Search..."
-            className="pl-9"
+            className="pl-9 cursor-pointer"
+            onClick={() => setSearchOpen(true)}
+            readOnly
           />
         </div>
       </div>
+
+      {/* Search Dialog */}
+      <SearchDialog open={searchOpen} onOpenChange={setSearchOpen} />
 
       {/* Actions */}
       <div className="flex items-center gap-2">
@@ -63,14 +71,7 @@ export function Header({ variant, user }: HeaderProps) {
           {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
         </Button>
 
-        {variant !== "public" && (
-          <Button variant="ghost" size="icon" className="relative">
-            <Bell className="h-5 w-5" />
-            <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-destructive text-[10px] text-destructive-foreground">
-              3
-            </span>
-          </Button>
-        )}
+        {variant !== "public" && <NotificationBell />}
 
         {variant === "public" ? (
           <Button asChild>

@@ -1,8 +1,34 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { supabaseServer } from "@/lib/supabase/server";
+import {
+  getDashboardStats,
+  getRevenueTimeSeries,
+  getConversionFunnel,
+  getTopCourses,
+  getOfferAnalytics,
+} from "@/lib/db/analytics";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import {
+  DollarSign,
+  ShoppingCart,
+  TrendingUp,
+  Eye,
+  Download,
+  ArrowLeft,
+} from "lucide-react";
+import { RevenueChart } from "@/components/analytics/RevenueChart";
+import { ConversionFunnel } from "@/components/analytics/ConversionFunnel";
+import { TopCoursesTable } from "@/components/analytics/TopCoursesTable";
+import { TimeFilterButtons } from "@/components/analytics/TimeFilterButtons";
+import { ExportButton } from "@/components/analytics/ExportButton";
 
-export default async function AdminAnalyticsPage() {
+export default async function AdminAnalyticsPage({
+  searchParams,
+}: {
+  searchParams: { days?: string };
+}) {
   const supabase = supabaseServer();
   const { data: auth } = await supabase.auth.getUser();
 
@@ -20,171 +46,202 @@ export default async function AdminAnalyticsPage() {
     redirect("/app");
   }
 
-  const since = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+  // Get time period from URL (default 30 days)
+  const days = parseInt(searchParams.days ?? "30");
+  const since = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString();
 
-  const [impressionsRes, attemptsRes] = await Promise.all([
-    supabase
-      .from("offer_impressions")
-      .select("placement_key, offer_key, created_at")
-      .gte("created_at", since),
-    supabase
-      .from("checkout_attempts")
-      .select("offer_key, placement_key, status, created_at")
-      .gte("created_at", since),
-  ]);
-
-  const impressions = impressionsRes.data ?? [];
-  const attempts = attemptsRes.data ?? [];
-
-  type Stats = { impressions: number; checkouts: number; purchases: number };
-  const byPlacement: Record<string, Stats> = {};
-  const byOffer: Record<string, Stats> = {};
-
-  for (const imp of impressions) {
-    const p = (imp as any).placement_key || "unknown";
-    const o = (imp as any).offer_key || "unknown";
-    byPlacement[p] ||= { impressions: 0, checkouts: 0, purchases: 0 };
-    byOffer[o] ||= { impressions: 0, checkouts: 0, purchases: 0 };
-    byPlacement[p].impressions++;
-    byOffer[o].impressions++;
-  }
-
-  for (const a of attempts) {
-    const p = (a as any).placement_key || "unknown";
-    const o = (a as any).offer_key || "unknown";
-    byPlacement[p] ||= { impressions: 0, checkouts: 0, purchases: 0 };
-    byOffer[o] ||= { impressions: 0, checkouts: 0, purchases: 0 };
-
-    if ((a as any).status === "redirected" || (a as any).status === "completed") {
-      byPlacement[p].checkouts++;
-      byOffer[o].checkouts++;
-    }
-    if ((a as any).status === "completed") {
-      byPlacement[p].purchases++;
-      byOffer[o].purchases++;
-    }
-  }
-
-  const placementRows = Object.entries(byPlacement)
-    .map(([key, v]) => ({
-      key,
-      ...v,
-      checkoutRate: v.impressions ? v.checkouts / v.impressions : 0,
-      purchaseRate: v.impressions ? v.purchases / v.impressions : 0,
-    }))
-    .sort((a, b) => b.purchases - a.purchases);
-
-  const offerRows = Object.entries(byOffer)
-    .map(([key, v]) => ({
-      key,
-      ...v,
-      checkoutRate: v.impressions ? v.checkouts / v.impressions : 0,
-      purchaseRate: v.impressions ? v.purchases / v.impressions : 0,
-    }))
-    .sort((a, b) => b.purchases - a.purchases);
-
-  const totalImpressions = impressions.length;
-  const totalCheckouts = attempts.filter((a: any) => a.status === "redirected" || a.status === "completed").length;
-  const totalPurchases = attempts.filter((a: any) => a.status === "completed").length;
+  // Fetch all analytics data
+  const [stats, revenueData, funnelData, topCourses, offerAnalytics] =
+    await Promise.all([
+      getDashboardStats(days),
+      getRevenueTimeSeries("day", days),
+      getConversionFunnel(days),
+      getTopCourses(10),
+      getOfferAnalytics(days),
+    ]);
 
   return (
-    <main className="p-6 max-w-6xl mx-auto space-y-8">
-      <div>
-        <Link href="/admin" className="text-sm text-gray-600 hover:text-black">
-          ← Admin
-        </Link>
-        <h1 className="text-2xl font-semibold mt-1">Analytics</h1>
-        <p className="text-gray-600">Last 30 days</p>
-      </div>
-
-      <div className="grid md:grid-cols-3 gap-4">
-        <div className="rounded-xl border p-5">
-          <div className="text-sm text-gray-600">Impressions</div>
-          <div className="text-3xl font-semibold">{totalImpressions.toLocaleString()}</div>
-        </div>
-        <div className="rounded-xl border p-5">
-          <div className="text-sm text-gray-600">Checkouts</div>
-          <div className="text-3xl font-semibold">{totalCheckouts.toLocaleString()}</div>
-          <div className="text-sm text-gray-500">
-            {totalImpressions ? ((totalCheckouts / totalImpressions) * 100).toFixed(1) : 0}% rate
+    <div className="space-y-6">
+      {/* Page Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <div className="flex items-center gap-2 mb-1">
+            <Link href="/admin">
+              <Button variant="ghost" size="sm">
+                <ArrowLeft className="h-4 w-4 mr-1" />
+                Admin
+              </Button>
+            </Link>
           </div>
+          <h1 className="text-3xl font-bold tracking-tight">Sales Analytics</h1>
+          <p className="text-muted-foreground">
+            Revenue, conversions, and offer performance
+          </p>
         </div>
-        <div className="rounded-xl border p-5">
-          <div className="text-sm text-gray-600">Purchases</div>
-          <div className="text-3xl font-semibold">{totalPurchases.toLocaleString()}</div>
-          <div className="text-sm text-gray-500">
-            {totalImpressions ? ((totalPurchases / totalImpressions) * 100).toFixed(1) : 0}% rate
-          </div>
+        <div className="flex items-center gap-3">
+          <TimeFilterButtons currentDays={days} />
+          <ExportButton days={days} />
         </div>
       </div>
 
-      <section className="space-y-4">
-        <h2 className="text-xl font-semibold">By Placement</h2>
-        {placementRows.length === 0 ? (
-          <p className="text-gray-600">No placement data yet.</p>
-        ) : (
-          <div className="rounded-xl border overflow-hidden">
-            <table className="w-full text-sm">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="text-left p-3">Placement</th>
-                  <th className="text-right p-3">Impressions</th>
-                  <th className="text-right p-3">Checkouts</th>
-                  <th className="text-right p-3">Purchases</th>
-                  <th className="text-right p-3">Checkout %</th>
-                  <th className="text-right p-3">Purchase %</th>
-                </tr>
-              </thead>
-              <tbody>
-                {placementRows.map((r) => (
-                  <tr key={r.key} className="border-t">
-                    <td className="p-3 font-mono text-xs">{r.key}</td>
-                    <td className="p-3 text-right">{r.impressions}</td>
-                    <td className="p-3 text-right">{r.checkouts}</td>
-                    <td className="p-3 text-right">{r.purchases}</td>
-                    <td className="p-3 text-right">{(r.checkoutRate * 100).toFixed(1)}%</td>
-                    <td className="p-3 text-right">{(r.purchaseRate * 100).toFixed(1)}%</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </section>
+      {/* Stats Cards */}
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
+            <DollarSign className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">
+              ${(stats.totalRevenue / 100).toFixed(2)}
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Last {days} days
+            </p>
+          </CardContent>
+        </Card>
 
-      <section className="space-y-4">
-        <h2 className="text-xl font-semibold">By Offer</h2>
-        {offerRows.length === 0 ? (
-          <p className="text-gray-600">No offer data yet.</p>
-        ) : (
-          <div className="rounded-xl border overflow-hidden">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Orders</CardTitle>
+            <ShoppingCart className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stats.totalOrders}</div>
+            <p className="text-xs text-muted-foreground">
+              Completed purchases
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Impressions</CardTitle>
+            <Eye className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stats.totalImpressions}</div>
+            <p className="text-xs text-muted-foreground">
+              Offer views
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Checkouts</CardTitle>
+            <TrendingUp className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stats.totalCheckouts}</div>
+            <p className="text-xs text-muted-foreground">
+              Checkout attempts
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Conversion</CardTitle>
+            <TrendingUp className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stats.conversionRate}%</div>
+            <p className="text-xs text-muted-foreground">
+              Checkout to purchase
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Charts Row */}
+      <div className="grid gap-6 md:grid-cols-2">
+        {/* Revenue Chart */}
+        <Card className="md:col-span-2">
+          <CardHeader>
+            <CardTitle>Revenue Over Time</CardTitle>
+            <CardDescription>
+              Daily revenue for the last {days} days
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <RevenueChart data={revenueData} />
+          </CardContent>
+        </Card>
+
+        {/* Conversion Funnel */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Conversion Funnel</CardTitle>
+            <CardDescription>
+              From impression to purchase
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ConversionFunnel data={funnelData} />
+          </CardContent>
+        </Card>
+
+        {/* Top Courses */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Top Courses by Revenue</CardTitle>
+            <CardDescription>
+              Best performing products
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <TopCoursesTable courses={topCourses} />
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Offer Analytics Table */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Offer Performance</CardTitle>
+          <CardDescription>
+            Impressions, checkouts, and conversions by offer
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="rounded-lg border overflow-hidden">
             <table className="w-full text-sm">
-              <thead className="bg-gray-50">
+              <thead className="bg-muted">
                 <tr>
-                  <th className="text-left p-3">Offer</th>
-                  <th className="text-right p-3">Impressions</th>
-                  <th className="text-right p-3">Checkouts</th>
-                  <th className="text-right p-3">Purchases</th>
-                  <th className="text-right p-3">Checkout %</th>
-                  <th className="text-right p-3">Purchase %</th>
+                  <th className="text-left p-3 font-medium">Offer</th>
+                  <th className="text-right p-3 font-medium">Impressions</th>
+                  <th className="text-right p-3 font-medium">Checkouts</th>
+                  <th className="text-right p-3 font-medium">Conversions</th>
+                  <th className="text-right p-3 font-medium">Rate</th>
                 </tr>
               </thead>
               <tbody>
-                {offerRows.map((r) => (
-                  <tr key={r.key} className="border-t">
-                    <td className="p-3 font-mono text-xs">{r.key}</td>
-                    <td className="p-3 text-right">{r.impressions}</td>
-                    <td className="p-3 text-right">{r.checkouts}</td>
-                    <td className="p-3 text-right">{r.purchases}</td>
-                    <td className="p-3 text-right">{(r.checkoutRate * 100).toFixed(1)}%</td>
-                    <td className="p-3 text-right">{(r.purchaseRate * 100).toFixed(1)}%</td>
+                {offerAnalytics.length === 0 ? (
+                  <tr>
+                    <td colSpan={5} className="p-6 text-center text-muted-foreground">
+                      No offer data yet
+                    </td>
                   </tr>
-                ))}
+                ) : (
+                  offerAnalytics.map((offer) => (
+                    <tr key={offer.offer_key} className="border-t">
+                      <td className="p-3">
+                        <div className="font-medium">{offer.offer_title}</div>
+                        <div className="text-xs text-muted-foreground">{offer.offer_key}</div>
+                      </td>
+                      <td className="p-3 text-right">{offer.impressions}</td>
+                      <td className="p-3 text-right">{offer.checkouts}</td>
+                      <td className="p-3 text-right">{offer.conversions}</td>
+                      <td className="p-3 text-right">{offer.conversion_rate.toFixed(1)}%</td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>
-        )}
-      </section>
-    </main>
+        </CardContent>
+      </Card>
+    </div>
   );
 }

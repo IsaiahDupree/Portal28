@@ -1,8 +1,22 @@
 import Link from "next/link";
+import { Metadata } from "next";
 import { getPublishedCourses } from "@/lib/db/queries";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Sparkles, ArrowRight } from "lucide-react";
+
+// Enable static generation with ISR
+export const revalidate = 3600; // Revalidate every hour
+
+export const metadata: Metadata = {
+  title: "Courses | Portal28 Academy",
+  description: "Browse our curriculum of brand strategy, storytelling, and content creation courses. These aren't courses—they're leverage points.",
+  openGraph: {
+    title: "Courses | Portal28 Academy",
+    description: "Browse our curriculum of brand strategy, storytelling, and content creation courses.",
+    type: "website",
+  },
+};
 
 export default async function CoursesPage() {
   const courses = await getPublishedCourses();

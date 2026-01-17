@@ -1,5 +1,6 @@
 import { redirect, notFound } from "next/navigation";
 import { createClient } from "@supabase/supabase-js";
+import { sanitizeHtml } from "@/lib/security/sanitize";
 import Link from "next/link";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -197,9 +198,9 @@ export default async function LessonPreviewPage({ params, searchParams }: Props)
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div 
+              <div
                 className="prose prose-sm max-w-none dark:prose-invert"
-                dangerouslySetInnerHTML={{ __html: lesson.content_html }}
+                dangerouslySetInnerHTML={{ __html: sanitizeHtml(lesson.content_html) }}
               />
             </CardContent>
           </Card>

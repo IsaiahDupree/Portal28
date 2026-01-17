@@ -19,6 +19,7 @@ import {
   BookOpen,
   Megaphone,
   FolderOpen,
+  Award,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -56,6 +57,7 @@ const adminNavItems = [
 const appNavItems = [
   { title: "Dashboard", href: "/app", icon: LayoutDashboard },
   { title: "My Courses", href: "/app/courses", icon: GraduationCap },
+  { title: "Certificates", href: "/app/certificates", icon: Award },
   { title: "Community", href: "/app/community", icon: Users },
 ];
 

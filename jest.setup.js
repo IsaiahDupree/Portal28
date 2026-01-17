@@ -1,4 +1,45 @@
 import "@testing-library/jest-dom";
+import { TextEncoder, TextDecoder } from "util";
+
+// Polyfill Text encoding for Node.js tests
+global.TextEncoder = TextEncoder;
+global.TextDecoder = TextDecoder;
+
+// Polyfill fetch for Node.js < 18
+if (typeof global.fetch === 'undefined') {
+  global.fetch = async () => ({ ok: true, json: async () => ({}) });
+}
+
+// Polyfill Request and Response for Next.js API testing
+if (typeof Request === 'undefined') {
+  global.Request = class Request {
+    constructor(input, init) {
+      this.url = input;
+      this.method = init?.method || 'GET';
+      this.headers = new Map(Object.entries(init?.headers || {}));
+      this.body = init?.body;
+    }
+  };
+}
+
+if (typeof Response === 'undefined') {
+  global.Response = class Response {
+    constructor(body, init) {
+      this.body = body;
+      this.status = init?.status || 200;
+      this.headers = new Map(Object.entries(init?.headers || {}));
+    }
+    async json() {
+      return typeof this.body === 'string' ? JSON.parse(this.body) : this.body;
+    }
+    static json(data, init) {
+      return new Response(JSON.stringify(data), {
+        ...init,
+        headers: { 'content-type': 'application/json', ...init?.headers },
+      });
+    }
+  };
+}
 
 // Mock Next.js router
 jest.mock("next/navigation", () => ({

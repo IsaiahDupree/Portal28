@@ -1,16 +1,17 @@
 "use client";
 
 import { useState, useRef } from "react";
+import MuxPlayer from "@mux/mux-player-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
-import { 
-  Play, 
-  Pause, 
-  Volume2, 
-  VolumeX, 
-  Maximize, 
-  SkipBack, 
+import {
+  Play,
+  Pause,
+  Volume2,
+  VolumeX,
+  Maximize,
+  SkipBack,
   SkipForward,
   Settings
 } from "lucide-react";
@@ -22,16 +23,35 @@ interface VideoPlayerProps {
   poster?: string;
   onComplete?: () => void;
   className?: string;
+  // Mux-specific props
+  muxPlaybackId?: string;
+  muxPlaybackToken?: string;
+  lessonId?: string;
+  onProgress?: (position: number, duration: number) => void;
 }
 
-export function VideoPlayer({ src, title, poster, onComplete, className }: VideoPlayerProps) {
+export function VideoPlayer({
+  src,
+  title,
+  poster,
+  onComplete,
+  className,
+  muxPlaybackId,
+  muxPlaybackToken,
+  lessonId,
+  onProgress
+}: VideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const muxPlayerRef = useRef<any>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [volume, setVolume] = useState(1);
   const [isMuted, setIsMuted] = useState(false);
   const [showControls, setShowControls] = useState(true);
+
+  // Check if this is a Mux video
+  const isMuxVideo = Boolean(muxPlaybackId);
 
   const togglePlay = () => {
     if (videoRef.current) {
@@ -105,6 +125,48 @@ export function VideoPlayer({ src, title, poster, onComplete, className }: Video
     const seconds = Math.floor(time % 60);
     return `${minutes}:${seconds.toString().padStart(2, "0")}`;
   };
+
+  // Render Mux player if we have a Mux playback ID
+  if (isMuxVideo && muxPlaybackId) {
+    return (
+      <Card className={cn("overflow-hidden bg-black", className)}>
+        <div className="relative aspect-video">
+          <MuxPlayer
+            ref={muxPlayerRef}
+            playbackId={muxPlaybackId}
+            tokens={{
+              playback: muxPlaybackToken,
+            }}
+            metadata={{
+              video_title: title || "Lesson Video",
+              lesson_id: lessonId,
+            }}
+            streamType="on-demand"
+            onPlay={() => setIsPlaying(true)}
+            onPause={() => setIsPlaying(false)}
+            onEnded={() => {
+              setIsPlaying(false);
+              onComplete?.();
+            }}
+            onTimeUpdate={(e: any) => {
+              const player = e.target;
+              if (player && onProgress) {
+                const currentTime = player.currentTime || 0;
+                const duration = player.duration || 0;
+                onProgress(currentTime, duration);
+              }
+            }}
+            className="w-full h-full"
+          />
+        </div>
+        {title && (
+          <div className="p-4 bg-card">
+            <h3 className="font-semibold">{title}</h3>
+          </div>
+        )}
+      </Card>
+    );
+  }
 
   // Check if it's an embed URL (Vimeo, YouTube, etc.)
   const isEmbed = src.includes("vimeo.com") || src.includes("youtube.com") || src.includes("youtu.be");

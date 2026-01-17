@@ -330,3 +330,203 @@ export async function getContactTimeline(email: string, limit = 50): Promise<{
     } : null
   };
 }
+
+/**
+ * Get analytics for an email program
+ */
+export async function getEmailProgramAnalytics(programId: string) {
+  // Get all runs for this program
+  const { data: runs } = await supabaseAdmin
+    .from("email_runs")
+    .select("*")
+    .eq("program_id", programId)
+    .order("created_at", { ascending: false });
+
+  if (!runs || runs.length === 0) {
+    return {
+      total_runs: 0,
+      total_sent: 0,
+      total_delivered: 0,
+      total_opened: 0,
+      total_clicked: 0,
+      total_bounced: 0,
+      total_complained: 0,
+      delivery_rate: 0,
+      open_rate: 0,
+      click_rate: 0,
+      bounce_rate: 0,
+      complaint_rate: 0,
+      runs: []
+    };
+  }
+
+  const totalSent = runs.reduce((sum, r) => sum + (r.recipient_count || 0), 0);
+  const totalDelivered = runs.reduce((sum, r) => sum + (r.delivered_count || 0), 0);
+  const totalOpened = runs.reduce((sum, r) => sum + (r.opened_count || 0), 0);
+  const totalClicked = runs.reduce((sum, r) => sum + (r.clicked_count || 0), 0);
+  const totalBounced = runs.reduce((sum, r) => sum + (r.bounced_count || 0), 0);
+  const totalComplained = runs.reduce((sum, r) => sum + (r.complained_count || 0), 0);
+
+  return {
+    total_runs: runs.length,
+    total_sent: totalSent,
+    total_delivered: totalDelivered,
+    total_opened: totalOpened,
+    total_clicked: totalClicked,
+    total_bounced: totalBounced,
+    total_complained: totalComplained,
+    delivery_rate: totalSent > 0 ? (totalDelivered / totalSent) * 100 : 0,
+    open_rate: totalDelivered > 0 ? (totalOpened / totalDelivered) * 100 : 0,
+    click_rate: totalDelivered > 0 ? (totalClicked / totalDelivered) * 100 : 0,
+    bounce_rate: totalSent > 0 ? (totalBounced / totalSent) * 100 : 0,
+    complaint_rate: totalSent > 0 ? (totalComplained / totalSent) * 100 : 0,
+    runs: runs.map((r) => ({
+      id: r.id,
+      scheduled_for: r.scheduled_for,
+      status: r.status,
+      recipient_count: r.recipient_count,
+      delivered_count: r.delivered_count,
+      opened_count: r.opened_count,
+      clicked_count: r.clicked_count,
+      bounced_count: r.bounced_count,
+      complained_count: r.complained_count
+    }))
+  };
+}
+
+/**
+ * Get aggregate email stats across all templates or filtered by template
+ */
+export async function getEmailStats(templateFilter?: string) {
+  const query = supabaseAdmin
+    .from("email_sends")
+    .select("id, template, status, open_count, click_count, human_click_count");
+
+  if (templateFilter && templateFilter !== "all") {
+    query.eq("template", templateFilter);
+  }
+
+  const { data: sends } = await query;
+
+  if (!sends || sends.length === 0) {
+    return {
+      total_sends: 0,
+      total_delivered: 0,
+      total_bounced: 0,
+      total_complained: 0,
+      total_opened: 0,
+      total_clicked: 0,
+      total_human_clicked: 0,
+      delivery_rate: 0,
+      open_rate: 0,
+      click_rate: 0,
+      human_click_rate: 0,
+      bounce_rate: 0,
+      complaint_rate: 0
+    };
+  }
+
+  const stats = {
+    total_sends: sends.length,
+    total_delivered: 0,
+    total_bounced: 0,
+    total_complained: 0,
+    total_opened: 0,
+    total_clicked: 0,
+    total_human_clicked: 0
+  };
+
+  for (const send of sends) {
+    if (send.status === "delivered" || send.status === "sent") stats.total_delivered++;
+    if (send.status === "bounced") stats.total_bounced++;
+    if (send.status === "complained") stats.total_complained++;
+    if (send.open_count && send.open_count > 0) stats.total_opened++;
+    if (send.click_count && send.click_count > 0) stats.total_clicked++;
+    if (send.human_click_count && send.human_click_count > 0) stats.total_human_clicked++;
+  }
+
+  const delivered = stats.total_delivered || 1; // Avoid division by zero
+
+  return {
+    ...stats,
+    delivery_rate: (stats.total_delivered / stats.total_sends) * 100,
+    open_rate: (stats.total_opened / delivered) * 100,
+    click_rate: (stats.total_clicked / delivered) * 100,
+    human_click_rate: (stats.total_human_clicked / delivered) * 100,
+    bounce_rate: (stats.total_bounced / stats.total_sends) * 100,
+    complaint_rate: (stats.total_complained / stats.total_sends) * 100
+  };
+}
+
+/**
+ * Get list of all unique templates that have been sent
+ */
+export async function getEmailTemplates() {
+  const { data } = await supabaseAdmin
+    .from("email_sends")
+    .select("template")
+    .order("template");
+
+  if (!data) return [];
+
+  // Get unique templates
+  const templates = Array.from(new Set(data.map((s) => s.template)));
+  return templates.filter((t) => t); // Filter out null/undefined
+}
+
+/**
+ * Get analytics for an automation
+ */
+export async function getAutomationAnalytics(automationId: string) {
+  // Get all enrollments for this automation
+  const { data: enrollments } = await supabaseAdmin
+    .from("automation_enrollments")
+    .select("*")
+    .eq("automation_id", automationId);
+
+  // Get email sends for this automation
+  const { data: sends } = await supabaseAdmin
+    .from("email_sends")
+    .select("*")
+    .like("template", `automation_${automationId}%`);
+
+  // Get email events for these sends
+  const sendIds = sends?.map((s) => s.id) || [];
+  const { data: events } = sendIds.length > 0
+    ? await supabaseAdmin
+        .from("email_events")
+        .select("*")
+        .in("email_send_id", sendIds)
+    : { data: [] };
+
+  const totalEnrolled = enrollments?.length || 0;
+  const activeEnrollments = enrollments?.filter((e) => e.status === "active").length || 0;
+  const completedEnrollments = enrollments?.filter((e) => e.status === "completed").length || 0;
+  const cancelledEnrollments = enrollments?.filter((e) => e.status === "cancelled").length || 0;
+
+  const totalSent = sends?.length || 0;
+  const delivered = events?.filter((e) => e.event_type === "delivered").length || 0;
+  const opened = events?.filter((e) => e.event_type === "opened").length || 0;
+  const clicked = events?.filter((e) => e.event_type === "clicked").length || 0;
+  const bounced = events?.filter((e) => e.event_type === "bounced").length || 0;
+  const complained = events?.filter((e) => e.event_type === "complained").length || 0;
+
+  return {
+    total_enrolled: totalEnrolled,
+    active_enrollments: activeEnrollments,
+    completed_enrollments: completedEnrollments,
+    cancelled_enrollments: cancelledEnrollments,
+    completion_rate: totalEnrolled > 0 ? (completedEnrollments / totalEnrolled) * 100 : 0,
+    total_sent: totalSent,
+    delivered_count: delivered,
+    opened_count: opened,
+    clicked_count: clicked,
+    bounced_count: bounced,
+    complained_count: complained,
+    delivery_rate: totalSent > 0 ? (delivered / totalSent) * 100 : 0,
+    open_rate: delivered > 0 ? (opened / delivered) * 100 : 0,
+    click_rate: delivered > 0 ? (clicked / delivered) * 100 : 0,
+    bounce_rate: totalSent > 0 ? (bounced / totalSent) * 100 : 0,
+    complaint_rate: totalSent > 0 ? (complained / totalSent) * 100 : 0
+  };
+}

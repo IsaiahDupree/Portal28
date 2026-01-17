@@ -30,3 +30,6 @@ export function supabaseServer() {
     }
   );
 }
+
+// Alias for common import pattern
+export const createClient = supabaseServer;

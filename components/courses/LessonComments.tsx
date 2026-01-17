@@ -5,14 +5,16 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { 
-  MessageSquare, 
-  Heart, 
-  Send, 
+import {
+  MessageSquare,
+  Heart,
+  Send,
   Loader2,
   MoreHorizontal,
   Trash2,
-  Flag
+  Flag,
+  ChevronDown,
+  ChevronUp
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -32,6 +34,11 @@ interface Comment {
   likedByMe: boolean;
   createdAt: string;
   isOwner: boolean;
+  parentCommentId?: string | null;
+  replyCount: number;
+  replies?: Comment[];
+  showReplies?: boolean;
+  replying?: boolean;
 }
 
 interface LessonCommentsProps {
@@ -53,6 +60,7 @@ export function LessonComments({
 }: LessonCommentsProps) {
   const [comments, setComments] = useState<Comment[]>(initialComments);
   const [newComment, setNewComment] = useState("");
+  const [replyText, setReplyText] = useState<Record<string, string>>({});
   const [posting, setPosting] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -75,21 +83,42 @@ export function LessonComments({
     }
   }
 
-  async function postComment() {
-    if (!userId || !newComment.trim()) return;
-    
+  async function postComment(parentCommentId?: string) {
+    const content = parentCommentId ? replyText[parentCommentId] : newComment;
+    if (!userId || !content?.trim()) return;
+
     setPosting(true);
     try {
       const res = await fetch("/api/comments", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ lessonId, content: newComment }),
+        body: JSON.stringify({
+          lessonId,
+          content,
+          parentCommentId
+        }),
       });
 
       if (res.ok) {
         const data = await res.json();
-        setComments([data.comment, ...comments]);
-        setNewComment("");
+        if (parentCommentId) {
+          // Add reply to parent comment
+          setComments(comments.map(c => {
+            if (c.id === parentCommentId) {
+              return {
+                ...c,
+                replyCount: c.replyCount + 1,
+                replies: [...(c.replies || []), data.comment],
+                replying: false,
+              };
+            }
+            return c;
+          }));
+          setReplyText({ ...replyText, [parentCommentId]: "" });
+        } else {
+          setComments([data.comment, ...comments]);
+          setNewComment("");
+        }
       }
     } catch (error) {
       console.error("Failed to post comment:", error);
@@ -135,6 +164,48 @@ export function LessonComments({
     } catch (error) {
       console.error("Failed to delete comment:", error);
     }
+  }
+
+  async function loadReplies(commentId: string) {
+    try {
+      const res = await fetch(`/api/comments/${commentId}/replies`);
+      if (res.ok) {
+        const data = await res.json();
+        setComments(comments.map(c => {
+          if (c.id === commentId) {
+            return { ...c, replies: data.replies, showReplies: true };
+          }
+          return c;
+        }));
+      }
+    } catch (error) {
+      console.error("Failed to load replies:", error);
+    }
+  }
+
+  function toggleReplies(commentId: string) {
+    const comment = comments.find(c => c.id === commentId);
+    if (comment?.showReplies) {
+      // Hide replies
+      setComments(comments.map(c => {
+        if (c.id === commentId) {
+          return { ...c, showReplies: false };
+        }
+        return c;
+      }));
+    } else {
+      // Load and show replies
+      loadReplies(commentId);
+    }
+  }
+
+  function toggleReplyForm(commentId: string) {
+    setComments(comments.map(c => {
+      if (c.id === commentId) {
+        return { ...c, replying: !c.replying };
+      }
+      return c;
+    }));
   }
 
   function getInitials(name: string) {
@@ -266,18 +337,121 @@ export function LessonComments({
                     </DropdownMenu>
                   </div>
                   <p className="text-sm">{comment.content}</p>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className={cn(
-                      "h-8 px-2 text-muted-foreground hover:text-foreground",
-                      comment.likedByMe && "text-red-500 hover:text-red-600"
+                  <div className="flex items-center gap-2">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className={cn(
+                        "h-8 px-2 text-muted-foreground hover:text-foreground",
+                        comment.likedByMe && "text-red-500 hover:text-red-600"
+                      )}
+                      onClick={() => toggleLike(comment.id)}
+                    >
+                      <Heart className={cn("h-4 w-4 mr-1", comment.likedByMe && "fill-current")} />
+                      {comment.likes > 0 && <span>{comment.likes}</span>}
+                    </Button>
+                    {userId && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-8 px-2 text-muted-foreground hover:text-foreground"
+                        onClick={() => toggleReplyForm(comment.id)}
+                      >
+                        <MessageSquare className="h-4 w-4 mr-1" />
+                        Reply
+                      </Button>
                     )}
-                    onClick={() => toggleLike(comment.id)}
-                  >
-                    <Heart className={cn("h-4 w-4 mr-1", comment.likedByMe && "fill-current")} />
-                    {comment.likes > 0 && <span>{comment.likes}</span>}
-                  </Button>
+                    {comment.replyCount > 0 && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-8 px-2 text-muted-foreground hover:text-foreground"
+                        onClick={() => toggleReplies(comment.id)}
+                      >
+                        {comment.showReplies ? (
+                          <ChevronUp className="h-4 w-4 mr-1" />
+                        ) : (
+                          <ChevronDown className="h-4 w-4 mr-1" />
+                        )}
+                        {comment.replyCount} {comment.replyCount === 1 ? "reply" : "replies"}
+                      </Button>
+                    )}
+                  </div>
+
+                  {/* Reply form */}
+                  {comment.replying && (
+                    <div className="mt-3 flex gap-2">
+                      <Avatar className="h-8 w-8">
+                        <AvatarImage src={userAvatar} />
+                        <AvatarFallback className="bg-primary text-primary-foreground text-xs">
+                          {userName ? getInitials(userName) : "U"}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="flex-1 space-y-2">
+                        <Textarea
+                          value={replyText[comment.id] || ""}
+                          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                            setReplyText({ ...replyText, [comment.id]: e.target.value })
+                          }
+                          placeholder={`Reply to ${comment.userName}...`}
+                          className="min-h-[60px] resize-none text-sm"
+                        />
+                        <div className="flex gap-2">
+                          <Button
+                            size="sm"
+                            onClick={() => postComment(comment.id)}
+                            disabled={posting || !replyText[comment.id]?.trim()}
+                          >
+                            {posting ? <Loader2 className="h-4 w-4 animate-spin" /> : "Reply"}
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => toggleReplyForm(comment.id)}
+                          >
+                            Cancel
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Replies */}
+                  {comment.showReplies && comment.replies && comment.replies.length > 0 && (
+                    <div className="mt-3 space-y-3 pl-4 border-l-2 border-muted">
+                      {comment.replies.map((reply) => (
+                        <div key={reply.id} className="flex gap-2">
+                          <Avatar className="h-7 w-7">
+                            <AvatarImage src={reply.userAvatar} />
+                            <AvatarFallback className="bg-muted text-xs">
+                              {getInitials(reply.userName)}
+                            </AvatarFallback>
+                          </Avatar>
+                          <div className="flex-1 space-y-1">
+                            <div className="flex items-center gap-2">
+                              <span className="font-medium text-sm">{reply.userName}</span>
+                              <span className="text-xs text-muted-foreground">
+                                {formatDate(reply.createdAt)}
+                              </span>
+                            </div>
+                            <p className="text-sm">{reply.content}</p>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className={cn(
+                                "h-7 px-2 text-xs text-muted-foreground hover:text-foreground",
+                                reply.likedByMe && "text-red-500 hover:text-red-600"
+                              )}
+                              onClick={() => toggleLike(reply.id)}
+                            >
+                              <Heart className={cn("h-3 w-3 mr-1", reply.likedByMe && "fill-current")} />
+                              {reply.likes > 0 && <span>{reply.likes}</span>}
+                            </Button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
             ))}

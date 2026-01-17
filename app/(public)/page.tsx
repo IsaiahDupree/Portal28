@@ -1,8 +1,23 @@
 import Link from "next/link";
+import { Metadata } from "next";
 import { AttributionCapture } from "../attrib-capture";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Sparkles, Target, Mic2, ArrowRight } from "lucide-react";
+
+// Enable static generation with ISR
+export const revalidate = 3600; // Revalidate every hour
+
+export const metadata: Metadata = {
+  title: "Portal28 Academy | Where Power Gets Built",
+  description: "Portal 28 is a private clubhouse for founders, creators, and CEOs who know they're meant to operate at a higher level. Master brand strategy, storytelling, and AI-powered content creation.",
+  openGraph: {
+    title: "Portal28 Academy | Where Power Gets Built",
+    description: "Portal 28 is a private clubhouse for founders, creators, and CEOs who know they're meant to operate at a higher level.",
+    type: "website",
+  },
+  keywords: ["brand strategy", "storytelling", "content creation", "AI", "founders", "CEOs", "creators"],
+};
 
 export default function HomePage() {
   return (

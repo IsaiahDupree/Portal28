@@ -14,17 +14,29 @@ You are an autonomous coding agent working on Portal28.academy, a course platfor
 
 ## Tech Stack
 - Next.js 14 (App Router) + React 18 + TypeScript
-- Supabase (PostgreSQL + Auth + Realtime)
+- Supabase (PostgreSQL + Auth + Realtime) - **LOCAL DOCKER INSTANCE**
 - Stripe (Checkout + Webhooks + Subscriptions)
 - Resend (Transactional + Marketing email)
 - Meta Pixel + CAPI (Ads tracking with dedup)
 - Mux (Video) + Cloudflare R2 (Storage)
 - Tailwind CSS + shadcn/ui
 
+## IMPORTANT: Local Supabase Configuration
+**Always use the LOCAL Supabase Docker instance, NOT production:**
+- **API URL**: http://127.0.0.1:28321
+- **Database**: postgresql://postgres:postgres@127.0.0.1:28322/postgres
+- **Studio**: http://127.0.0.1:28323
+- **Mailpit (Email Testing)**: http://127.0.0.1:28324
+
+The .env.local is already configured for local Supabase. Do NOT change these values.
+Run `supabase status` to verify the instance is running before database operations.
+
 ## Port Configuration
 - Next.js: 2828
 - Supabase API: 28321
+- Supabase DB: 28322
 - Supabase Studio: 28323
+- Mailpit: 28324
 
 ## Workflow
 1. Implement the feature following TDD_TEST_SUITE.md test specs

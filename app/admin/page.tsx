@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { GraduationCap, ShoppingCart, Users, DollarSign, TrendingUp, Plus, Shield, BarChart3, Crown } from "lucide-react";
+import { getCurrentMRR, getChurnRate } from "@/lib/db/mrr";
 
 export default async function AdminPage() {
   const supabase = supabaseServer();
@@ -48,6 +49,10 @@ export default async function AdminPage() {
 
   const totalRevenue = orders?.reduce((sum, o) => sum + (o.amount || 0), 0) || 0;
 
+  // Get MRR and churn data
+  const mrrData = await getCurrentMRR();
+  const churnData = await getChurnRate(30);
+
   return (
     <div className="space-y-6">
       {/* Page Header */}
@@ -67,7 +72,25 @@ export default async function AdminPage() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">MRR</CardTitle>
+            <TrendingUp className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">${(mrrData.current_mrr / 100).toFixed(0)}</div>
+            <p className="text-xs text-muted-foreground">
+              {mrrData.subscriber_count} active subscribers
+            </p>
+            {mrrData.growth_rate !== 0 && (
+              <p className="text-xs text-green-600 mt-1">
+                {mrrData.growth_rate > 0 ? '+' : ''}{mrrData.growth_rate.toFixed(1)}% growth
+              </p>
+            )}
+          </CardContent>
+        </Card>
+
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
@@ -102,7 +125,7 @@ export default async function AdminPage() {
           <CardContent>
             <div className="text-2xl font-bold">{totalUsers || 0}</div>
             <p className="text-xs text-muted-foreground">
-              Total registered users
+              Churn: {churnData.churn_rate.toFixed(1)}%
             </p>
           </CardContent>
         </Card>
@@ -124,14 +147,14 @@ export default async function AdminPage() {
       {/* Quick Actions */}
       <div className="grid gap-4 md:grid-cols-3">
         <Card className="hover:border-primary/50 transition-colors">
-          <Link href="/admin/analytics/enrollments">
+          <Link href="/admin/subscribers">
             <CardHeader className="flex flex-row items-center gap-3">
               <div className="p-2 rounded-lg bg-green-100">
                 <Crown className="h-5 w-5 text-green-600" />
               </div>
               <div>
-                <CardTitle className="text-base">Enrollment Analytics</CardTitle>
-                <CardDescription>Course & membership stats, MRR</CardDescription>
+                <CardTitle className="text-base">Subscribers & MRR</CardTitle>
+                <CardDescription>Manage subscriptions and revenue</CardDescription>
               </div>
             </CardHeader>
           </Link>

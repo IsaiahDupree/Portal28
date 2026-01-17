@@ -1,18 +1,23 @@
 import Link from "next/link";
 import { supabaseServer } from "@/lib/supabase/server";
 import { getLessonProgress } from "@/lib/progress/lessonProgress";
+import { getAdjacentLessons } from "@/lib/db/queries";
+import { sanitizeHtml } from "@/lib/security/sanitize";
 import LessonCompleteButton from "@/components/progress/LessonCompleteButton";
-import { VideoPlayer } from "@/components/courses/VideoPlayer";
+import { LessonVideoPlayer } from "@/components/courses/LessonVideoPlayer";
 import { LessonNotes } from "@/components/courses/LessonNotes";
 import { LessonComments } from "@/components/courses/LessonComments";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { 
-  ArrowLeft, 
-  Download, 
-  FileText, 
-  Image as ImageIcon, 
+import {
+  ArrowLeft,
+  ArrowRight,
+  ChevronLeft,
+  ChevronRight,
+  Download,
+  FileText,
+  Image as ImageIcon,
   File,
   CheckCircle,
   Clock
@@ -30,7 +35,7 @@ export default async function LessonPage({ params }: { params: { id: string } })
 
   const { data: lesson } = await supabase
     .from("lessons")
-    .select("id,title,video_url,content_html,downloads,module_id,duration_minutes")
+    .select("id,title,video_url,mux_playback_id,content_html,downloads,module_id,duration_minutes")
     .eq("id", params.id)
     .single();
 
@@ -63,6 +68,9 @@ export default async function LessonPage({ params }: { params: { id: string } })
     .single();
 
   const downloads = (lesson.downloads ?? []) as DownloadItem[];
+
+  // Get adjacent lessons for next/prev navigation
+  const adjacentLessons = await getAdjacentLessons(course!.id, lesson.id);
 
   // Get lesson progress if user is logged in
   const progress = auth.user
@@ -148,9 +156,11 @@ export default async function LessonPage({ params }: { params: { id: string } })
         {/* Main Content */}
         <div className="lg:col-span-2 space-y-6">
           {/* Video Player */}
-          {lesson.video_url && (
-            <VideoPlayer 
-              src={lesson.video_url} 
+          {(lesson.video_url || (lesson as any).mux_playback_id) && (
+            <LessonVideoPlayer
+              lessonId={lesson.id}
+              videoUrl={lesson.video_url || undefined}
+              muxPlaybackId={(lesson as any).mux_playback_id || undefined}
               title={lesson.title}
               onComplete={() => {
                 // Could auto-mark as complete
@@ -162,7 +172,7 @@ export default async function LessonPage({ params }: { params: { id: string } })
           {lesson.content_html && (
             <Card>
               <CardContent className="pt-6 prose prose-sm max-w-none dark:prose-invert">
-                <div dangerouslySetInnerHTML={{ __html: lesson.content_html }} />
+                <div dangerouslySetInnerHTML={{ __html: sanitizeHtml(lesson.content_html) }} />
               </CardContent>
             </Card>
           )}
@@ -211,6 +221,45 @@ export default async function LessonPage({ params }: { params: { id: string } })
             userName={userData?.full_name || userData?.email?.split("@")[0]}
             userAvatar={userData?.avatar_url}
           />
+
+          {/* Next/Previous Navigation */}
+          <Card>
+            <CardContent className="pt-6">
+              <div className="flex items-center justify-between gap-4">
+                {adjacentLessons.prev ? (
+                  <Button variant="outline" asChild className="flex-1">
+                    <Link href={`/app/lesson/${adjacentLessons.prev.id}`}>
+                      <ChevronLeft className="mr-2 h-4 w-4" />
+                      <div className="flex flex-col items-start text-left min-w-0">
+                        <span className="text-xs text-muted-foreground">Previous</span>
+                        <span className="font-medium truncate w-full">
+                          {adjacentLessons.prev.title}
+                        </span>
+                      </div>
+                    </Link>
+                  </Button>
+                ) : (
+                  <div className="flex-1" />
+                )}
+
+                {adjacentLessons.next ? (
+                  <Button variant="outline" asChild className="flex-1">
+                    <Link href={`/app/lesson/${adjacentLessons.next.id}`}>
+                      <div className="flex flex-col items-end text-right min-w-0">
+                        <span className="text-xs text-muted-foreground">Next</span>
+                        <span className="font-medium truncate w-full">
+                          {adjacentLessons.next.title}
+                        </span>
+                      </div>
+                      <ChevronRight className="ml-2 h-4 w-4" />
+                    </Link>
+                  </Button>
+                ) : (
+                  <div className="flex-1" />
+                )}
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Sidebar */}

@@ -36,6 +36,42 @@ export async function POST(req: Request) {
     const amountTotal = (session.amount_total ?? 0) / 100;
     const currency = (session.currency ?? "usd").toUpperCase();
 
+    // Extract promo code information
+    let promoCode: string | null = null;
+    let discountAmount: number | null = null;
+    let discountPercent: number | null = null;
+    let amountBeforeDiscount: number | null = null;
+
+    if (session.total_details?.amount_discount && session.total_details.amount_discount > 0) {
+      // Fetch full session details to get discount info
+      try {
+        const fullSession = await stripe.checkout.sessions.retrieve(session.id, {
+          expand: ['total_details.breakdown']
+        });
+
+        if (fullSession.total_details?.breakdown?.discounts && fullSession.total_details.breakdown.discounts.length > 0) {
+          const discount = fullSession.total_details.breakdown.discounts[0];
+          discountAmount = discount.amount;
+
+          // Get the promotion code details
+          if (discount.discount.promotion_code) {
+            const promoCodeObj = await stripe.promotionCodes.retrieve(discount.discount.promotion_code as string);
+            promoCode = promoCodeObj.code;
+          }
+
+          // Calculate percentage if it's a percentage discount
+          if (discount.discount.coupon?.percent_off) {
+            discountPercent = discount.discount.coupon.percent_off;
+          }
+
+          // Calculate original amount
+          amountBeforeDiscount = (session.amount_total ?? 0) + discountAmount;
+        }
+      } catch (err) {
+        console.error("Error fetching discount details:", err);
+      }
+    }
+
     if (courseId && event_id) {
       const { data: existing } = await supabaseAdmin
         .from("orders")
@@ -55,7 +91,12 @@ export async function POST(req: Request) {
             // Email attribution
             email_send_id: emailSendId,
             email_program_id: emailProgramId,
-            email_campaign: emailCampaign
+            email_campaign: emailCampaign,
+            // Promo code tracking
+            promo_code: promoCode,
+            discount_amount: discountAmount,
+            discount_percent: discountPercent,
+            amount_before_discount: amountBeforeDiscount
           })
           .eq("stripe_session_id", session.id);
 
@@ -125,13 +166,20 @@ export async function POST(req: Request) {
     const stripeCustomerId = subscription.customer as string;
     
     if (userId) {
+      // Extract price details from subscription
+      const priceData = subscription.items.data[0]?.price;
+      const priceCents = priceData?.unit_amount || 0;
+      const interval = priceData?.recurring?.interval || "month"; // 'month' or 'year'
+
       await supabaseAdmin.from("subscriptions").upsert({
         user_id: userId,
         stripe_customer_id: stripeCustomerId,
         stripe_subscription_id: subscription.id,
-        stripe_price_id: subscription.items.data[0]?.price?.id,
+        stripe_price_id: priceData?.id,
         tier,
         status: subscription.status,
+        price_cents: priceCents,
+        interval: interval,
         current_period_start: new Date(subscription.current_period_start * 1000).toISOString(),
         current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
         cancel_at_period_end: subscription.cancel_at_period_end,

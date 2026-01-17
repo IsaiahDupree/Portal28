@@ -32,7 +32,38 @@ npm run test:coverage  # Coverage report
 
 - **App:** http://localhost:2828
 - **Supabase Studio:** http://localhost:28323
-- **Email Inbox (Inbucket):** http://localhost:28324
+- **Email Inbox (Mailpit):** http://localhost:28324
+
+---
+
+## ⚠️ CRITICAL: Local Supabase Configuration
+
+**This project uses a LOCAL Supabase Docker instance. Always verify it's running before database operations.**
+
+### Local Supabase URLs (Portal28 Custom Ports)
+| Service | URL |
+|---------|-----|
+| **API** | http://127.0.0.1:28321 |
+| **Database** | postgresql://postgres:postgres@127.0.0.1:28322/postgres |
+| **Studio** | http://127.0.0.1:28323 |
+| **Mailpit** | http://127.0.0.1:28324 |
+
+### Check Supabase Status
+```bash
+supabase status
+```
+
+### Start Supabase (if not running)
+```bash
+supabase start
+```
+
+### Environment Variables (.env.local)
+The `.env.local` file is already configured for local Supabase:
+- `NEXT_PUBLIC_SUPABASE_URL=http://127.0.0.1:28321`
+- Uses demo anon/service keys for local development
+
+**DO NOT change these to production URLs during development.**
 
 ---
 

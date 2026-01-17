@@ -41,9 +41,9 @@ export default async function ModerationPage() {
     .order("created_at", { ascending: false })
     .limit(50);
 
-  // Fetch forum replies with author info
+  // Fetch forum posts with author info
   const { data: replies } = await supabase
-    .from("forum_replies")
+    .from("forum_posts")
     .select(`
       id,
       thread_id,
@@ -88,7 +88,7 @@ export default async function ModerationPage() {
     .select("*", { count: "exact", head: true });
 
   const { count: totalReplies } = await supabase
-    .from("forum_replies")
+    .from("forum_posts")
     .select("*", { count: "exact", head: true });
 
   return (
