@@ -3,8 +3,6 @@
  * Helps search engines understand the content better
  */
 
-import { Course } from "@/types/supabase";
-
 /**
  * Generate Organization structured data
  */

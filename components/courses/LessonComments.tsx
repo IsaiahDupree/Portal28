@@ -264,7 +264,7 @@ export function LessonComments({
               <div className="flex justify-end">
                 <Button 
                   size="sm" 
-                  onClick={postComment}
+                  onClick={() => postComment()}
                   disabled={posting || !newComment.trim()}
                 >
                   {posting ? (

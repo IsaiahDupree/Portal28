@@ -27,7 +27,12 @@ interface Note {
         slug: string;
       };
     };
-  } | null;
+  } | {
+    id: any;
+    title: any;
+    module_id: any;
+    modules: any[];
+  }[] | null;
 }
 
 interface NotesSearchProps {

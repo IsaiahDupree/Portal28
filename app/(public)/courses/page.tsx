@@ -5,8 +5,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Sparkles, ArrowRight } from "lucide-react";
 
-// Enable static generation with ISR
-export const revalidate = 3600; // Revalidate every hour
+// Force dynamic rendering to avoid build-time fetch issues
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Courses | Portal28 Academy",

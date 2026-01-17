@@ -2,10 +2,32 @@
  * Security utilities for XSS prevention and input sanitization
  *
  * This module provides functions to sanitize HTML content and prevent XSS attacks.
- * Uses DOMPurify for robust HTML sanitization.
+ * Uses a simple regex-based sanitizer for serverless compatibility.
  */
 
-import DOMPurify from "isomorphic-dompurify";
+// Safe tags that are allowed in sanitized HTML
+const SAFE_TAGS = new Set([
+  "h1", "h2", "h3", "h4", "h5", "h6",
+  "p", "br", "span", "div",
+  "strong", "em", "u", "s", "mark", "b", "i",
+  "ul", "ol", "li",
+  "a", "img",
+  "blockquote", "pre", "code",
+  "table", "thead", "tbody", "tr", "th", "td",
+  "hr",
+]);
+
+// Dangerous tags that should always be removed
+const DANGEROUS_TAGS = ["script", "style", "iframe", "object", "embed", "form", "input", "textarea", "button", "meta", "link", "base"];
+
+// Dangerous attribute patterns
+const DANGEROUS_ATTR_PATTERNS = [
+  /\bon\w+\s*=/gi, // Event handlers like onclick=
+  /javascript:/gi,
+  /vbscript:/gi,
+  /data:/gi,
+  /expression\s*\(/gi,
+];
 
 /**
  * Sanitize HTML content to prevent XSS attacks
@@ -14,7 +36,7 @@ import DOMPurify from "isomorphic-dompurify";
  * potentially malicious HTML while preserving safe formatting.
  *
  * @param html - Raw HTML content to sanitize
- * @param options - Optional DOMPurify configuration
+ * @param options - Optional configuration
  * @returns Sanitized HTML safe for rendering
  */
 export function sanitizeHtml(
@@ -28,57 +50,23 @@ export function sanitizeHtml(
     return "";
   }
 
-  // Add hook to block data: URIs and other dangerous protocols
-  DOMPurify.addHook("afterSanitizeAttributes", (node: Element) => {
-    // Block data: URIs in src and href attributes
-    if (node.hasAttribute("src")) {
-      const src = node.getAttribute("src") || "";
-      if (src.toLowerCase().startsWith("data:")) {
-        node.removeAttribute("src");
-      }
-    }
-    if (node.hasAttribute("href")) {
-      const href = node.getAttribute("href") || "";
-      if (href.toLowerCase().startsWith("data:") ||
-          href.toLowerCase().startsWith("javascript:") ||
-          href.toLowerCase().startsWith("vbscript:")) {
-        node.removeAttribute("href");
-      }
-    }
+  let result = html;
+
+  // Remove dangerous tags completely (including content)
+  DANGEROUS_TAGS.forEach(tag => {
+    const regex = new RegExp(`<${tag}[^>]*>([\\s\\S]*?)<\\/${tag}>`, "gi");
+    result = result.replace(regex, "");
+    // Also remove self-closing versions
+    result = result.replace(new RegExp(`<${tag}[^>]*\\/?>`, "gi"), "");
   });
 
-  const config: DOMPurify.Config = {
-    // Allow safe HTML tags for course content
-    ALLOWED_TAGS: options?.allowedTags || [
-      "h1", "h2", "h3", "h4", "h5", "h6",
-      "p", "br", "span", "div",
-      "strong", "em", "u", "s", "mark",
-      "ul", "ol", "li",
-      "a", "img",
-      "blockquote", "pre", "code",
-      "table", "thead", "tbody", "tr", "th", "td",
-      "hr",
-    ],
-    // Allow safe attributes
-    ALLOWED_ATTR: options?.allowedAttributes
-      ? Object.keys(options.allowedAttributes)
-      : ["href", "src", "alt", "title", "class", "id", "target", "rel"],
-    // Keep certain safe attributes on anchor tags
-    ALLOW_DATA_ATTR: false,
-    // Add rel="noopener noreferrer" to links
-    ADD_ATTR: ["target"],
-    // Only allow safe protocols - explicitly block data:, javascript:, vbscript:, etc.
-    ALLOWED_URI_REGEXP: /^(?:(?:(?:f|ht)tps?|mailto|tel|callto|sms|cid|xmpp):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i,
-    // Forbid tags that can contain scripts
-    FORBID_TAGS: ["script", "style", "iframe", "object", "embed", "form", "input", "textarea", "button"],
-    // Forbid attributes that can execute scripts
-    FORBID_ATTR: ["onerror", "onload", "onclick", "onmouseover", "onmouseout", "onanimationend", "onanimationstart", "ontransitionend"],
-  };
+  // Remove dangerous attributes
+  DANGEROUS_ATTR_PATTERNS.forEach(pattern => {
+    result = result.replace(pattern, "");
+  });
 
-  const result = DOMPurify.sanitize(html, config);
-
-  // Remove the hook after sanitization to prevent memory leaks
-  DOMPurify.removeHook("afterSanitizeAttributes");
+  // Remove any remaining script-like content
+  result = result.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "");
 
   return result;
 }

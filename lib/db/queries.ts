@@ -1,79 +1,62 @@
-import { supabaseServer } from "@/lib/supabase/server";
-import { unstable_cache } from "next/cache";
+import { createClient } from "@supabase/supabase-js";
 
-export const getPublishedCourses = unstable_cache(
-  async () => {
-    const supabase = supabaseServer();
-    const { data, error } = await supabase
-      .from("courses")
-      .select("id,title,slug,description,hero_image")
-      .eq("status", "published")
-      .order("created_at", { ascending: false });
+// Create a static Supabase client for cached queries (no cookies needed)
+function getStaticSupabase() {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+  return createClient(supabaseUrl, supabaseAnonKey);
+}
 
-    if (error) throw new Error(error.message);
-    return data ?? [];
-  },
-  ["published-courses"],
-  {
-    revalidate: 3600, // Revalidate every hour
-    tags: ["courses"],
-  }
-);
+export async function getPublishedCourses() {
+  const supabase = getStaticSupabase();
+  const { data, error } = await supabase
+    .from("courses")
+    .select("id,title,slug,description,hero_image")
+    .eq("status", "published")
+    .order("created_at", { ascending: false });
 
-export const getCourseBySlug = unstable_cache(
-  async (slug: string) => {
-    const supabase = supabaseServer();
-    const { data, error } = await supabase
-      .from("courses")
-      .select("*")
-      .eq("slug", slug)
-      .single();
+  if (error) throw new Error(error.message);
+  return data ?? [];
+}
 
-    if (error) return null;
-    return data;
-  },
-  ["course-by-slug"],
-  {
-    revalidate: 1800, // Revalidate every 30 minutes
-    tags: ["courses"],
-  }
-);
+export async function getCourseBySlug(slug: string) {
+  const supabase = getStaticSupabase();
+  const { data, error } = await supabase
+    .from("courses")
+    .select("*")
+    .eq("slug", slug)
+    .single();
 
-export const getCourseOutline = unstable_cache(
-  async (courseId: string) => {
-    const supabase = supabaseServer();
-    const { data: modules, error: mErr } = await supabase
-      .from("modules")
-      .select("id,title,sort_order")
-      .eq("course_id", courseId)
-      .order("sort_order", { ascending: true });
+  if (error) return null;
+  return data;
+}
 
-    if (mErr) throw new Error(mErr.message);
+export async function getCourseOutline(courseId: string) {
+  const supabase = getStaticSupabase();
+  const { data: modules, error: mErr } = await supabase
+    .from("modules")
+    .select("id,title,sort_order")
+    .eq("course_id", courseId)
+    .order("sort_order", { ascending: true });
 
-    const moduleIds = (modules ?? []).map((m) => m.id);
-    const { data: lessons, error: lErr } = await supabase
-      .from("lessons")
-      .select("id,module_id,title,sort_order")
-      .in("module_id", moduleIds.length ? moduleIds : ["00000000-0000-0000-0000-000000000000"])
-      .order("sort_order", { ascending: true });
+  if (mErr) throw new Error(mErr.message);
 
-    if (lErr) throw new Error(lErr.message);
+  const moduleIds = (modules ?? []).map((m) => m.id);
+  const { data: lessons, error: lErr } = await supabase
+    .from("lessons")
+    .select("id,module_id,title,sort_order")
+    .in("module_id", moduleIds.length ? moduleIds : ["00000000-0000-0000-0000-000000000000"])
+    .order("sort_order", { ascending: true });
 
-    return (modules ?? []).map((m) => ({
-      ...m,
-      lessons: (lessons ?? []).filter((l) => l.module_id === m.id)
-    }));
-  },
-  ["course-outline"],
-  {
-    revalidate: 1800, // Revalidate every 30 minutes
-    tags: ["courses", "modules", "lessons"],
-  }
-);
+  if (lErr) throw new Error(lErr.message);
+
+  return (modules ?? []).map((m) => ({
+    ...m,
+    lessons: (lessons ?? []).filter((l) => l.module_id === m.id)
+  }));
+}
 
 export async function getAdjacentLessons(courseId: string, currentLessonId: string) {
-  const supabase = supabaseServer();
-
   // Get all modules and lessons for the course, sorted correctly
   const outline = await getCourseOutline(courseId);
 
