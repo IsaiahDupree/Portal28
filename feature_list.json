@@ -1,9 +1,17 @@
 {
   "project": "Portal28",
-  "version": "1.0",
+  "version": "1.1",
   "created": "2026-01-13",
-  "total_features": 55,
+  "updated": "2026-01-17",
+  "total_features": 195,
   "total_tests": 300,
+  "phases": {
+    "phase0_mvp": "Core course selling: auth, payments, course delivery, admin CMS, tracking, email",
+    "phase1_growth": "AOV/LTV optimization: offers, bundles, memberships, email sequences, analytics",
+    "phase2_platform": "Whop-style modular platform: widgets, community, forums, chat, resources",
+    "phase3_expansion": "Advanced features: affiliates, events, coaching, multi-instructor, marketplace",
+    "phase4_video": "AI Video Generation Platform: brief-to-video automation, voice cloning, captions, multi-format output"
+  },
   "features": [
     {
       "id": "feat-001",
@@ -1665,6 +1673,3262 @@
       "passes": true,
       "implemented_at": "2026-01-14",
       "notes": "Updated README.md with testing instructions, deployment guide reference, and feature status (51/55, 93% complete). Created comprehensive DEPLOYMENT.md guide (400+ lines) covering Supabase, Stripe, Resend, Meta Pixel, Vercel deployment, environment variables, cron jobs, production testing, troubleshooting, and security checklist."
+    },
+    {
+      "id": "feat-056",
+      "epic": "Phase 1: Growth",
+      "category": "high",
+      "priority": 56,
+      "description": "Order Bumps - Post-selection upsells",
+      "test_ids": ["GRO-OBP-001", "GRO-OBP-002", "GRO-OBP-003", "GRO-OBP-004"],
+      "steps": [
+        "Create order bump component for checkout page",
+        "Configure bump products per course/offer",
+        "Add bump to Stripe checkout as line item",
+        "Track bump acceptance rate"
+      ],
+      "acceptance_criteria": [
+        "Order bump displays on checkout",
+        "Bump adds to cart when selected",
+        "Analytics track bump conversions",
+        "Admin can configure bumps per offer"
+      ],
+      "passes": false,
+      "implemented_at": null,
+      "notes": "PRD Phase 1 feature - infrastructure partially exists via offers system. Needs dedicated OrderBump component and checkout integration."
+    },
+    {
+      "id": "feat-057",
+      "epic": "Phase 1: Growth",
+      "category": "medium",
+      "priority": 57,
+      "description": "Bundle Product Pages",
+      "test_ids": ["GRO-BND-001", "GRO-BND-002", "GRO-BND-003", "GRO-BND-004"],
+      "steps": [
+        "Create bundle sales page template",
+        "Display included courses with details",
+        "Show bundle savings vs individual",
+        "Bundle checkout grants all entitlements"
+      ],
+      "acceptance_criteria": [
+        "Bundle page shows all included courses",
+        "Savings percentage displayed",
+        "Single checkout for bundle",
+        "All course entitlements granted"
+      ],
+      "passes": false,
+      "implemented_at": null,
+      "notes": "PRD Phase 1 - Offers support bundles via payload.courseIds[] but dedicated bundle UI missing."
+    },
+    {
+      "id": "feat-058",
+      "epic": "Phase 1: Growth",
+      "category": "medium",
+      "priority": 58,
+      "description": "Upsell Flows - Post-purchase",
+      "test_ids": ["GRO-UPS-001", "GRO-UPS-002", "GRO-UPS-003", "GRO-UPS-004"],
+      "steps": [
+        "Create upsell modal component",
+        "Configure upsell triggers",
+        "One-click upsell purchase",
+        "Track upsell conversion rates"
+      ],
+      "acceptance_criteria": [
+        "Upsell modal appears post-purchase",
+        "One-click purchase works",
+        "Upsell analytics tracked",
+        "Admin can configure upsell offers"
+      ],
+      "passes": false,
+      "implemented_at": null,
+      "notes": "PRD Phase 1 - Can be done via offers + placements, needs dedicated upsell flow."
+    },
+    {
+      "id": "feat-059",
+      "epic": "Phase 1: Growth",
+      "category": "medium",
+      "priority": 59,
+      "description": "Limited-Time Offers",
+      "test_ids": ["GRO-LTO-001", "GRO-LTO-002", "GRO-LTO-003", "GRO-LTO-004"],
+      "steps": [
+        "Add start_at/end_at to offers table",
+        "Create countdown timer component",
+        "Auto-expire offers after deadline",
+        "Show urgency messaging"
+      ],
+      "acceptance_criteria": [
+        "Offers have time bounds",
+        "Countdown timer displays",
+        "Expired offers hidden",
+        "Urgency increases conversions"
+      ],
+      "passes": false,
+      "implemented_at": null,
+      "notes": "PRD Phase 1 Growth feature - time-limited promotions for urgency."
+    },
+    {
+      "id": "feat-060",
+      "epic": "Phase 1: Growth",
+      "category": "medium",
+      "priority": 60,
+      "description": "Abandoned Checkout Recovery",
+      "test_ids": ["GRO-ACR-001", "GRO-ACR-002", "GRO-ACR-003", "GRO-ACR-004"],
+      "steps": [
+        "Track checkout abandonment events",
+        "Trigger recovery email sequence",
+        "Include checkout resume link",
+        "Track recovery conversions"
+      ],
+      "acceptance_criteria": [
+        "Abandonment detected and logged",
+        "Recovery email sent within 1hr",
+        "Resume link restores cart",
+        "Conversion rate tracked"
+      ],
+      "passes": false,
+      "implemented_at": null,
+      "notes": "PRD Phase 1 - Email sequences mention abandoned checkout recovery."
+    },
+    {
+      "id": "feat-061",
+      "epic": "Phase 1: Growth",
+      "category": "low",
+      "priority": 61,
+      "description": "Cohort Analytics",
+      "test_ids": ["GRO-COH-001", "GRO-COH-002", "GRO-COH-003"],
+      "steps": [
+        "Group users by signup cohort",
+        "Calculate retention by cohort",
+        "Visualize cohort performance",
+        "Compare cohort LTV"
+      ],
+      "acceptance_criteria": [
+        "Cohort groupings accurate",
+        "Retention curves displayed",
+        "LTV by cohort calculated"
+      ],
+      "passes": false,
+      "implemented_at": null,
+      "notes": "PRD Phase 1 - Basic analytics dashboard for funnel + cohorts."
+    },
+    {
+      "id": "feat-062",
+      "epic": "Phase 2: Platform",
+      "category": "medium",
+      "priority": 62,
+      "description": "Drip Content Scheduling",
+      "test_ids": ["PLT-DRP-001", "PLT-DRP-002", "PLT-DRP-003", "PLT-DRP-004"],
+      "steps": [
+        "Add drip settings to lessons",
+        "Calculate unlock dates per user",
+        "Show locked state with unlock date",
+        "Send drip notification emails"
+      ],
+      "acceptance_criteria": [
+        "Lessons can be drip-scheduled",
+        "Locked lessons show unlock date",
+        "Lessons unlock automatically",
+        "Drip emails notify users"
+      ],
+      "passes": false,
+      "implemented_at": null,
+      "notes": "AUDIT.md shows drip scheduling as partial - logic exists but UI incomplete."
+    },
+    {
+      "id": "feat-063",
+      "epic": "Phase 2: Platform",
+      "category": "medium",
+      "priority": 63,
+      "description": "Mux Admin Upload UI",
+      "test_ids": ["PLT-MUX-U-001", "PLT-MUX-U-002", "PLT-MUX-U-003"],
+      "steps": [
+        "Create video upload form in studio",
+        "Show upload progress",
+        "Display processing status",
+        "Preview uploaded video"
+      ],
+      "acceptance_criteria": [
+        "Admin can upload videos via UI",
+        "Progress bar shows upload",
+        "Processing status displayed",
+        "Video preview works"
+      ],
+      "passes": false,
+      "implemented_at": null,
+      "notes": "AUDIT.md - Mux SDK installed, upload route exists, admin UI pending."
+    },
+    {
+      "id": "feat-064",
+      "epic": "Phase 2: Platform",
+      "category": "medium",
+      "priority": 64,
+      "description": "PDF/File Upload Management",
+      "test_ids": ["PLT-PDF-001", "PLT-PDF-002", "PLT-PDF-003", "PLT-PDF-004"],
+      "steps": [
+        "Create file upload component",
+        "Configure R2/S3 bucket",
+        "Generate signed download URLs",
+        "Manage lesson downloads"
+      ],
+      "acceptance_criteria": [
+        "Files upload to R2/S3",
+        "Downloads work with signed URLs",
+        "Admin can manage attachments",
+        "File size limits enforced"
+      ],
+      "passes": false,
+      "implemented_at": null,
+      "notes": "AUDIT.md - Route exists, needs S3/R2 config and admin UI."
+    },
+    {
+      "id": "feat-065",
+      "epic": "Phase 2: Platform",
+      "category": "medium",
+      "priority": 65,
+      "description": "Course Preview Links",
+      "test_ids": ["PLT-PRV-001", "PLT-PRV-002", "PLT-PRV-003", "PLT-PRV-004", "PLT-PRV-005"],
+      "steps": [
+        "Generate unique preview tokens",
+        "Create preview route /preview/course/[id]",
+        "Show preview watermark",
+        "Set token expiration"
+      ],
+      "acceptance_criteria": [
+        "Preview tokens generated",
+        "Preview route shows course",
+        "Watermark indicates preview mode",
+        "Expired tokens rejected"
+      ],
+      "passes": false,
+      "implemented_at": null,
+      "notes": "AUDIT.md - Token system exists in 0017_preview_tokens.sql, preview route needed."
+    },
+    {
+      "id": "feat-066",
+      "epic": "Phase 2: Platform",
+      "category": "low",
+      "priority": 66,
+      "description": "Community Activity Feed",
+      "test_ids": ["PLT-FED-001", "PLT-FED-002", "PLT-FED-003", "PLT-FED-004", "PLT-FED-005"],
+      "steps": [
+        "Aggregate threads, posts, announcements",
+        "Sort by recent activity",
+        "Show feed on community home",
+        "Filter by content type"
+      ],
+      "acceptance_criteria": [
+        "Feed shows mixed content",
+        "Recent items first",
+        "Clicking opens full view",
+        "Type filter works"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-14",
+      "notes": "lib/community/feed.ts exists - aggregated activity feed implemented."
+    },
+    {
+      "id": "feat-067",
+      "epic": "Phase 2: Platform",
+      "category": "medium",
+      "priority": 67,
+      "description": "Multi-Provider Video Support",
+      "test_ids": ["PLT-VID-001", "PLT-VID-002", "PLT-VID-003", "PLT-VID-004", "PLT-VID-005", "PLT-VID-006"],
+      "steps": [
+        "Parse video URL to detect provider",
+        "Support YouTube unlisted",
+        "Support Vimeo private",
+        "Support Mux playback",
+        "Unified player component"
+      ],
+      "acceptance_criteria": [
+        "YouTube videos embed",
+        "Vimeo videos embed",
+        "Mux videos play with signed URLs",
+        "Auto-detect provider from URL"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-14",
+      "notes": "VideoPlayer component supports multiple providers. Mux integration added."
+    },
+    {
+      "id": "feat-068",
+      "epic": "Phase 2: Platform",
+      "category": "low",
+      "priority": 68,
+      "description": "Enrollment Analytics Dashboard",
+      "test_ids": ["PLT-ENR-001", "PLT-ENR-002", "PLT-ENR-003", "PLT-ENR-004"],
+      "steps": [
+        "Create /admin/analytics/enrollments page",
+        "Show course enrollment stats",
+        "Display membership metrics",
+        "Show renewal timeline"
+      ],
+      "acceptance_criteria": [
+        "Enrollment counts per course",
+        "Active vs total shown",
+        "MRR calculated correctly",
+        "At-risk subscriptions highlighted"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-14",
+      "notes": "FEATURES.md - Recently added enrollment analytics dashboard."
+    },
+    {
+      "id": "feat-069",
+      "epic": "Phase 2: Platform",
+      "category": "medium",
+      "priority": 69,
+      "description": "Content Reports System",
+      "test_ids": ["PLT-RPT-001", "PLT-RPT-002", "PLT-RPT-003", "PLT-RPT-004"],
+      "steps": [
+        "Create content_reports table",
+        "Allow users to flag content",
+        "Admin review queue",
+        "Resolve/dismiss reports"
+      ],
+      "acceptance_criteria": [
+        "Users can report content",
+        "Reports appear in admin queue",
+        "Admin can resolve/dismiss",
+        "Resolution tracked"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-14",
+      "notes": "FEATURES.md - Content moderation system with reports implemented."
+    },
+    {
+      "id": "feat-070",
+      "epic": "Phase 0: MVP",
+      "category": "low",
+      "priority": 70,
+      "description": "Google OAuth Login",
+      "test_ids": ["MVP-GOA-001", "MVP-GOA-002", "MVP-GOA-003"],
+      "steps": [
+        "Configure Google OAuth in Supabase",
+        "Add Google login button",
+        "Handle OAuth callback",
+        "Link to existing accounts"
+      ],
+      "acceptance_criteria": [
+        "Google login button works",
+        "OAuth flow completes",
+        "Session created on success",
+        "Existing users linked"
+      ],
+      "passes": false,
+      "implemented_at": null,
+      "notes": "PRD mentions 'Optional: Google login later' - low priority but common request."
+    },
+    {
+      "id": "feat-071",
+      "epic": "Phase 0: MVP",
+      "category": "low",
+      "priority": 71,
+      "description": "Cookie Consent Banner",
+      "test_ids": ["MVP-CKE-001", "MVP-CKE-002", "MVP-CKE-003"],
+      "steps": [
+        "Create cookie consent component",
+        "Store consent preference",
+        "Block tracking until consent",
+        "Show cookie policy link"
+      ],
+      "acceptance_criteria": [
+        "Banner appears on first visit",
+        "Consent stored in cookie",
+        "Tracking respects consent",
+        "GDPR compliant"
+      ],
+      "passes": false,
+      "implemented_at": null,
+      "notes": "PRD Non-Functional Requirements - Cookie consent banner if needed for privacy."
+    },
+    {
+      "id": "feat-072",
+      "epic": "Phase 3: Expansion",
+      "category": "medium",
+      "priority": 72,
+      "description": "Affiliate System",
+      "test_ids": ["EXP-AFF-001", "EXP-AFF-002", "EXP-AFF-003", "EXP-AFF-004", "EXP-AFF-005"],
+      "steps": [
+        "Create affiliates table",
+        "Generate unique affiliate links",
+        "Track referral purchases",
+        "Calculate commissions",
+        "Payout management"
+      ],
+      "acceptance_criteria": [
+        "Affiliates can register",
+        "Unique links generated",
+        "Purchases attributed correctly",
+        "Commissions calculated",
+        "Payout reports available"
+      ],
+      "passes": false,
+      "implemented_at": null,
+      "notes": "PRD excludes from MVP but mentions for Phase 2+. Common revenue driver."
+    },
+    {
+      "id": "feat-073",
+      "epic": "Phase 3: Expansion",
+      "category": "medium",
+      "priority": 73,
+      "description": "Events/Calendar App",
+      "test_ids": ["EXP-EVT-001", "EXP-EVT-002", "EXP-EVT-003", "EXP-EVT-004"],
+      "steps": [
+        "Create events table",
+        "Calendar view component",
+        "Event registration",
+        "Event reminders via email"
+      ],
+      "acceptance_criteria": [
+        "Events can be created",
+        "Calendar displays events",
+        "Users can register",
+        "Reminders sent"
+      ],
+      "passes": false,
+      "implemented_at": null,
+      "notes": "PRD Phase 2 'Apps' system includes Events calendar integration."
+    },
+    {
+      "id": "feat-074",
+      "epic": "Phase 3: Expansion",
+      "category": "medium",
+      "priority": 74,
+      "description": "Coaching Bookings",
+      "test_ids": ["EXP-COA-001", "EXP-COA-002", "EXP-COA-003", "EXP-COA-004"],
+      "steps": [
+        "Create coaching slots table",
+        "Calendar availability picker",
+        "Booking confirmation flow",
+        "Integration with video calls"
+      ],
+      "acceptance_criteria": [
+        "Coach sets availability",
+        "Students can book slots",
+        "Confirmations sent",
+        "Video call links generated"
+      ],
+      "passes": false,
+      "implemented_at": null,
+      "notes": "PRD Phase 2 'Apps' system includes Coaching bookings."
+    },
+    {
+      "id": "feat-075",
+      "epic": "Phase 3: Expansion",
+      "category": "low",
+      "priority": 75,
+      "description": "Templates Vault App",
+      "test_ids": ["EXP-TPL-001", "EXP-TPL-002", "EXP-TPL-003"],
+      "steps": [
+        "Create templates table",
+        "Template browser UI",
+        "Download/copy functionality",
+        "Organize by category"
+      ],
+      "acceptance_criteria": [
+        "Templates can be uploaded",
+        "Browser shows templates",
+        "Download works",
+        "Categories filter"
+      ],
+      "passes": false,
+      "implemented_at": null,
+      "notes": "PRD Phase 2 'Apps' system includes Templates vault."
+    },
+    {
+      "id": "feat-076",
+      "epic": "Phase 3: Expansion",
+      "category": "low",
+      "priority": 76,
+      "description": "Multi-Instructor Support",
+      "test_ids": ["EXP-INS-001", "EXP-INS-002", "EXP-INS-003", "EXP-INS-004"],
+      "steps": [
+        "Add instructor role",
+        "Assign instructors to courses",
+        "Instructor dashboard",
+        "Revenue sharing config"
+      ],
+      "acceptance_criteria": [
+        "Instructors can be added",
+        "Course assignment works",
+        "Instructors see own courses",
+        "Revenue split calculated"
+      ],
+      "passes": false,
+      "implemented_at": null,
+      "notes": "PRD mentions as future enhancement - enables marketplace model."
+    },
+    {
+      "id": "feat-077",
+      "epic": "Phase 3: Expansion",
+      "category": "low",
+      "priority": 77,
+      "description": "App Marketplace",
+      "test_ids": ["EXP-MKT-001", "EXP-MKT-002", "EXP-MKT-003"],
+      "steps": [
+        "Create apps registry",
+        "App installation flow",
+        "App configuration UI",
+        "Third-party app support"
+      ],
+      "acceptance_criteria": [
+        "Apps can be browsed",
+        "Installation works",
+        "Configuration saves",
+        "Third-party apps integrate"
+      ],
+      "passes": false,
+      "implemented_at": null,
+      "notes": "PRD Phase 2+ - App marketplace for extensibility."
+    },
+    {
+      "id": "feat-078",
+      "epic": "Phase 2: Platform",
+      "category": "medium",
+      "priority": 78,
+      "description": "Workspace/Experiences System",
+      "test_ids": ["PLT-WKS-001", "PLT-WKS-002", "PLT-WKS-003", "PLT-WKS-004"],
+      "steps": [
+        "Create workspaces table",
+        "Assign products to workspaces",
+        "Workspace-specific navigation",
+        "Switch between workspaces"
+      ],
+      "acceptance_criteria": [
+        "Workspaces can be created",
+        "Products assigned",
+        "Navigation adapts",
+        "Switching works"
+      ],
+      "passes": false,
+      "implemented_at": null,
+      "notes": "PRD Phase 2 - Multiple spaces/experiences per offer (like Whop 'products')."
+    },
+    {
+      "id": "feat-079",
+      "epic": "Phase 1: Growth",
+      "category": "high",
+      "priority": 79,
+      "description": "Onboarding Email Sequence",
+      "test_ids": ["GRO-ONB-001", "GRO-ONB-002", "GRO-ONB-003", "GRO-ONB-004"],
+      "steps": [
+        "Create onboarding automation",
+        "Welcome + getting started email",
+        "Progress check-in emails",
+        "Completion nudge emails"
+      ],
+      "acceptance_criteria": [
+        "Automation triggers on purchase",
+        "Welcome email sent immediately",
+        "Check-ins sent on schedule",
+        "Completion nudges work"
+      ],
+      "passes": false,
+      "implemented_at": null,
+      "notes": "PRD Phase 1 - Email sequences for onboarding, completion nudges."
+    },
+    {
+      "id": "feat-080",
+      "epic": "Phase 2: Platform",
+      "category": "medium",
+      "priority": 80,
+      "description": "Announcement Email Notifications",
+      "test_ids": ["PLT-ANN-E-001", "PLT-ANN-E-002", "PLT-ANN-E-003"],
+      "steps": [
+        "Option to email on announcement",
+        "Send to relevant members",
+        "Include announcement content",
+        "Unsubscribe handling"
+      ],
+      "acceptance_criteria": [
+        "Admin can toggle email notify",
+        "Email sent to members",
+        "Content included",
+        "Unsubscribe works"
+      ],
+      "passes": false,
+      "implemented_at": null,
+      "notes": "PRD Phase 2 Community - Announcements with email notify option."
+    },
+    {
+      "id": "feat-081",
+      "epic": "Phase 2: Platform",
+      "category": "low",
+      "priority": 81,
+      "description": "Reply Notifications",
+      "test_ids": ["PLT-RPN-001", "PLT-RPN-002", "PLT-RPN-003"],
+      "steps": [
+        "Notify on thread reply",
+        "Notify on comment reply",
+        "Email digest option",
+        "Notification preferences"
+      ],
+      "acceptance_criteria": [
+        "Thread authors notified",
+        "Comment authors notified",
+        "Digest option works",
+        "Preferences respected"
+      ],
+      "passes": false,
+      "implemented_at": null,
+      "notes": "Enhance existing notifications with email delivery options."
+    },
+    {
+      "id": "feat-082",
+      "epic": "Phase 2: Platform",
+      "category": "low",
+      "priority": 82,
+      "description": "Mux Webhook Handler",
+      "test_ids": ["PLT-MUX-W-001", "PLT-MUX-W-002", "PLT-MUX-W-003"],
+      "steps": [
+        "Handle video.asset.ready event",
+        "Update lesson with playback_id",
+        "Handle processing errors",
+        "Track video status"
+      ],
+      "acceptance_criteria": [
+        "Ready events processed",
+        "Playback IDs stored",
+        "Errors logged",
+        "Status visible in admin"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-14",
+      "notes": "Mux webhook handler exists at /api/webhooks/mux per DEVELOPER_HANDOFF.md."
+    },
+    {
+      "id": "feat-083",
+      "epic": "Phase 2: Platform",
+      "category": "medium",
+      "priority": 83,
+      "description": "Quiz Grading & Results",
+      "test_ids": ["PLT-QIZ-G-001", "PLT-QIZ-G-002", "PLT-QIZ-G-003", "PLT-QIZ-G-004"],
+      "steps": [
+        "Auto-grade multiple choice",
+        "Calculate passing score",
+        "Show results breakdown",
+        "Allow retakes if configured"
+      ],
+      "acceptance_criteria": [
+        "Answers graded correctly",
+        "Pass/fail determined",
+        "Results show correct answers",
+        "Retake policy enforced"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-14",
+      "notes": "Quiz system includes grading per feat-040 notes."
+    },
+    {
+      "id": "feat-084",
+      "epic": "Phase 1: Growth",
+      "category": "medium",
+      "priority": 84,
+      "description": "Offer Impression Analytics",
+      "test_ids": ["GRO-OIA-001", "GRO-OIA-002", "GRO-OIA-003"],
+      "steps": [
+        "Track offer views",
+        "Calculate impression to checkout rate",
+        "Compare offer performance",
+        "A/B test offers"
+      ],
+      "acceptance_criteria": [
+        "Impressions logged",
+        "Rates calculated",
+        "Comparison dashboard",
+        "Best performers identified"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-14",
+      "notes": "offer_impressions table exists, analytics in dashboard."
+    },
+    {
+      "id": "feat-085",
+      "epic": "Phase 2: Platform",
+      "category": "low",
+      "priority": 85,
+      "description": "Password Authentication",
+      "test_ids": ["PLT-PWD-001", "PLT-PWD-002", "PLT-PWD-003", "PLT-PWD-004"],
+      "steps": [
+        "Enable password signup",
+        "Password strength validation",
+        "Forgot password flow",
+        "Password reset emails"
+      ],
+      "acceptance_criteria": [
+        "Users can set password",
+        "Strength requirements enforced",
+        "Reset flow works",
+        "Email sent with reset link"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-13",
+      "notes": "AUDIT.md shows password auth complete with reset flow."
+    },
+    {
+      "id": "feat-086",
+      "epic": "Phase 2: Platform",
+      "category": "medium",
+      "priority": 86,
+      "description": "Chat Reactions - Emoji Responses",
+      "test_ids": ["PLT-RXN-001", "PLT-RXN-002", "PLT-RXN-003"],
+      "steps": [
+        "Create chat_reactions table",
+        "Add reaction picker to messages",
+        "Toggle reactions on/off",
+        "Display reaction counts"
+      ],
+      "acceptance_criteria": [
+        "Users can add emoji reactions",
+        "Reactions display on messages",
+        "Users can remove own reactions",
+        "Reaction counts accurate"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-14",
+      "notes": "0021_chat_messages.sql includes chat_reactions table with RLS policies."
+    },
+    {
+      "id": "feat-087",
+      "epic": "Phase 2: Platform",
+      "category": "low",
+      "priority": 87,
+      "description": "Typing Indicators - Realtime",
+      "test_ids": ["PLT-TYP-001", "PLT-TYP-002", "PLT-TYP-003"],
+      "steps": [
+        "Create chat_typing table",
+        "Track typing start/stop",
+        "Auto-expire old indicators",
+        "Display typing users"
+      ],
+      "acceptance_criteria": [
+        "Typing status tracked",
+        "Indicators show in real-time",
+        "Auto-expire after 10 seconds",
+        "Multiple typers shown"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-14",
+      "notes": "0021_chat_messages.sql includes chat_typing table with cleanup function."
+    },
+    {
+      "id": "feat-088",
+      "epic": "Phase 2: Platform",
+      "category": "medium",
+      "priority": 88,
+      "description": "Chat Channels - Multiple per Space",
+      "test_ids": ["PLT-CHN-001", "PLT-CHN-002", "PLT-CHN-003", "PLT-CHN-004"],
+      "steps": [
+        "Create chat_channels table",
+        "Configure channels per space",
+        "Channel icons and descriptions",
+        "Sort order for channels"
+      ],
+      "acceptance_criteria": [
+        "Multiple channels per space",
+        "Channels have icons",
+        "Sort order respected",
+        "Default channels seeded"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-14",
+      "notes": "0021_chat_messages.sql creates chat_channels with General, Wins, Questions defaults."
+    },
+    {
+      "id": "feat-089",
+      "epic": "Phase 2: Platform",
+      "category": "medium",
+      "priority": 89,
+      "description": "Certificate PDF Generation",
+      "test_ids": ["PLT-PDF-C-001", "PLT-PDF-C-002", "PLT-PDF-C-003"],
+      "steps": [
+        "Generate PDF certificate",
+        "Include student name and course",
+        "Add certificate number",
+        "Store PDF URL"
+      ],
+      "acceptance_criteria": [
+        "PDF generated on completion",
+        "Certificate styled properly",
+        "Download link works",
+        "PDF stored in R2/S3"
+      ],
+      "passes": false,
+      "implemented_at": null,
+      "notes": "0022_certificates.sql has schema but pdf_generated flag indicates PDF gen is pending."
+    },
+    {
+      "id": "feat-090",
+      "epic": "Phase 2: Platform",
+      "category": "low",
+      "priority": 90,
+      "description": "Certificate Verification Page",
+      "test_ids": ["PLT-VRF-001", "PLT-VRF-002", "PLT-VRF-003"],
+      "steps": [
+        "Create /verify/[token] route",
+        "Display certificate details",
+        "Show verification status",
+        "Public access without login"
+      ],
+      "acceptance_criteria": [
+        "Verification URL works",
+        "Certificate info displayed",
+        "Invalid tokens handled",
+        "No login required"
+      ],
+      "passes": false,
+      "implemented_at": null,
+      "notes": "verification_token column exists in certificates table, needs public route."
+    },
+    {
+      "id": "feat-091",
+      "epic": "Phase 2: Platform",
+      "category": "medium",
+      "priority": 91,
+      "description": "Auto-Certificate Generation Trigger",
+      "test_ids": ["PLT-ACG-001", "PLT-ACG-002", "PLT-ACG-003"],
+      "steps": [
+        "Trigger on course completion",
+        "Generate unique certificate number",
+        "Create verification token",
+        "Store certificate record"
+      ],
+      "acceptance_criteria": [
+        "Certificate created on 100% completion",
+        "Unique number format CERT-YYYYMMDD-XXXXX",
+        "Duplicate certificates prevented",
+        "Trigger fires correctly"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-14",
+      "notes": "0022_certificates.sql has auto_generate_certificate() trigger on lesson_progress."
+    },
+    {
+      "id": "feat-092",
+      "epic": "Phase 1: Growth",
+      "category": "medium",
+      "priority": 92,
+      "description": "Subscription History Tracking",
+      "test_ids": ["GRO-SHT-001", "GRO-SHT-002", "GRO-SHT-003", "GRO-SHT-004"],
+      "steps": [
+        "Create subscription_history table",
+        "Track plan changes",
+        "Log cancellations and renewals",
+        "Store event metadata"
+      ],
+      "acceptance_criteria": [
+        "All changes logged",
+        "Event types categorized",
+        "History viewable by admin",
+        "Trigger captures changes"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-14",
+      "notes": "0020_mrr_tracking.sql includes subscription_history table with change trigger."
+    },
+    {
+      "id": "feat-093",
+      "epic": "Phase 1: Growth",
+      "category": "medium",
+      "priority": 93,
+      "description": "Churn Rate Analytics",
+      "test_ids": ["GRO-CHR-001", "GRO-CHR-002", "GRO-CHR-003"],
+      "steps": [
+        "Calculate churn rate function",
+        "Track churned subscribers",
+        "Display in admin dashboard",
+        "Compare periods"
+      ],
+      "acceptance_criteria": [
+        "Churn rate calculated correctly",
+        "30-day default period",
+        "Percentage displayed",
+        "Historical comparison"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-14",
+      "notes": "0020_mrr_tracking.sql includes calculate_churn_rate() function."
+    },
+    {
+      "id": "feat-094",
+      "epic": "Phase 2: Platform",
+      "category": "medium",
+      "priority": 94,
+      "description": "Notification Preferences",
+      "test_ids": ["PLT-NPR-001", "PLT-NPR-002", "PLT-NPR-003", "PLT-NPR-004"],
+      "steps": [
+        "Create notification_preferences table",
+        "Settings for email types",
+        "Toggle in-app notifications",
+        "Preferences UI in profile"
+      ],
+      "acceptance_criteria": [
+        "Preferences stored per user",
+        "Email toggles work",
+        "In-app toggle works",
+        "Settings persist"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-15",
+      "notes": "20260115040000_notifications.sql includes notification_preferences table."
+    },
+    {
+      "id": "feat-095",
+      "epic": "Phase 2: Platform",
+      "category": "medium",
+      "priority": 95,
+      "description": "User Profiles with Avatars",
+      "test_ids": ["PLT-AVT-001", "PLT-AVT-002", "PLT-AVT-003", "PLT-AVT-004"],
+      "steps": [
+        "Create profiles table",
+        "Display name and bio fields",
+        "Avatar URL storage",
+        "Auto-create on signup"
+      ],
+      "acceptance_criteria": [
+        "Profiles created on signup",
+        "Display name editable",
+        "Bio supports text",
+        "Avatar displays in UI"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-15",
+      "notes": "20260115050000_user_profiles.sql with auto-create trigger on auth.users."
+    },
+    {
+      "id": "feat-096",
+      "epic": "Phase 1: Growth",
+      "category": "low",
+      "priority": 96,
+      "description": "Newsletter Subscription",
+      "test_ids": ["GRO-NWS-001", "GRO-NWS-002", "GRO-NWS-003"],
+      "steps": [
+        "Newsletter signup form",
+        "Store email in Resend audience",
+        "Confirmation email",
+        "Unsubscribe handling"
+      ],
+      "acceptance_criteria": [
+        "Signup form works",
+        "Email added to list",
+        "Confirmation sent",
+        "Unsubscribe works"
+      ],
+      "passes": false,
+      "implemented_at": null,
+      "notes": "API route /api/newsletter exists but needs Resend audience integration."
+    },
+    {
+      "id": "feat-097",
+      "epic": "Phase 2: Platform",
+      "category": "medium",
+      "priority": 97,
+      "description": "Video Progress Tracking",
+      "test_ids": ["PLT-VPT-001", "PLT-VPT-002", "PLT-VPT-003", "PLT-VPT-004"],
+      "steps": [
+        "Track video watch position",
+        "Store last watched timestamp",
+        "Resume from position",
+        "Calculate watch percentage"
+      ],
+      "acceptance_criteria": [
+        "Position saved on pause/exit",
+        "Resume works on return",
+        "Percentage tracked",
+        "Works with Mux/YouTube/Vimeo"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-14",
+      "notes": "API route /api/video-progress exists for tracking watch position."
+    },
+    {
+      "id": "feat-098",
+      "epic": "Phase 2: Platform",
+      "category": "medium",
+      "priority": 98,
+      "description": "Full-Text Search Infrastructure",
+      "test_ids": ["PLT-FTS-001", "PLT-FTS-002", "PLT-FTS-003", "PLT-FTS-004", "PLT-FTS-005"],
+      "steps": [
+        "Add tsvector columns to tables",
+        "Create GIN indexes",
+        "search_content() function",
+        "Weighted search ranking"
+      ],
+      "acceptance_criteria": [
+        "Courses searchable",
+        "Lessons searchable",
+        "Forum threads/posts searchable",
+        "Announcements searchable",
+        "Results ranked by relevance"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-15",
+      "notes": "20260115060000_search_indexes.sql with full search_content() function."
+    },
+    {
+      "id": "feat-099",
+      "epic": "Phase 2: Platform",
+      "category": "low",
+      "priority": 99,
+      "description": "Realtime Subscriptions - Supabase",
+      "test_ids": ["PLT-RTS-001", "PLT-RTS-002", "PLT-RTS-003"],
+      "steps": [
+        "Enable realtime on chat tables",
+        "Subscribe to message inserts",
+        "Subscribe to reactions",
+        "Subscribe to typing"
+      ],
+      "acceptance_criteria": [
+        "Chat updates in realtime",
+        "No page refresh needed",
+        "Reactions update live",
+        "Typing shows live"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-14",
+      "notes": "0021_chat_messages.sql adds tables to supabase_realtime publication."
+    },
+    {
+      "id": "feat-100",
+      "epic": "Phase 2: Platform",
+      "category": "low",
+      "priority": 100,
+      "description": "Drip Content Logic Library",
+      "test_ids": ["PLT-DCL-001", "PLT-DCL-002", "PLT-DCL-003", "PLT-DCL-004"],
+      "steps": [
+        "Compute unlock dates",
+        "Check lesson availability",
+        "Human-readable descriptions",
+        "Time until unlock formatting"
+      ],
+      "acceptance_criteria": [
+        "Immediate type works",
+        "Date-based drip works",
+        "Days-after-enroll works",
+        "Descriptions accurate"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-14",
+      "notes": "lib/drip.ts implements computeUnlockedAt, isLessonUnlocked, formatTimeUntilUnlock."
+    },
+    {
+      "id": "feat-101",
+      "epic": "Phase 4: Video Platform",
+      "category": "critical",
+      "priority": 101,
+      "description": "Brief-to-Video Pipeline - JSON brief to rendered MP4",
+      "test_ids": ["VID-BRF-001", "VID-BRF-002", "VID-BRF-003", "VID-BRF-004", "VID-BRF-005"],
+      "steps": [
+        "Parse ContentBrief JSON schema",
+        "Resolve all asset dependencies",
+        "Generate timeline from sections",
+        "Render via Remotion",
+        "Output MP4 with manifest"
+      ],
+      "acceptance_criteria": [
+        "Brief JSON validates against schema",
+        "All sections render correctly",
+        "Timeline synchronization accurate",
+        "Output MP4 playable",
+        "Asset manifest generated"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "Core pipeline in scripts/generate-explainer.ts. BriefComposition.tsx renders sections."
+    },
+    {
+      "id": "feat-102",
+      "epic": "Phase 4: Video Platform",
+      "category": "critical",
+      "priority": 102,
+      "description": "AI Voice Cloning - IndexTTS-2 Integration",
+      "test_ids": ["VID-VOX-001", "VID-VOX-002", "VID-VOX-003", "VID-VOX-004"],
+      "steps": [
+        "Connect to Hugging Face IndexTTS-2 space",
+        "Upload voice reference WAV",
+        "Generate speech with emotion control",
+        "Fallback to OpenAI TTS",
+        "Cache generated audio"
+      ],
+      "acceptance_criteria": [
+        "Voice clone sounds like reference",
+        "Emotion control works (happy, calm, explaining)",
+        "Fallback triggers on quota exceeded",
+        "Audio quality suitable for video"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "IndexTTS-2 via HF Spaces with OpenAI TTS fallback. ~60s/day free GPU quota."
+    },
+    {
+      "id": "feat-103",
+      "epic": "Phase 4: Video Platform",
+      "category": "critical",
+      "priority": 103,
+      "description": "Auto-Captioning - Whisper Word Timestamps",
+      "test_ids": ["VID-CAP-001", "VID-CAP-002", "VID-CAP-003", "VID-CAP-004"],
+      "steps": [
+        "Send audio to OpenAI Whisper API",
+        "Request word-level timestamps",
+        "Generate timestamps.json per section",
+        "Sync captions to video timeline"
+      ],
+      "acceptance_criteria": [
+        "Word timestamps accurate to 0.1s",
+        "JSON output per section",
+        "Supports multiple audio files",
+        "Handles silence and pauses"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "scripts/generate-word-timestamps.py uses Whisper API with word granularity."
+    },
+    {
+      "id": "feat-104",
+      "epic": "Phase 4: Video Platform",
+      "category": "high",
+      "priority": 104,
+      "description": "TikTok-Style Caption Renderer",
+      "test_ids": ["VID-TKC-001", "VID-TKC-002", "VID-TKC-003", "VID-TKC-004"],
+      "steps": [
+        "Create AnimatedCaption component",
+        "Word-by-word highlight animation",
+        "Support multiple caption styles",
+        "Configurable colors and fonts"
+      ],
+      "acceptance_criteria": [
+        "TikTok style: bold, centered, highlight",
+        "YouTube style: bottom bar",
+        "Karaoke style: color wipe",
+        "Minimal and neon styles work"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "AnimatedCaption component with tiktok, youtube, karaoke, minimal, neon styles."
+    },
+    {
+      "id": "feat-105",
+      "epic": "Phase 4: Video Platform",
+      "category": "high",
+      "priority": 105,
+      "description": "AI Graphics Generation - DALL-E 3",
+      "test_ids": ["VID-IMG-001", "VID-IMG-002", "VID-IMG-003", "VID-IMG-004"],
+      "steps": [
+        "Generate scene illustrations from prompts",
+        "Create character graphics",
+        "Apply consistent art style",
+        "Cache generated images"
+      ],
+      "acceptance_criteria": [
+        "Images match scene descriptions",
+        "Art style consistent across scenes",
+        "Resolution suitable for video",
+        "Images cached for reuse"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "DALL-E 3 via OpenAI API. 50 img/min rate limit. Images saved to public/assets/."
+    },
+    {
+      "id": "feat-106",
+      "epic": "Phase 4: Video Platform",
+      "category": "high",
+      "priority": 106,
+      "description": "Character Consistency Engine",
+      "test_ids": ["VID-CHR-001", "VID-CHR-002", "VID-CHR-003", "VID-CHR-004"],
+      "steps": [
+        "Define character traits schema",
+        "Generate reference sheet",
+        "Include traits in all prompts",
+        "Emotion mapping for expressions"
+      ],
+      "acceptance_criteria": [
+        "Characters look consistent across scenes",
+        "Traits anchored in every prompt",
+        "Style locked per character",
+        "Emotions map to visual expressions"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "Character definitions with name, description, style, seed, reference_image."
+    },
+    {
+      "id": "feat-107",
+      "epic": "Phase 4: Video Platform",
+      "category": "high",
+      "priority": 107,
+      "description": "Script Generation - GPT-4 Topic to Script",
+      "test_ids": ["VID-SCR-001", "VID-SCR-002", "VID-SCR-003", "VID-SCR-004"],
+      "steps": [
+        "Accept topic or raw script input",
+        "Generate structured brief via GPT-4",
+        "Create section breakdown",
+        "Generate voiceover text per section"
+      ],
+      "acceptance_criteria": [
+        "Topic converts to full brief",
+        "Sections have appropriate durations",
+        "Voiceover text natural and engaging",
+        "Hook and CTA included"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "GPT-4o for script generation. 10k TPM rate limit."
+    },
+    {
+      "id": "feat-108",
+      "epic": "Phase 4: Video Platform",
+      "category": "medium",
+      "priority": 108,
+      "description": "Sound Effects Generation - ElevenLabs",
+      "test_ids": ["VID-SFX-001", "VID-SFX-002", "VID-SFX-003"],
+      "steps": [
+        "Generate SFX from text prompts",
+        "Fallback to Freesound library",
+        "Sync SFX to visual cues",
+        "Mix audio levels"
+      ],
+      "acceptance_criteria": [
+        "SFX match prompt descriptions",
+        "Timing aligns with visuals",
+        "Audio levels balanced",
+        "Fallback works when API fails"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "ElevenLabs /v1/sound-generation API with Freesound fallback."
+    },
+    {
+      "id": "feat-109",
+      "epic": "Phase 4: Video Platform",
+      "category": "medium",
+      "priority": 109,
+      "description": "B-Roll Fetching - Stock Media APIs",
+      "test_ids": ["VID-BRL-001", "VID-BRL-002", "VID-BRL-003", "VID-BRL-004"],
+      "steps": [
+        "Query Pexels for video clips",
+        "Query Pixabay for footage",
+        "Fetch NASA public domain media",
+        "Track attribution requirements"
+      ],
+      "acceptance_criteria": [
+        "B-roll matches query keywords",
+        "Multiple providers searched",
+        "Attribution logged",
+        "Clips cached locally"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "Pexels (200/hr), Pixabay (5000/hr), NASA (unlimited). scripts/fetch-media.ts."
+    },
+    {
+      "id": "feat-110",
+      "epic": "Phase 4: Video Platform",
+      "category": "high",
+      "priority": 110,
+      "description": "Explainer Video Format (explainer_v1)",
+      "test_ids": ["VID-EXP-001", "VID-EXP-002", "VID-EXP-003", "VID-EXP-004", "VID-EXP-005"],
+      "steps": [
+        "Hook scene (5s attention grabber)",
+        "Context scene (10s problem setup)",
+        "Topic scenes (3x 15s key points)",
+        "Summary scene (10s recap)",
+        "Outro scene (5s CTA)"
+      ],
+      "acceptance_criteria": [
+        "30-90s total duration",
+        "9:16 aspect ratio",
+        "Consistent host character",
+        "Progress indicator visible",
+        "Captions overlay works"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "Educational content format. IntroScene, TopicScene, OutroScene components."
+    },
+    {
+      "id": "feat-111",
+      "epic": "Phase 4: Video Platform",
+      "category": "medium",
+      "priority": 111,
+      "description": "GitHub Dev Vlog Format (devvlog_v1)",
+      "test_ids": ["VID-DVL-001", "VID-DVL-002", "VID-DVL-003", "VID-DVL-004"],
+      "steps": [
+        "Hook (3-5s 'I just built X')",
+        "Context (10-15s problem statement)",
+        "Code walk (30-60s screen + voiceover)",
+        "Key insight (10-15s aha moment)",
+        "Result + CTA (15-20s)"
+      ],
+      "acceptance_criteria": [
+        "60-180s total duration",
+        "9:16 or 16:9 aspect ratio",
+        "Code blocks render correctly",
+        "Terminal animations work"
+      ],
+      "passes": false,
+      "implemented_at": null,
+      "notes": "In progress per PRD roadmap. Needs CodeBlock and TerminalOutput components."
+    },
+    {
+      "id": "feat-112",
+      "epic": "Phase 4: Video Platform",
+      "category": "medium",
+      "priority": 112,
+      "description": "Shorts Format (shorts_v1)",
+      "test_ids": ["VID-SHT-001", "VID-SHT-002", "VID-SHT-003"],
+      "steps": [
+        "Viral hook opening",
+        "Quick value delivery",
+        "Strong CTA",
+        "15-60s duration"
+      ],
+      "acceptance_criteria": [
+        "9:16 aspect ratio",
+        "TikTok/Reels optimized",
+        "Hook grabs attention",
+        "CTA is clear"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "Short-form content for TikTok, Reels, YouTube Shorts."
+    },
+    {
+      "id": "feat-113",
+      "epic": "Phase 4: Video Platform",
+      "category": "medium",
+      "priority": 113,
+      "description": "Listicle Format (listicle_v1)",
+      "test_ids": ["VID-LST-001", "VID-LST-002", "VID-LST-003", "VID-LST-004"],
+      "steps": [
+        "Hook with list preview",
+        "Numbered list items",
+        "Countdown or count-up",
+        "Summary and CTA"
+      ],
+      "acceptance_criteria": [
+        "45-90s duration",
+        "9:16 aspect ratio",
+        "Numbers visible",
+        "Transitions between items"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "Top N lists, countdowns format. list_item section type."
+    },
+    {
+      "id": "feat-114",
+      "epic": "Phase 4: Video Platform",
+      "category": "low",
+      "priority": 114,
+      "description": "Comparison Format (comparison_v1)",
+      "test_ids": ["VID-CMP-001", "VID-CMP-002", "VID-CMP-003"],
+      "steps": [
+        "Split screen layout",
+        "X vs Y comparison",
+        "Pros and cons lists",
+        "Winner/recommendation"
+      ],
+      "acceptance_criteria": [
+        "60-120s duration",
+        "16:9 aspect ratio",
+        "Side-by-side view",
+        "Clear winner indicated"
+      ],
+      "passes": false,
+      "implemented_at": null,
+      "notes": "Planned format per PRD. Needs split-screen component."
+    },
+    {
+      "id": "feat-115",
+      "epic": "Phase 4: Video Platform",
+      "category": "low",
+      "priority": 115,
+      "description": "UGC Recreation Format (ugc_v1)",
+      "test_ids": ["VID-UGC-001", "VID-UGC-002", "VID-UGC-003"],
+      "steps": [
+        "Analyze trending format",
+        "Recreate structure",
+        "Apply brand style",
+        "30-60s duration"
+      ],
+      "acceptance_criteria": [
+        "Mimics trending format",
+        "Brand consistent",
+        "Authentic feel",
+        "9:16 aspect ratio"
+      ],
+      "passes": false,
+      "implemented_at": null,
+      "notes": "Planned format for recreating viral/trending content structures."
+    },
+    {
+      "id": "feat-116",
+      "epic": "Phase 4: Video Platform",
+      "category": "medium",
+      "priority": 116,
+      "description": "Static Ad Compositions",
+      "test_ids": ["VID-SAD-001", "VID-SAD-002", "VID-SAD-003", "VID-SAD-004"],
+      "steps": [
+        "Instagram Post (1080x1080)",
+        "Instagram Story (1080x1920)",
+        "Facebook Post (1200x630)",
+        "Twitter/X (1200x675)",
+        "LinkedIn (1200x627)",
+        "Display ads (300x250, 728x90)"
+      ],
+      "acceptance_criteria": [
+        "All sizes render correctly",
+        "Brand elements consistent",
+        "Text readable at size",
+        "Export as PNG"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "StaticAds.tsx composition. npm run render:static-ads for batch."
+    },
+    {
+      "id": "feat-117",
+      "epic": "Phase 4: Video Platform",
+      "category": "medium",
+      "priority": 117,
+      "description": "Code Block Component",
+      "test_ids": ["VID-COD-001", "VID-COD-002", "VID-COD-003", "VID-COD-004"],
+      "steps": [
+        "Syntax highlighting by language",
+        "Typing animation effect",
+        "Line highlighting",
+        "Copy button visual"
+      ],
+      "acceptance_criteria": [
+        "Syntax colors correct",
+        "Typing animation smooth",
+        "Multiple languages supported",
+        "Readable at video resolution"
+      ],
+      "passes": false,
+      "implemented_at": null,
+      "notes": "In progress per PRD. Part of devvlog_v1 format requirements."
+    },
+    {
+      "id": "feat-118",
+      "epic": "Phase 4: Video Platform",
+      "category": "medium",
+      "priority": 118,
+      "description": "Terminal Animation Component",
+      "test_ids": ["VID-TRM-001", "VID-TRM-002", "VID-TRM-003"],
+      "steps": [
+        "Terminal window mockup",
+        "Command typing animation",
+        "Output reveal animation",
+        "Cursor blinking"
+      ],
+      "acceptance_criteria": [
+        "Looks like real terminal",
+        "Commands type out",
+        "Output appears naturally",
+        "Cursor visible"
+      ],
+      "passes": false,
+      "implemented_at": null,
+      "notes": "In progress per PRD. Part of devvlog_v1 format requirements."
+    },
+    {
+      "id": "feat-119",
+      "epic": "Phase 4: Video Platform",
+      "category": "medium",
+      "priority": 119,
+      "description": "Browser Mockup Component",
+      "test_ids": ["VID-BRW-001", "VID-BRW-002", "VID-BRW-003"],
+      "steps": [
+        "Chrome-style browser frame",
+        "URL bar with custom URL",
+        "Content area for screenshots",
+        "Tab styling"
+      ],
+      "acceptance_criteria": [
+        "Looks like real browser",
+        "URL customizable",
+        "Content fits frame",
+        "Professional appearance"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "BrowserMockup component for showing web content in videos."
+    },
+    {
+      "id": "feat-120",
+      "epic": "Phase 4: Video Platform",
+      "category": "low",
+      "priority": 120,
+      "description": "Git Commit Animation",
+      "test_ids": ["VID-GIT-001", "VID-GIT-002"],
+      "steps": [
+        "Commit message display",
+        "Hash animation",
+        "Branch indicator",
+        "Avatar/author info"
+      ],
+      "acceptance_criteria": [
+        "Commit message readable",
+        "Hash styled correctly",
+        "Professional appearance"
+      ],
+      "passes": false,
+      "implemented_at": null,
+      "notes": "Part of devvlog_v1 format. GitCommit component."
+    },
+    {
+      "id": "feat-121",
+      "epic": "Phase 4: Video Platform",
+      "category": "low",
+      "priority": 121,
+      "description": "PR Merge Animation",
+      "test_ids": ["VID-PRM-001", "VID-PRM-002"],
+      "steps": [
+        "PR title and number",
+        "Merge animation effect",
+        "Branch merge visual",
+        "Success indicator"
+      ],
+      "acceptance_criteria": [
+        "PR info displayed",
+        "Merge animation smooth",
+        "Celebratory feel"
+      ],
+      "passes": false,
+      "implemented_at": null,
+      "notes": "Part of devvlog_v1 format. PRMerge component."
+    },
+    {
+      "id": "feat-122",
+      "epic": "Phase 4: Video Platform",
+      "category": "high",
+      "priority": 122,
+      "description": "Scene Templates System",
+      "test_ids": ["VID-SCN-001", "VID-SCN-002", "VID-SCN-003", "VID-SCN-004"],
+      "steps": [
+        "IntroScene template",
+        "TopicScene template",
+        "ListItemScene template",
+        "OutroScene template",
+        "TransitionScene template"
+      ],
+      "acceptance_criteria": [
+        "Each scene type renders",
+        "Customizable via props",
+        "Animations work",
+        "Timing accurate"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "src/scenes/ directory with IntroScene, TopicScene, OutroScene components."
+    },
+    {
+      "id": "feat-123",
+      "epic": "Phase 4: Video Platform",
+      "category": "medium",
+      "priority": 123,
+      "description": "Animation Presets Library",
+      "test_ids": ["VID-ANI-001", "VID-ANI-002", "VID-ANI-003", "VID-ANI-004"],
+      "steps": [
+        "Fade animations",
+        "Slide animations",
+        "Bounce animations",
+        "Glitch effects",
+        "Scale animations"
+      ],
+      "acceptance_criteria": [
+        "Presets reusable",
+        "Timing customizable",
+        "Easing options",
+        "Smooth at 30fps"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "src/animations/ directory with preset motion effects."
+    },
+    {
+      "id": "feat-124",
+      "epic": "Phase 4: Video Platform",
+      "category": "medium",
+      "priority": 124,
+      "description": "Visual Effects - Particles & Glow",
+      "test_ids": ["VID-VFX-001", "VID-VFX-002", "VID-VFX-003"],
+      "steps": [
+        "Particle systems",
+        "Glow effects",
+        "Light flares",
+        "Background effects"
+      ],
+      "acceptance_criteria": [
+        "Effects render smoothly",
+        "Customizable parameters",
+        "Performance acceptable",
+        "Don't distract from content"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "Visual effects in src/components/ for enhanced visuals."
+    },
+    {
+      "id": "feat-125",
+      "epic": "Phase 4: Video Platform",
+      "category": "high",
+      "priority": 125,
+      "description": "Multi-Format Output System",
+      "test_ids": ["VID-MFO-001", "VID-MFO-002", "VID-MFO-003", "VID-MFO-004"],
+      "steps": [
+        "9:16 vertical (TikTok/Reels)",
+        "16:9 horizontal (YouTube)",
+        "1:1 square (Instagram)",
+        "Automatic reformatting"
+      ],
+      "acceptance_criteria": [
+        "All aspect ratios render",
+        "Content reflows properly",
+        "Quality maintained",
+        "Single brief, multiple outputs"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "Resolution and aspect_ratio settings in ContentBrief schema."
+    },
+    {
+      "id": "feat-126",
+      "epic": "Phase 4: Video Platform",
+      "category": "high",
+      "priority": 126,
+      "description": "Brand Template System",
+      "test_ids": ["VID-BRD-001", "VID-BRD-002", "VID-BRD-003", "VID-BRD-004"],
+      "steps": [
+        "Brand config JSON schema",
+        "Colors, fonts, logos",
+        "Character definitions",
+        "Voice configuration",
+        "Default templates per format"
+      ],
+      "acceptance_criteria": [
+        "Brand applied consistently",
+        "Templates reusable",
+        "Easy to customize",
+        "Package exportable"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "brand-template/ directory structure with config/, assets/, templates/."
+    },
+    {
+      "id": "feat-127",
+      "epic": "Phase 4: Video Platform",
+      "category": "high",
+      "priority": 127,
+      "description": "CLI Pipeline - npm run commands",
+      "test_ids": ["VID-CLI-001", "VID-CLI-002", "VID-CLI-003", "VID-CLI-004", "VID-CLI-005"],
+      "steps": [
+        "generate:explainer command",
+        "generate:audio command",
+        "render:brief command",
+        "render:static-ads command",
+        "batch-render command"
+      ],
+      "acceptance_criteria": [
+        "All commands documented",
+        "Options work (--topic, --brief, --skip-*)",
+        "Output paths correct",
+        "Error handling robust"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "npm scripts defined in package.json. Primary entry: generate-explainer.ts."
+    },
+    {
+      "id": "feat-128",
+      "epic": "Phase 4: Video Platform",
+      "category": "medium",
+      "priority": 128,
+      "description": "Batch Video Generation",
+      "test_ids": ["VID-BAT-001", "VID-BAT-002", "VID-BAT-003"],
+      "steps": [
+        "Queue multiple briefs",
+        "Process sequentially",
+        "Report progress",
+        "Handle failures gracefully"
+      ],
+      "acceptance_criteria": [
+        "Multiple briefs processed",
+        "Progress reported",
+        "Failures logged",
+        "Successful outputs collected"
+      ],
+      "passes": false,
+      "implemented_at": null,
+      "notes": "In progress per PRD roadmap. Batch video generation API."
+    },
+    {
+      "id": "feat-129",
+      "epic": "Phase 4: Video Platform",
+      "category": "medium",
+      "priority": 129,
+      "description": "Timeline QA System",
+      "test_ids": ["VID-TQA-001", "VID-TQA-002", "VID-TQA-003"],
+      "steps": [
+        "Validate timeline synchronization",
+        "Check audio/video alignment",
+        "Verify section durations",
+        "Report warnings"
+      ],
+      "acceptance_criteria": [
+        "Sync issues detected",
+        "Warnings actionable",
+        "Non-blocking mode available",
+        "Report generated"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "npm run qa:timeline and qa:timeline:warn commands."
+    },
+    {
+      "id": "feat-130",
+      "epic": "Phase 4: Video Platform",
+      "category": "medium",
+      "priority": 130,
+      "description": "Brief Validation System",
+      "test_ids": ["VID-BVL-001", "VID-BVL-002", "VID-BVL-003"],
+      "steps": [
+        "Validate JSON structure",
+        "Check required fields",
+        "Verify asset paths",
+        "Report validation errors"
+      ],
+      "acceptance_criteria": [
+        "Invalid briefs rejected",
+        "Errors descriptive",
+        "Missing assets flagged",
+        "Schema enforced"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "npm run validate command. data/briefs/schema.json for validation."
+    },
+    {
+      "id": "feat-131",
+      "epic": "Phase 4: Video Platform",
+      "category": "low",
+      "priority": 131,
+      "description": "YouTube Upload Automation",
+      "test_ids": ["VID-YTU-001", "VID-YTU-002", "VID-YTU-003"],
+      "steps": [
+        "Connect YouTube API",
+        "Upload rendered video",
+        "Set title and description",
+        "Add tags and thumbnail"
+      ],
+      "acceptance_criteria": [
+        "Video uploads successfully",
+        "Metadata applied",
+        "Thumbnail uploaded",
+        "Scheduled publishing works"
+      ],
+      "passes": false,
+      "implemented_at": null,
+      "notes": "Planned feature per PRD roadmap."
+    },
+    {
+      "id": "feat-132",
+      "epic": "Phase 4: Video Platform",
+      "category": "low",
+      "priority": 132,
+      "description": "Thumbnail Generator",
+      "test_ids": ["VID-THM-001", "VID-THM-002", "VID-THM-003"],
+      "steps": [
+        "Extract key frame",
+        "Add text overlay",
+        "Apply brand styling",
+        "Export multiple sizes"
+      ],
+      "acceptance_criteria": [
+        "Thumbnail eye-catching",
+        "Text readable",
+        "Brand consistent",
+        "Correct dimensions"
+      ],
+      "passes": false,
+      "implemented_at": null,
+      "notes": "Planned feature per PRD roadmap."
+    },
+    {
+      "id": "feat-133",
+      "epic": "Phase 4: Video Platform",
+      "category": "low",
+      "priority": 133,
+      "description": "A/B Testing Framework",
+      "test_ids": ["VID-ABT-001", "VID-ABT-002", "VID-ABT-003"],
+      "steps": [
+        "Generate video variants",
+        "Track performance metrics",
+        "Compare engagement",
+        "Recommend winner"
+      ],
+      "acceptance_criteria": [
+        "Multiple variants created",
+        "Metrics tracked",
+        "Statistical significance",
+        "Recommendations provided"
+      ],
+      "passes": false,
+      "implemented_at": null,
+      "notes": "Planned feature per PRD roadmap."
+    },
+    {
+      "id": "feat-134",
+      "epic": "Phase 4: Video Platform",
+      "category": "low",
+      "priority": 134,
+      "description": "Analytics Dashboard",
+      "test_ids": ["VID-ANA-001", "VID-ANA-002", "VID-ANA-003"],
+      "steps": [
+        "Track video performance",
+        "Display engagement metrics",
+        "Compare formats",
+        "Export reports"
+      ],
+      "acceptance_criteria": [
+        "Metrics displayed",
+        "Charts readable",
+        "Filtering works",
+        "Export functional"
+      ],
+      "passes": false,
+      "implemented_at": null,
+      "notes": "Planned feature per PRD roadmap."
+    },
+    {
+      "id": "feat-135",
+      "epic": "Phase 4: Video Platform",
+      "category": "low",
+      "priority": 135,
+      "description": "Brand Template Marketplace",
+      "test_ids": ["VID-MKP-001", "VID-MKP-002", "VID-MKP-003"],
+      "steps": [
+        "Browse templates",
+        "Purchase/download templates",
+        "Apply to projects",
+        "Share custom templates"
+      ],
+      "acceptance_criteria": [
+        "Templates browsable",
+        "Download works",
+        "Templates apply correctly",
+        "Sharing functional"
+      ],
+      "passes": false,
+      "implemented_at": null,
+      "notes": "Planned feature per PRD roadmap."
+    },
+    {
+      "id": "feat-136",
+      "epic": "Phase 4: Video Platform",
+      "category": "low",
+      "priority": 136,
+      "description": "Real-Time Collaboration",
+      "test_ids": ["VID-RTC-001", "VID-RTC-002", "VID-RTC-003"],
+      "steps": [
+        "Multiple editors",
+        "Live sync",
+        "Comments/annotations",
+        "Version history"
+      ],
+      "acceptance_criteria": [
+        "Changes sync live",
+        "Comments visible",
+        "Conflict resolution",
+        "History accessible"
+      ],
+      "passes": false,
+      "implemented_at": null,
+      "notes": "Planned feature per PRD roadmap."
+    },
+    {
+      "id": "feat-137",
+      "epic": "Phase 4: Video Platform",
+      "category": "medium",
+      "priority": 137,
+      "description": "Title Summarization - GPT-4",
+      "test_ids": ["VID-TTL-001", "VID-TTL-002"],
+      "steps": [
+        "Generate hook_title from script",
+        "Eye-catching summary",
+        "Thumbnail-ready text"
+      ],
+      "acceptance_criteria": [
+        "Title summarizes content",
+        "Hooks attention",
+        "Fits character limits"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "GPT-4 generates hook_title in metadata from full script."
+    },
+    {
+      "id": "feat-138",
+      "epic": "Phase 4: Video Platform",
+      "category": "medium",
+      "priority": 138,
+      "description": "Attribution Logging",
+      "test_ids": ["VID-ATT-001", "VID-ATT-002", "VID-ATT-003"],
+      "steps": [
+        "Track stock media usage",
+        "Log license requirements",
+        "Generate attribution file",
+        "Include in output manifest"
+      ],
+      "acceptance_criteria": [
+        "All media tracked",
+        "Licenses noted",
+        "Attribution file generated",
+        "CC requirements met"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "Attribution log generated alongside asset manifest."
+    },
+    {
+      "id": "feat-139",
+      "epic": "Phase 4: Video Platform",
+      "category": "medium",
+      "priority": 139,
+      "description": "Remotion Studio Preview",
+      "test_ids": ["VID-STU-001", "VID-STU-002", "VID-STU-003"],
+      "steps": [
+        "npm run dev server",
+        "Live composition preview",
+        "Timeline scrubbing",
+        "Parameter controls"
+      ],
+      "acceptance_criteria": [
+        "Studio loads compositions",
+        "Preview plays",
+        "Props editable",
+        "Real-time updates"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "Remotion Studio via npm run dev. src/Root.tsx exports all compositions."
+    },
+    {
+      "id": "feat-140",
+      "epic": "Phase 4: Video Platform",
+      "category": "high",
+      "priority": 140,
+      "description": "Video Render Engine - Remotion",
+      "test_ids": ["VID-RND-001", "VID-RND-002", "VID-RND-003", "VID-RND-004"],
+      "steps": [
+        "Configure Remotion 4.x",
+        "H.264/H.265 output",
+        "FPS configuration",
+        "Quality settings"
+      ],
+      "acceptance_criteria": [
+        "Videos render successfully",
+        "Codec options work",
+        "Quality acceptable",
+        "Render times reasonable"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "Remotion 4.x with remotion.config.ts. scripts/render.ts wrapper."
+    },
+    {
+      "id": "feat-141",
+      "epic": "Phase 4: Video Platform",
+      "category": "high",
+      "priority": 141,
+      "description": "SFX Library Manifest System",
+      "test_ids": ["VID-SFM-001", "VID-SFM-002", "VID-SFM-003", "VID-SFM-004"],
+      "steps": [
+        "Create manifest.json structure",
+        "Define sfxId, file, tags, description",
+        "Include license attribution",
+        "Categorize by type (ui, transitions, impacts, ambient)"
+      ],
+      "acceptance_criteria": [
+        "Manifest validates against schema",
+        "AI can address SFX by ID",
+        "Tags enable fuzzy matching",
+        "Attribution tracked per asset"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "public/assets/sfx/manifest.json with CREDITS.md. AI-addressable index."
+    },
+    {
+      "id": "feat-142",
+      "epic": "Phase 4: Video Platform",
+      "category": "medium",
+      "priority": 142,
+      "description": "Beat Extractor - Script to Frames",
+      "test_ids": ["VID-BEX-001", "VID-BEX-002", "VID-BEX-003"],
+      "steps": [
+        "Parse script text",
+        "Assign frame offsets using WPM",
+        "Detect beat actions (hook, reveal, transition)",
+        "Output beats.sec.json"
+      ],
+      "acceptance_criteria": [
+        "Script converts to beats",
+        "Frame timing accurate",
+        "Actions categorized correctly",
+        "WPM configurable (default 165)"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "src/audio/beat-extractor.ts. npm run sfx:beats command."
+    },
+    {
+      "id": "feat-143",
+      "epic": "Phase 4: Video Platform",
+      "category": "medium",
+      "priority": 143,
+      "description": "SFX Context Pack for LLM",
+      "test_ids": ["VID-SCP-001", "VID-SCP-002", "VID-SCP-003"],
+      "steps": [
+        "Generate compact sfxIndex",
+        "Include rules for placement",
+        "Best match finder for hallucinated IDs",
+        "Tag/description similarity matching"
+      ],
+      "acceptance_criteria": [
+        "Payload fits LLM context",
+        "Rules prevent spam",
+        "Auto-fix invalid IDs",
+        "Similarity scoring works"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "src/audio/sfx-context-pack.ts. Compact payload for AI prompts."
+    },
+    {
+      "id": "feat-144",
+      "epic": "Phase 4: Video Platform",
+      "category": "medium",
+      "priority": 144,
+      "description": "Anti-Spam SFX Thinning",
+      "test_ids": ["VID-AST-001", "VID-AST-002", "VID-AST-003"],
+      "steps": [
+        "Min 0.35s between SFX",
+        "Max 2 SFX per second",
+        "De-dupe same ID within 0.2s",
+        "Priority: reveals > transitions > ui"
+      ],
+      "acceptance_criteria": [
+        "Spam prevented",
+        "Density limits enforced",
+        "Duplicates removed",
+        "Priority respected"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "src/audio/sfx-thin.ts. Cooldown and density limits."
+    },
+    {
+      "id": "feat-145",
+      "epic": "Phase 4: Video Platform",
+      "category": "high",
+      "priority": 145,
+      "description": "FFmpeg Audio Mixer",
+      "test_ids": ["VID-FAM-001", "VID-FAM-002", "VID-FAM-003", "VID-FAM-004"],
+      "steps": [
+        "Combine voiceover + music + SFX",
+        "Output audio_mix.wav",
+        "Volume normalization",
+        "Ducking for speech clarity"
+      ],
+      "acceptance_criteria": [
+        "All audio sources mixed",
+        "Levels balanced",
+        "Output format correct",
+        "No clipping"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "scripts/build-audio-mix.ts. npm run audio:mix command."
+    },
+    {
+      "id": "feat-146",
+      "epic": "Phase 4: Video Platform",
+      "category": "medium",
+      "priority": 146,
+      "description": "SfxLayer Remotion Component",
+      "test_ids": ["VID-SFL-001", "VID-SFL-002", "VID-SFL-003"],
+      "steps": [
+        "Map audio_events.json to Sequences",
+        "Validate IDs against manifest",
+        "Fail loud on unknown IDs",
+        "Volume control per event"
+      ],
+      "acceptance_criteria": [
+        "Events render as audio",
+        "Invalid IDs rejected",
+        "Timing accurate",
+        "Volume applied"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "src/audio/SfxLayer.tsx. <SfxLayer events={} manifest={} />."
+    },
+    {
+      "id": "feat-147",
+      "epic": "Phase 4: Video Platform",
+      "category": "high",
+      "priority": 147,
+      "description": "YouTube Style Analyzer",
+      "test_ids": ["VID-YSA-001", "VID-YSA-002", "VID-YSA-003", "VID-YSA-004"],
+      "steps": [
+        "Download YouTube video frames",
+        "Analyze with AI vision (GPT-4o)",
+        "Extract visual style patterns",
+        "Output recreation brief"
+      ],
+      "acceptance_criteria": [
+        "Videos download successfully",
+        "Frames extracted at intervals",
+        "Style analysis comprehensive",
+        "Brief generated for recreation"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "scripts/analyze-youtube.py. Extracts colors, typography, composition, elements."
+    },
+    {
+      "id": "feat-148",
+      "epic": "Phase 4: Video Platform",
+      "category": "high",
+      "priority": 148,
+      "description": "TikTok Caption Styles (9 variants)",
+      "test_ids": ["VID-TCS-001", "VID-TCS-002", "VID-TCS-003", "VID-TCS-004", "VID-TCS-005"],
+      "steps": [
+        "Bouncy word animation",
+        "Shake active word",
+        "Neon glow effect",
+        "Split and rejoin",
+        "Zoom on active",
+        "Wave effect",
+        "Color cycle",
+        "Stack vertically",
+        "Explode outward"
+      ],
+      "acceptance_criteria": [
+        "All 9 styles work",
+        "Word-level timing",
+        "Customizable colors",
+        "Smooth animations"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "src/components/TikTokCaptions.tsx. bouncy, shake, glow, split, zoom, wave, color-cycle, stack, explode."
+    },
+    {
+      "id": "feat-149",
+      "epic": "Phase 4: Video Platform",
+      "category": "medium",
+      "priority": 149,
+      "description": "AI Character Component",
+      "test_ids": ["VID-AIC-001", "VID-AIC-002", "VID-AIC-003", "VID-AIC-004"],
+      "steps": [
+        "Load AI-generated character image",
+        "Background removal (rembg)",
+        "Animation presets (float, bounce, wave, talk)",
+        "Position and scale control"
+      ],
+      "acceptance_criteria": [
+        "Characters render correctly",
+        "Background transparent",
+        "Animations smooth",
+        "Positioning flexible"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "src/components/AICharacter.tsx. Animated character overlays."
+    },
+    {
+      "id": "feat-150",
+      "epic": "Phase 4: Video Platform",
+      "category": "low",
+      "priority": 150,
+      "description": "Background Gradient Component",
+      "test_ids": ["VID-BGC-001", "VID-BGC-002"],
+      "steps": [
+        "Render gradient backgrounds",
+        "Support linear and radial",
+        "Animated gradients",
+        "CSS gradient syntax"
+      ],
+      "acceptance_criteria": [
+        "Gradients render correctly",
+        "Animation optional",
+        "Multiple color stops"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "src/components/BackgroundGradient.tsx."
+    },
+    {
+      "id": "feat-151",
+      "epic": "Phase 4: Video Platform",
+      "category": "low",
+      "priority": 151,
+      "description": "Progress Bar Component",
+      "test_ids": ["VID-PBC-001", "VID-PBC-002"],
+      "steps": [
+        "Display video progress",
+        "Customizable colors",
+        "Position options",
+        "Animated fill"
+      ],
+      "acceptance_criteria": [
+        "Progress accurate",
+        "Style customizable",
+        "Position flexible"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "src/components/ProgressBar.tsx."
+    },
+    {
+      "id": "feat-152",
+      "epic": "Phase 4: Video Platform",
+      "category": "medium",
+      "priority": 152,
+      "description": "Animated Captions Component",
+      "test_ids": ["VID-ACC-001", "VID-ACC-002", "VID-ACC-003", "VID-ACC-004"],
+      "steps": [
+        "Word-by-word karaoke style",
+        "Multiple animation styles",
+        "Generate transcript from text",
+        "Highlight, bounce, typewriter, pop"
+      ],
+      "acceptance_criteria": [
+        "Captions sync to audio",
+        "Styles interchangeable",
+        "Transcript generation works",
+        "Smooth transitions"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "src/components/AnimatedCaptions.tsx. generateTranscriptFromText() helper."
+    },
+    {
+      "id": "feat-153",
+      "epic": "Phase 4: Video Platform",
+      "category": "medium",
+      "priority": 153,
+      "description": "Before/After Video Ads (BlankLogo)",
+      "test_ids": ["VID-BAV-001", "VID-BAV-002", "VID-BAV-003", "VID-BAV-004"],
+      "steps": [
+        "Before video (problem state)",
+        "After video (solution state)",
+        "12 copy variants matrix",
+        "3 aspect ratios (9:16, 4:5, 16:9)"
+      ],
+      "acceptance_criteria": [
+        "Before/after comparison clear",
+        "Copy variants work",
+        "All aspect ratios render",
+        "Batch rendering works"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "src/compositions/blanklogo/. BeforeAfterVideo component with VIDEO_AD_COPY matrix."
+    },
+    {
+      "id": "feat-154",
+      "epic": "Phase 4: Video Platform",
+      "category": "medium",
+      "priority": 154,
+      "description": "Video Pairs Management System",
+      "test_ids": ["VID-VPM-001", "VID-VPM-002", "VID-VPM-003"],
+      "steps": [
+        "Define video pairs in config",
+        "Before/after source mapping",
+        "FFmpeg web re-encoding",
+        "Output directory structure"
+      ],
+      "acceptance_criteria": [
+        "Pairs configured in JSON",
+        "Web-compatible encoding",
+        "Organized output folders",
+        "Easy to add new pairs"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "VIDEO_PAIRS config. ffmpeg -c:v libx264 for web compatibility."
+    },
+    {
+      "id": "feat-155",
+      "epic": "Phase 4: Video Platform",
+      "category": "low",
+      "priority": 155,
+      "description": "Copy Matrix System (12 variants)",
+      "test_ids": ["VID-CMS-001", "VID-CMS-002", "VID-CMS-003"],
+      "steps": [
+        "6 problem-aware ad variants",
+        "6 solution-aware ad variants",
+        "Badge, headline, subheadline, CTA",
+        "Trust lines and footer text"
+      ],
+      "acceptance_criteria": [
+        "All 12 variants defined",
+        "Copy renders correctly",
+        "Easy to customize",
+        "Consistent structure"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "VIDEO_AD_COPY in config.ts. PA-01 to PA-06, SA-01 to SA-06."
+    },
+    {
+      "id": "feat-156",
+      "epic": "Phase 4: Video Platform",
+      "category": "low",
+      "priority": 156,
+      "description": "Motion Canvas Integration",
+      "test_ids": ["VID-MCI-001", "VID-MCI-002", "VID-MCI-003"],
+      "steps": [
+        "Playwright headless renderer",
+        "Two-pass pipeline (seed → capture → render)",
+        "Shared audio events schema",
+        "Engine-agnostic timeline"
+      ],
+      "acceptance_criteria": [
+        "Motion Canvas scenes render",
+        "Audio events compatible",
+        "Visual reveals captured",
+        "Final output correct"
+      ],
+      "passes": false,
+      "implemented_at": null,
+      "notes": "Pending per PRD-Audio-Video-System-v2. motion-canvas/ directory exists."
+    },
+    {
+      "id": "feat-157",
+      "epic": "Phase 4: Video Platform",
+      "category": "low",
+      "priority": 157,
+      "description": "Visual Reveals System",
+      "test_ids": ["VID-VRS-001", "VID-VRS-002", "VID-VRS-003"],
+      "steps": [
+        "Capture visual element appearances",
+        "Record timestamp and kind",
+        "Pacing-accurate seeder",
+        "SFX sync to reveals"
+      ],
+      "acceptance_criteria": [
+        "Reveals captured during render",
+        "Timestamps accurate",
+        "SFX aligned to reveals",
+        "Seeder uses WPM model"
+      ],
+      "passes": false,
+      "implemented_at": null,
+      "notes": "Pending per PRD. src/format/reveal-recorder.ts planned."
+    },
+    {
+      "id": "feat-158",
+      "epic": "Phase 4: Video Platform",
+      "category": "medium",
+      "priority": 158,
+      "description": "Macro Cues System",
+      "test_ids": ["VID-MAC-001", "VID-MAC-002", "VID-MAC-003", "VID-MAC-004"],
+      "steps": [
+        "Define macro → SFX mappings",
+        "reveal_riser, impact_soft, text_ping, whoosh_fast",
+        "Policy rules for placement",
+        "Cooldown and priority system"
+      ],
+      "acceptance_criteria": [
+        "Macros map to SFX files",
+        "Policy prevents spam",
+        "Cooldown enforced",
+        "Priority respected"
+      ],
+      "passes": false,
+      "implemented_at": null,
+      "notes": "Pending per PRD. src/sfx/macro-cues.ts and policy-engine.ts."
+    },
+    {
+      "id": "feat-159",
+      "epic": "Phase 4: Video Platform",
+      "category": "medium",
+      "priority": 159,
+      "description": "Hybrid Format DSL",
+      "test_ids": ["VID-HFD-001", "VID-HFD-002", "VID-HFD-003"],
+      "steps": [
+        "Define format block types",
+        "keyword, bullet, code, error, success, cta",
+        "Beat action mapping",
+        "Style configuration"
+      ],
+      "acceptance_criteria": [
+        "All block types render",
+        "Actions map to visuals",
+        "Style customizable",
+        "DSL parseable"
+      ],
+      "passes": false,
+      "implemented_at": null,
+      "notes": "Pending per PRD. src/format/hybrid-types.ts."
+    },
+    {
+      "id": "feat-160",
+      "epic": "Phase 4: Video Platform",
+      "category": "medium",
+      "priority": 160,
+      "description": "API Render Server",
+      "test_ids": ["VID-ARS-001", "VID-ARS-002", "VID-ARS-003"],
+      "steps": [
+        "HTTP endpoint for render requests",
+        "Accept brief JSON",
+        "Return rendered video URL",
+        "Queue management"
+      ],
+      "acceptance_criteria": [
+        "API accepts briefs",
+        "Videos render correctly",
+        "Errors handled gracefully",
+        "Queue prevents overload"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "scripts/api-render.ts. npm run api command."
+    },
+    {
+      "id": "feat-161",
+      "epic": "Phase 4: Video Platform",
+      "category": "medium",
+      "priority": 161,
+      "description": "Stripe Pricing Video Composition",
+      "test_ids": ["VID-SPV-001", "VID-SPV-002", "VID-SPV-003"],
+      "steps": [
+        "Animated pricing cards",
+        "Feature lists",
+        "CTA buttons",
+        "Brand-consistent styling"
+      ],
+      "acceptance_criteria": [
+        "Pricing tiers displayed",
+        "Features animated",
+        "CTAs prominent",
+        "Professional appearance"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "src/compositions/StripePricing.tsx and StripeProductCard.tsx."
+    },
+    {
+      "id": "feat-162",
+      "epic": "Phase 4: Video Platform",
+      "category": "low",
+      "priority": 162,
+      "description": "UGC Style Composition",
+      "test_ids": ["VID-UGC-C-001", "VID-UGC-C-002"],
+      "steps": [
+        "User-generated content look",
+        "Authentic feel",
+        "Trending format recreation",
+        "Platform-native styling"
+      ],
+      "acceptance_criteria": [
+        "Looks like real UGC",
+        "Format matches trends",
+        "Authentic appearance"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "src/compositions/UGCComposition.tsx."
+    },
+    {
+      "id": "feat-163",
+      "epic": "Phase 4: Video Platform",
+      "category": "low",
+      "priority": 163,
+      "description": "Asset-Enhanced Compositions",
+      "test_ids": ["VID-AEC-001", "VID-AEC-002", "VID-AEC-003"],
+      "steps": [
+        "AI-generated icons and props",
+        "DALL-E asset integration",
+        "Asset caching",
+        "Attribution tracking"
+      ],
+      "acceptance_criteria": [
+        "Assets render in compositions",
+        "AI assets integrate seamlessly",
+        "Cache prevents re-generation",
+        "Attribution logged"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "src/compositions/AssetComposition.tsx. AI asset rendering."
+    },
+    {
+      "id": "feat-164",
+      "epic": "Phase 4: Video Platform",
+      "category": "low",
+      "priority": 164,
+      "description": "Benchmark Test Compositions",
+      "test_ids": ["VID-BTC-001", "VID-BTC-002"],
+      "steps": [
+        "Performance benchmarking",
+        "Caption styles benchmark",
+        "Render time comparison",
+        "Quality metrics"
+      ],
+      "acceptance_criteria": [
+        "Benchmarks run consistently",
+        "Results comparable",
+        "Metrics logged"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "src/compositions/BenchmarkTest.tsx and CaptionStylesBenchmark.tsx."
+    },
+    {
+      "id": "feat-165",
+      "epic": "Phase 4: Video Platform",
+      "category": "medium",
+      "priority": 165,
+      "description": "Audio Events Validation (Zod)",
+      "test_ids": ["VID-AEV-001", "VID-AEV-002", "VID-AEV-003"],
+      "steps": [
+        "SfxManifest schema validation",
+        "AudioEvents schema validation",
+        "LLM output parsing",
+        "Type-safe event handling"
+      ],
+      "acceptance_criteria": [
+        "Invalid events rejected",
+        "Type errors caught",
+        "Parser handles LLM quirks",
+        "Zod schemas complete"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "src/audio/audio-validate.ts. parseAndValidateAudioEvents()."
+    },
+    {
+      "id": "feat-166",
+      "epic": "Phase 4: Video Platform",
+      "category": "medium",
+      "priority": 166,
+      "description": "Audio Events Merge Utility",
+      "test_ids": ["VID-AEM-001", "VID-AEM-002"],
+      "steps": [
+        "Merge base events + SFX events",
+        "Maintain frame ordering",
+        "Handle overlaps",
+        "Output combined timeline"
+      ],
+      "acceptance_criteria": [
+        "Events merged correctly",
+        "Order preserved",
+        "No duplicates",
+        "Output validated"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "src/audio/merge-events.ts. Combines vo/music + sfx."
+    },
+    {
+      "id": "feat-167",
+      "epic": "Phase 4: Video Platform",
+      "category": "medium",
+      "priority": 167,
+      "description": "Toolkit Extraction Script",
+      "test_ids": ["VID-TES-001", "VID-TES-002"],
+      "steps": [
+        "Extract video toolkit to new project",
+        "Copy core files",
+        "Set up dependencies",
+        "Integration documentation"
+      ],
+      "acceptance_criteria": [
+        "Script runs successfully",
+        "Files copied correctly",
+        "Dependencies listed",
+        "Guide provided"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "scripts/extract-video-toolkit.sh. docs/INTEGRATION-Guide.md."
+    },
+    {
+      "id": "feat-168",
+      "epic": "Phase 4: Video Platform",
+      "category": "low",
+      "priority": 168,
+      "description": "Aerospace Content Templates",
+      "test_ids": ["VID-ACT-001", "VID-ACT-002"],
+      "steps": [
+        "Aircraft wings video template",
+        "NASA footage integration",
+        "Thermodynamics explainer",
+        "Tech/aerospace styling"
+      ],
+      "acceptance_criteria": [
+        "Templates render correctly",
+        "NASA footage integrated",
+        "Educational content clear",
+        "Professional appearance"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "AircraftWingsVideo.tsx, ThermodynamicsVideo.tsx compositions."
+    },
+    {
+      "id": "feat-169",
+      "epic": "Phase 4: Video Platform",
+      "category": "low",
+      "priority": 169,
+      "description": "EverReach Compilation Format",
+      "test_ids": ["VID-ERC-001", "VID-ERC-002"],
+      "steps": [
+        "Custom compilation format",
+        "Multiple clips combined",
+        "Transitions between clips",
+        "Branded styling"
+      ],
+      "acceptance_criteria": [
+        "Clips combined smoothly",
+        "Transitions work",
+        "Branding consistent",
+        "Output professional"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "src/compositions/EverReachCompilation.tsx. docs/everreach/ guides."
+    },
+    {
+      "id": "feat-170",
+      "epic": "Phase 4: Video Platform",
+      "category": "medium",
+      "priority": 170,
+      "description": "EverReach Static Ads Renderer",
+      "test_ids": ["VID-ESA-001", "VID-ESA-002", "VID-ESA-003"],
+      "steps": [
+        "Render EverReach static ads",
+        "Multiple sizes",
+        "Branded templates",
+        "Batch output"
+      ],
+      "acceptance_criteria": [
+        "All sizes render",
+        "Brand consistent",
+        "Batch processing works",
+        "Quality acceptable"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "scripts/render-everreach-ads.ts."
+    },
+    {
+      "id": "feat-171",
+      "epic": "Phase 4: Video Platform",
+      "category": "low",
+      "priority": 171,
+      "description": "Hugging Face Rate Limit Management",
+      "test_ids": ["VID-HFR-001", "VID-HFR-002"],
+      "steps": [
+        "Track API usage",
+        "Handle rate limits gracefully",
+        "Queue requests",
+        "Fallback strategies"
+      ],
+      "acceptance_criteria": [
+        "Limits respected",
+        "Fallback triggers",
+        "No crashes on limit",
+        "Usage tracked"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "docs/HUGGINGFACE_RATE_LIMITS.md. scripts/test-hf-rate-limit.py."
+    },
+    {
+      "id": "feat-172",
+      "epic": "Phase 4: Video Platform",
+      "category": "medium",
+      "priority": 172,
+      "description": "Voice Cloning Test Suite",
+      "test_ids": ["VID-VCT-001", "VID-VCT-002", "VID-VCT-003"],
+      "steps": [
+        "Test IndexTTS-2 API",
+        "Test multiple voice models",
+        "Compare voice quality",
+        "Emotion control testing"
+      ],
+      "acceptance_criteria": [
+        "All models tested",
+        "Quality compared",
+        "Emotions work",
+        "Results logged"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "scripts/test-indextts2.py, test-voice-cloning-models.py."
+    },
+    {
+      "id": "feat-173",
+      "epic": "Phase 4: Video Platform",
+      "category": "medium",
+      "priority": 173,
+      "description": "AI Asset Generator (DALL-E)",
+      "test_ids": ["VID-AAG-001", "VID-AAG-002", "VID-AAG-003"],
+      "steps": [
+        "Generate icons from prompts",
+        "Generate props and backgrounds",
+        "Batch generation from config",
+        "Cache generated assets"
+      ],
+      "acceptance_criteria": [
+        "Assets match prompts",
+        "Batch processing works",
+        "Assets cached",
+        "Quality suitable for video"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "scripts/generate-assets.py. DALL-E 3 integration."
+    },
+    {
+      "id": "feat-174",
+      "epic": "Phase 4: Video Platform",
+      "category": "low",
+      "priority": 174,
+      "description": "Voiceover Generator for Aircraft",
+      "test_ids": ["VID-VAC-001", "VID-VAC-002"],
+      "steps": [
+        "Generate aircraft-specific voiceovers",
+        "Technical narration style",
+        "Multiple voice options",
+        "Batch generation"
+      ],
+      "acceptance_criteria": [
+        "Voiceovers clear",
+        "Technical content accurate",
+        "Voices appropriate",
+        "Batch works"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "scripts/generate-aircraft-voiceovers.py."
+    },
+    {
+      "id": "feat-175",
+      "epic": "Phase 4: Video Platform",
+      "category": "low",
+      "priority": 175,
+      "description": "Format Generator Script",
+      "test_ids": ["VID-FGS-001", "VID-FGS-002"],
+      "steps": [
+        "Generate format from script.txt",
+        "Seed visual reveals",
+        "Prepare format data",
+        "Output format JSON"
+      ],
+      "acceptance_criteria": [
+        "Script converts to format",
+        "Reveals seeded",
+        "Format valid",
+        "Pipeline continues"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "npm run format:generate and format:prep commands."
+    },
+    {
+      "id": "feat-176",
+      "epic": "Phase 4: Video Platform",
+      "category": "high",
+      "priority": 176,
+      "description": "Animation Presets Library (40+ animations)",
+      "test_ids": ["VID-APL-001", "VID-APL-002", "VID-APL-003", "VID-APL-004"],
+      "steps": [
+        "Entrance animations (fadeIn, slideUp, popIn, bounceIn, zoomIn, flipIn, typewriter, glitchIn)",
+        "Exit animations (fadeOut, slideOutUp, popOut, zoomOut)",
+        "Loop animations (float, pulse, rotate, shimmer, glow, shake)",
+        "Transition effects (crossfade, wipeHorizontal, zoomTransition, slidePush)",
+        "Text animations (staggerWords, charReveal, highlight)"
+      ],
+      "acceptance_criteria": [
+        "All 40+ animations work",
+        "Configurable duration and easing",
+        "applyAnimation() helper works",
+        "Preset combinations available"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "src/animations/presets.ts. EASINGS, entranceAnimations, exitAnimations, loopAnimations, transitionEffects, textAnimations."
+    },
+    {
+      "id": "feat-177",
+      "epic": "Phase 4: Video Platform",
+      "category": "medium",
+      "priority": 177,
+      "description": "Custom Easing Functions Library",
+      "test_ids": ["VID-CEF-001", "VID-CEF-002", "VID-CEF-003"],
+      "steps": [
+        "Sine easings (easeInSine, easeOutSine, easeInOutSine)",
+        "Exponential easings (easeInExpo, easeOutExpo, easeInOutExpo)",
+        "Elastic easings (easeInElastic, easeOutElastic)",
+        "Back easings with overshoot",
+        "Bounce easings",
+        "Spring physics-based easing",
+        "Custom cubic bezier creator"
+      ],
+      "acceptance_criteria": [
+        "All easing functions work",
+        "Spring easing is physically accurate",
+        "Bezier creator flexible"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "src/utils/easing.ts. 15+ easing functions including physics-based spring()."
+    },
+    {
+      "id": "feat-178",
+      "epic": "Phase 4: Video Platform",
+      "category": "medium",
+      "priority": 178,
+      "description": "Layout Utilities System",
+      "test_ids": ["VID-LUS-001", "VID-LUS-002", "VID-LUS-003"],
+      "steps": [
+        "Center positioning helpers",
+        "Safe area calculations for mobile/TV",
+        "Grid layout with gap support",
+        "Flex-like distribution (horizontal/vertical)",
+        "Responsive scaling (contain/cover)",
+        "Aspect ratio utilities",
+        "Text alignment helpers"
+      ],
+      "acceptance_criteria": [
+        "All layout helpers work",
+        "Safe areas calculated correctly",
+        "Grid positions accurate",
+        "Scale to fit works"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "src/utils/layout.ts. gridLayout(), distributeHorizontally(), scaleToFit(), aspectRatioToSize()."
+    },
+    {
+      "id": "feat-179",
+      "epic": "Phase 4: Video Platform",
+      "category": "high",
+      "priority": 179,
+      "description": "Visual Effects Components (17 effects)",
+      "test_ids": ["VID-VEC-001", "VID-VEC-002", "VID-VEC-003", "VID-VEC-004", "VID-VEC-005"],
+      "steps": [
+        "FloatingParticles - animated particle system",
+        "GlowOrb - pulsing glow effects",
+        "NeonGlow - neon text/element glow",
+        "VignetteOverlay - edge darkening",
+        "GradientOverlay - gradient overlays",
+        "NoiseOverlay - film grain effect",
+        "ScanlineOverlay - retro CRT effect",
+        "DecorativeCircle/Line - animated decorations",
+        "GridPattern - background grid",
+        "ProgressBar - video progress indicator",
+        "CountdownTimer - animated timer",
+        "GradientText - gradient text fill",
+        "OutlineText - stroke text effect",
+        "AnimatedHighlight - text highlight animation",
+        "AnimatedEmoji - bounce/spin/pulse/shake emoji",
+        "LowerThird - animated name/title overlay"
+      ],
+      "acceptance_criteria": [
+        "All 17 effects render correctly",
+        "Customizable colors and sizes",
+        "Animations smooth at 30/60fps",
+        "No performance issues"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "src/components/effects/index.tsx. Comprehensive VFX library."
+    },
+    {
+      "id": "feat-180",
+      "epic": "Phase 4: Video Platform",
+      "category": "medium",
+      "priority": 180,
+      "description": "Color Palettes & Utilities",
+      "test_ids": ["VID-CPU-001", "VID-CPU-002", "VID-CPU-003"],
+      "steps": [
+        "6 preset palettes (midnight, ocean, forest, sunset, lavender, minimal)",
+        "hexToRgba() converter",
+        "adjustColor() lighten/darken",
+        "createGradient() linear/radial",
+        "getContrastColor() for accessibility"
+      ],
+      "acceptance_criteria": [
+        "Palettes apply correctly",
+        "Color conversions accurate",
+        "Gradients generate correctly",
+        "Contrast detection works"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "src/styles/colors.ts. ColorPalette type with 6 presets."
+    },
+    {
+      "id": "feat-181",
+      "epic": "Phase 4: Video Platform",
+      "category": "medium",
+      "priority": 181,
+      "description": "Scene Templates (7 scene types)",
+      "test_ids": ["VID-STT-001", "VID-STT-002", "VID-STT-003", "VID-STT-004"],
+      "steps": [
+        "IntroScene - opening with title, subtitle, hook",
+        "TopicScene - main content with heading, body, bullets",
+        "ListItemScene - numbered item with title/description",
+        "OutroScene - closing with CTA and social handles",
+        "TransitionScene - animated transitions",
+        "EnhancedIntro - with particles, glow, effects",
+        "EnhancedTopic - with advanced animations"
+      ],
+      "acceptance_criteria": [
+        "All 7 scene types render",
+        "Props customizable",
+        "Animations applied correctly",
+        "Effects layer works"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "src/scenes/. IntroScene, TopicScene, ListItemScene, OutroScene, TransitionScene, EnhancedIntro, EnhancedTopic."
+    },
+    {
+      "id": "feat-182",
+      "epic": "Phase 4: Video Platform",
+      "category": "high",
+      "priority": 182,
+      "description": "Video Format Definitions (5 formats)",
+      "test_ids": ["VID-VFD-001", "VID-VFD-002", "VID-VFD-003", "VID-VFD-004", "VID-VFD-005"],
+      "steps": [
+        "explainer_v1 - educational content format",
+        "listicle_v1 - top N lists format",
+        "comparison_v1 - X vs Y format",
+        "shorts_v1 - fast-paced shorts format",
+        "devvlog_v1 - GitHub dev vlog format"
+      ],
+      "acceptance_criteria": [
+        "All 5 formats defined",
+        "Scene sequences configured",
+        "Default styles applied",
+        "getFormat() lookup works"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "formats/. VideoFormat type with scene_sequence, resolution, default_style."
+    },
+    {
+      "id": "feat-183",
+      "epic": "Phase 4: Video Platform",
+      "category": "medium",
+      "priority": 183,
+      "description": "WhisperX Caption Converter",
+      "test_ids": ["VID-WCC-001", "VID-WCC-002"],
+      "steps": [
+        "Parse WhisperX JSON output",
+        "Convert to Remotion CaptionData format",
+        "Handle segments with word arrays",
+        "File loading utility for Node.js"
+      ],
+      "acceptance_criteria": [
+        "WhisperX JSON parses correctly",
+        "Word timings preserved",
+        "CaptionData format matches",
+        "File loading works"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "src/utils/whisperxToCaptions.ts. whisperxToCaptions(), loadWhisperxFile()."
+    },
+    {
+      "id": "feat-184",
+      "epic": "Phase 4: Video Platform",
+      "category": "high",
+      "priority": 184,
+      "description": "Voice Cloning Workflow (IndexTTS-2 + Fallback)",
+      "test_ids": ["VID-VCW-001", "VID-VCW-002", "VID-VCW-003", "VID-VCW-004"],
+      "steps": [
+        "IndexTTS-2 Hugging Face integration",
+        "handle_file() for audio uploads",
+        "Emotion control (8 emotion vectors)",
+        "OpenAI TTS fallback when quota exceeded",
+        "Word-level timestamps via Whisper API"
+      ],
+      "acceptance_criteria": [
+        "Voice cloning works",
+        "Emotion control works (happy, angry, sad, etc.)",
+        "Fallback triggers correctly",
+        "Timestamps sync accurately"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "docs/VOICE_CLONING_GUIDE.md. IndexTTS-2 with OpenAI TTS fallback."
+    },
+    {
+      "id": "feat-185",
+      "epic": "Phase 4: Video Platform",
+      "category": "medium",
+      "priority": 185,
+      "description": "Word Timestamp Generator",
+      "test_ids": ["VID-WTG-001", "VID-WTG-002"],
+      "steps": [
+        "Upload audio to OpenAI Whisper API",
+        "Request verbose_json with word granularity",
+        "Parse word array with start/end times",
+        "Output timestamps JSON"
+      ],
+      "acceptance_criteria": [
+        "Whisper API integration works",
+        "Word-level timing accurate",
+        "Output format compatible",
+        "Works with cloned audio"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "scripts/generate-word-timestamps.py. get_word_timestamps() function."
+    },
+    {
+      "id": "feat-186",
+      "epic": "Phase 4: Video Platform",
+      "category": "low",
+      "priority": 186,
+      "description": "Animation Style Presets (6 styles)",
+      "test_ids": ["VID-ASP-001", "VID-ASP-002"],
+      "steps": [
+        "professional - fadeIn/fadeOut, smooth",
+        "energetic - bounceIn/popOut, bounce",
+        "cinematic - zoomIn/zoomOut, dramatic",
+        "playful - popIn/slideOutDown, elastic",
+        "minimal - slideUp/fadeOut, smoothOut",
+        "glitch - glitchIn/fadeOut, sharp"
+      ],
+      "acceptance_criteria": [
+        "All 6 style presets work",
+        "Entrance/exit/easing configured",
+        "Easy to apply to compositions"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "animationPresets in src/animations/presets.ts."
+    },
+    {
+      "id": "feat-187",
+      "epic": "Phase 4: Video Platform",
+      "category": "low",
+      "priority": 187,
+      "description": "Duration Calculator Utility",
+      "test_ids": ["VID-DCU-001", "VID-DCU-002"],
+      "steps": [
+        "Calculate frame duration from seconds",
+        "FPS-aware conversions",
+        "Section duration distribution"
+      ],
+      "acceptance_criteria": [
+        "Calculations accurate",
+        "Works at 30/60fps",
+        "Distribution sums correctly"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "src/utils/calculateDuration.ts and timing.ts."
+    },
+    {
+      "id": "feat-188",
+      "epic": "Phase 4: Video Platform",
+      "category": "low",
+      "priority": 188,
+      "description": "Font Configuration System",
+      "test_ids": ["VID-FCS-001", "VID-FCS-002"],
+      "steps": [
+        "Font family definitions",
+        "Weight and style mappings",
+        "Loading instructions for web fonts"
+      ],
+      "acceptance_criteria": [
+        "Fonts load correctly",
+        "Fallbacks defined",
+        "Weights available"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "src/styles/fonts.ts."
+    },
+    {
+      "id": "feat-189",
+      "epic": "Phase 4: Video Platform",
+      "category": "medium",
+      "priority": 189,
+      "description": "Individual Animation Modules",
+      "test_ids": ["VID-IAM-001", "VID-IAM-002", "VID-IAM-003", "VID-IAM-004", "VID-IAM-005"],
+      "steps": [
+        "bounce.ts - spring-based bounce",
+        "fadeIn.ts - opacity transitions",
+        "slideIn.ts - directional slides",
+        "typewriter.ts - character reveal",
+        "zoom.ts - scale transitions"
+      ],
+      "acceptance_criteria": [
+        "Each module exports correctly",
+        "Animations configurable",
+        "Works with Remotion interpolate/spring"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "src/animations/ individual modules for modular imports."
+    },
+    {
+      "id": "feat-190",
+      "epic": "Phase 4: Video Platform",
+      "category": "medium",
+      "priority": 190,
+      "description": "Enhanced Intro Scene with VFX",
+      "test_ids": ["VID-EIS-001", "VID-EIS-002", "VID-EIS-003"],
+      "steps": [
+        "5 animation styles (cinematic, energetic, minimal, glitch, neon)",
+        "Floating particles layer",
+        "Glow orbs with pulse",
+        "Vignette overlay",
+        "Neon glow wrapper",
+        "Gradient text support",
+        "Optional icon display"
+      ],
+      "acceptance_criteria": [
+        "All 5 styles work",
+        "Effects layer composites correctly",
+        "Performance acceptable",
+        "Customizable via props"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "src/scenes/EnhancedIntro.tsx. Uses effects components."
+    },
+    {
+      "id": "feat-191",
+      "epic": "Phase 4: Video Platform",
+      "category": "low",
+      "priority": 191,
+      "description": "Static Ads Compositions",
+      "test_ids": ["VID-SAC-001", "VID-SAC-002"],
+      "steps": [
+        "Multiple ad size templates",
+        "Brand-consistent layouts",
+        "CTA button styling",
+        "Image/text composition"
+      ],
+      "acceptance_criteria": [
+        "All ad sizes render",
+        "Layouts professional",
+        "Export as image frames"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "src/compositions/StaticAds.tsx."
+    },
+    {
+      "id": "feat-192",
+      "epic": "Phase 4: Video Platform",
+      "category": "medium",
+      "priority": 192,
+      "description": "Full Video Demo Composition",
+      "test_ids": ["VID-FVD-001", "VID-FVD-002"],
+      "steps": [
+        "Showcase all capabilities",
+        "Multiple scene types",
+        "Animation demonstrations",
+        "Effects showcase"
+      ],
+      "acceptance_criteria": [
+        "Demo renders successfully",
+        "All features demonstrated",
+        "Suitable for marketing"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "src/compositions/FullVideoDemo.tsx. npm run render:demo."
+    },
+    {
+      "id": "feat-193",
+      "epic": "Phase 4: Video Platform",
+      "category": "low",
+      "priority": 193,
+      "description": "ElevenLabs TTS & SFX Integration",
+      "test_ids": ["VID-ELI-001", "VID-ELI-002", "VID-ELI-003"],
+      "steps": [
+        "Sound effects generation from text prompts",
+        "Text-to-speech with multiple voices",
+        "API permissions handling",
+        "Error handling for quota limits"
+      ],
+      "acceptance_criteria": [
+        "SFX generates from prompts",
+        "TTS produces natural speech",
+        "Voices selectable",
+        "Quota errors handled"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "Per PRD-Audio-Video-System-v2. ELEVENLABS_API_KEY required."
+    },
+    {
+      "id": "feat-194",
+      "epic": "Phase 4: Video Platform",
+      "category": "medium",
+      "priority": 194,
+      "description": "Free Media API Stack",
+      "test_ids": ["VID-FMA-001", "VID-FMA-002", "VID-FMA-003", "VID-FMA-004"],
+      "steps": [
+        "Pexels API integration (200/hr, 20k/mo)",
+        "Pixabay API integration (5000/hr)",
+        "NASA Images API (unlimited, public domain)",
+        "Openverse API (CC content)",
+        "Tenor/GIPHY for GIFs",
+        "Freesound for SFX"
+      ],
+      "acceptance_criteria": [
+        "All APIs fetch successfully",
+        "Rate limits respected",
+        "Attribution tracked",
+        "Fallback chain works"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "scripts/fetch-media.ts. Provider order configurable per brief."
+    },
+    {
+      "id": "feat-195",
+      "epic": "Phase 4: Video Platform",
+      "category": "medium",
+      "priority": 195,
+      "description": "Asset Attribution Tracking",
+      "test_ids": ["VID-AAT-001", "VID-AAT-002"],
+      "steps": [
+        "Per-asset metadata storage",
+        "License type tracking",
+        "Attribution text generation",
+        "CREDITS.md auto-generation"
+      ],
+      "acceptance_criteria": [
+        "Metadata stored per asset",
+        "License rules enforced",
+        "Attribution available",
+        "Credits file generated"
+      ],
+      "passes": true,
+      "implemented_at": "2026-01-17",
+      "notes": "public/assets/sfx/CREDITS.md. License rules for CC0, CC-BY, CC-BY-SA, CC-BY-NC."
     }
   ]
 }
