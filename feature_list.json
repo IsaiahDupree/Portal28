@@ -3,14 +3,16 @@
   "version": "1.1",
   "created": "2026-01-13",
   "updated": "2026-01-17",
-  "total_features": 195,
+  "total_features": 235,
   "total_tests": 300,
   "phases": {
     "phase0_mvp": "Core course selling: auth, payments, course delivery, admin CMS, tracking, email",
     "phase1_growth": "AOV/LTV optimization: offers, bundles, memberships, email sequences, analytics",
     "phase2_platform": "Whop-style modular platform: widgets, community, forums, chat, resources",
     "phase3_expansion": "Advanced features: affiliates, events, coaching, multi-instructor, marketplace",
-    "phase4_video": "AI Video Generation Platform: brief-to-video automation, voice cloning, captions, multi-format output"
+    "phase4_video": "AI Video Generation Platform: brief-to-video automation, voice cloning, captions, multi-format output",
+    "phase5_new_features": "New features: affiliates, DMs, streaks, achievements",
+    "phase6_testing": "E2E testing coverage for critical flows"
   },
   "features": [
     {
@@ -1680,7 +1682,12 @@
       "category": "high",
       "priority": 56,
       "description": "Order Bumps - Post-selection upsells",
-      "test_ids": ["GRO-OBP-001", "GRO-OBP-002", "GRO-OBP-003", "GRO-OBP-004"],
+      "test_ids": [
+        "GRO-OBP-001",
+        "GRO-OBP-002",
+        "GRO-OBP-003",
+        "GRO-OBP-004"
+      ],
       "steps": [
         "Create order bump component for checkout page",
         "Configure bump products per course/offer",
@@ -1703,7 +1710,12 @@
       "category": "medium",
       "priority": 57,
       "description": "Bundle Product Pages",
-      "test_ids": ["GRO-BND-001", "GRO-BND-002", "GRO-BND-003", "GRO-BND-004"],
+      "test_ids": [
+        "GRO-BND-001",
+        "GRO-BND-002",
+        "GRO-BND-003",
+        "GRO-BND-004"
+      ],
       "steps": [
         "Create bundle sales page template",
         "Display included courses with details",
@@ -1726,7 +1738,12 @@
       "category": "medium",
       "priority": 58,
       "description": "Upsell Flows - Post-purchase",
-      "test_ids": ["GRO-UPS-001", "GRO-UPS-002", "GRO-UPS-003", "GRO-UPS-004"],
+      "test_ids": [
+        "GRO-UPS-001",
+        "GRO-UPS-002",
+        "GRO-UPS-003",
+        "GRO-UPS-004"
+      ],
       "steps": [
         "Create upsell modal component",
         "Configure upsell triggers",
@@ -1749,7 +1766,12 @@
       "category": "medium",
       "priority": 59,
       "description": "Limited-Time Offers",
-      "test_ids": ["GRO-LTO-001", "GRO-LTO-002", "GRO-LTO-003", "GRO-LTO-004"],
+      "test_ids": [
+        "GRO-LTO-001",
+        "GRO-LTO-002",
+        "GRO-LTO-003",
+        "GRO-LTO-004"
+      ],
       "steps": [
         "Add start_at/end_at to offers table",
         "Create countdown timer component",
@@ -1772,7 +1794,12 @@
       "category": "medium",
       "priority": 60,
       "description": "Abandoned Checkout Recovery",
-      "test_ids": ["GRO-ACR-001", "GRO-ACR-002", "GRO-ACR-003", "GRO-ACR-004"],
+      "test_ids": [
+        "GRO-ACR-001",
+        "GRO-ACR-002",
+        "GRO-ACR-003",
+        "GRO-ACR-004"
+      ],
       "steps": [
         "Track checkout abandonment events",
         "Trigger recovery email sequence",
@@ -1795,7 +1822,11 @@
       "category": "low",
       "priority": 61,
       "description": "Cohort Analytics",
-      "test_ids": ["GRO-COH-001", "GRO-COH-002", "GRO-COH-003"],
+      "test_ids": [
+        "GRO-COH-001",
+        "GRO-COH-002",
+        "GRO-COH-003"
+      ],
       "steps": [
         "Group users by signup cohort",
         "Calculate retention by cohort",
@@ -1817,7 +1848,12 @@
       "category": "medium",
       "priority": 62,
       "description": "Drip Content Scheduling",
-      "test_ids": ["PLT-DRP-001", "PLT-DRP-002", "PLT-DRP-003", "PLT-DRP-004"],
+      "test_ids": [
+        "PLT-DRP-001",
+        "PLT-DRP-002",
+        "PLT-DRP-003",
+        "PLT-DRP-004"
+      ],
       "steps": [
         "Add drip settings to lessons",
         "Calculate unlock dates per user",
@@ -1840,7 +1876,11 @@
       "category": "medium",
       "priority": 63,
       "description": "Mux Admin Upload UI",
-      "test_ids": ["PLT-MUX-U-001", "PLT-MUX-U-002", "PLT-MUX-U-003"],
+      "test_ids": [
+        "PLT-MUX-U-001",
+        "PLT-MUX-U-002",
+        "PLT-MUX-U-003"
+      ],
       "steps": [
         "Create video upload form in studio",
         "Show upload progress",
@@ -1863,7 +1903,12 @@
       "category": "medium",
       "priority": 64,
       "description": "PDF/File Upload Management",
-      "test_ids": ["PLT-PDF-001", "PLT-PDF-002", "PLT-PDF-003", "PLT-PDF-004"],
+      "test_ids": [
+        "PLT-PDF-001",
+        "PLT-PDF-002",
+        "PLT-PDF-003",
+        "PLT-PDF-004"
+      ],
       "steps": [
         "Create file upload component",
         "Configure R2/S3 bucket",
@@ -1886,7 +1931,13 @@
       "category": "medium",
       "priority": 65,
       "description": "Course Preview Links",
-      "test_ids": ["PLT-PRV-001", "PLT-PRV-002", "PLT-PRV-003", "PLT-PRV-004", "PLT-PRV-005"],
+      "test_ids": [
+        "PLT-PRV-001",
+        "PLT-PRV-002",
+        "PLT-PRV-003",
+        "PLT-PRV-004",
+        "PLT-PRV-005"
+      ],
       "steps": [
         "Generate unique preview tokens",
         "Create preview route /preview/course/[id]",
@@ -1909,7 +1960,13 @@
       "category": "low",
       "priority": 66,
       "description": "Community Activity Feed",
-      "test_ids": ["PLT-FED-001", "PLT-FED-002", "PLT-FED-003", "PLT-FED-004", "PLT-FED-005"],
+      "test_ids": [
+        "PLT-FED-001",
+        "PLT-FED-002",
+        "PLT-FED-003",
+        "PLT-FED-004",
+        "PLT-FED-005"
+      ],
       "steps": [
         "Aggregate threads, posts, announcements",
         "Sort by recent activity",
@@ -1932,7 +1989,14 @@
       "category": "medium",
       "priority": 67,
       "description": "Multi-Provider Video Support",
-      "test_ids": ["PLT-VID-001", "PLT-VID-002", "PLT-VID-003", "PLT-VID-004", "PLT-VID-005", "PLT-VID-006"],
+      "test_ids": [
+        "PLT-VID-001",
+        "PLT-VID-002",
+        "PLT-VID-003",
+        "PLT-VID-004",
+        "PLT-VID-005",
+        "PLT-VID-006"
+      ],
       "steps": [
         "Parse video URL to detect provider",
         "Support YouTube unlisted",
@@ -1956,7 +2020,12 @@
       "category": "low",
       "priority": 68,
       "description": "Enrollment Analytics Dashboard",
-      "test_ids": ["PLT-ENR-001", "PLT-ENR-002", "PLT-ENR-003", "PLT-ENR-004"],
+      "test_ids": [
+        "PLT-ENR-001",
+        "PLT-ENR-002",
+        "PLT-ENR-003",
+        "PLT-ENR-004"
+      ],
       "steps": [
         "Create /admin/analytics/enrollments page",
         "Show course enrollment stats",
@@ -1979,7 +2048,12 @@
       "category": "medium",
       "priority": 69,
       "description": "Content Reports System",
-      "test_ids": ["PLT-RPT-001", "PLT-RPT-002", "PLT-RPT-003", "PLT-RPT-004"],
+      "test_ids": [
+        "PLT-RPT-001",
+        "PLT-RPT-002",
+        "PLT-RPT-003",
+        "PLT-RPT-004"
+      ],
       "steps": [
         "Create content_reports table",
         "Allow users to flag content",
@@ -2002,7 +2076,11 @@
       "category": "low",
       "priority": 70,
       "description": "Google OAuth Login",
-      "test_ids": ["MVP-GOA-001", "MVP-GOA-002", "MVP-GOA-003"],
+      "test_ids": [
+        "MVP-GOA-001",
+        "MVP-GOA-002",
+        "MVP-GOA-003"
+      ],
       "steps": [
         "Configure Google OAuth in Supabase",
         "Add Google login button",
@@ -2025,7 +2103,11 @@
       "category": "low",
       "priority": 71,
       "description": "Cookie Consent Banner",
-      "test_ids": ["MVP-CKE-001", "MVP-CKE-002", "MVP-CKE-003"],
+      "test_ids": [
+        "MVP-CKE-001",
+        "MVP-CKE-002",
+        "MVP-CKE-003"
+      ],
       "steps": [
         "Create cookie consent component",
         "Store consent preference",
@@ -2048,7 +2130,13 @@
       "category": "medium",
       "priority": 72,
       "description": "Affiliate System",
-      "test_ids": ["EXP-AFF-001", "EXP-AFF-002", "EXP-AFF-003", "EXP-AFF-004", "EXP-AFF-005"],
+      "test_ids": [
+        "EXP-AFF-001",
+        "EXP-AFF-002",
+        "EXP-AFF-003",
+        "EXP-AFF-004",
+        "EXP-AFF-005"
+      ],
       "steps": [
         "Create affiliates table",
         "Generate unique affiliate links",
@@ -2073,7 +2161,12 @@
       "category": "medium",
       "priority": 73,
       "description": "Events/Calendar App",
-      "test_ids": ["EXP-EVT-001", "EXP-EVT-002", "EXP-EVT-003", "EXP-EVT-004"],
+      "test_ids": [
+        "EXP-EVT-001",
+        "EXP-EVT-002",
+        "EXP-EVT-003",
+        "EXP-EVT-004"
+      ],
       "steps": [
         "Create events table",
         "Calendar view component",
@@ -2096,7 +2189,12 @@
       "category": "medium",
       "priority": 74,
       "description": "Coaching Bookings",
-      "test_ids": ["EXP-COA-001", "EXP-COA-002", "EXP-COA-003", "EXP-COA-004"],
+      "test_ids": [
+        "EXP-COA-001",
+        "EXP-COA-002",
+        "EXP-COA-003",
+        "EXP-COA-004"
+      ],
       "steps": [
         "Create coaching slots table",
         "Calendar availability picker",
@@ -2119,7 +2217,11 @@
       "category": "low",
       "priority": 75,
       "description": "Templates Vault App",
-      "test_ids": ["EXP-TPL-001", "EXP-TPL-002", "EXP-TPL-003"],
+      "test_ids": [
+        "EXP-TPL-001",
+        "EXP-TPL-002",
+        "EXP-TPL-003"
+      ],
       "steps": [
         "Create templates table",
         "Template browser UI",
@@ -2142,7 +2244,12 @@
       "category": "low",
       "priority": 76,
       "description": "Multi-Instructor Support",
-      "test_ids": ["EXP-INS-001", "EXP-INS-002", "EXP-INS-003", "EXP-INS-004"],
+      "test_ids": [
+        "EXP-INS-001",
+        "EXP-INS-002",
+        "EXP-INS-003",
+        "EXP-INS-004"
+      ],
       "steps": [
         "Add instructor role",
         "Assign instructors to courses",
@@ -2165,7 +2272,11 @@
       "category": "low",
       "priority": 77,
       "description": "App Marketplace",
-      "test_ids": ["EXP-MKT-001", "EXP-MKT-002", "EXP-MKT-003"],
+      "test_ids": [
+        "EXP-MKT-001",
+        "EXP-MKT-002",
+        "EXP-MKT-003"
+      ],
       "steps": [
         "Create apps registry",
         "App installation flow",
@@ -2188,7 +2299,12 @@
       "category": "medium",
       "priority": 78,
       "description": "Workspace/Experiences System",
-      "test_ids": ["PLT-WKS-001", "PLT-WKS-002", "PLT-WKS-003", "PLT-WKS-004"],
+      "test_ids": [
+        "PLT-WKS-001",
+        "PLT-WKS-002",
+        "PLT-WKS-003",
+        "PLT-WKS-004"
+      ],
       "steps": [
         "Create workspaces table",
         "Assign products to workspaces",
@@ -2211,7 +2327,12 @@
       "category": "high",
       "priority": 79,
       "description": "Onboarding Email Sequence",
-      "test_ids": ["GRO-ONB-001", "GRO-ONB-002", "GRO-ONB-003", "GRO-ONB-004"],
+      "test_ids": [
+        "GRO-ONB-001",
+        "GRO-ONB-002",
+        "GRO-ONB-003",
+        "GRO-ONB-004"
+      ],
       "steps": [
         "Create onboarding automation",
         "Welcome + getting started email",
@@ -2234,7 +2355,11 @@
       "category": "medium",
       "priority": 80,
       "description": "Announcement Email Notifications",
-      "test_ids": ["PLT-ANN-E-001", "PLT-ANN-E-002", "PLT-ANN-E-003"],
+      "test_ids": [
+        "PLT-ANN-E-001",
+        "PLT-ANN-E-002",
+        "PLT-ANN-E-003"
+      ],
       "steps": [
         "Option to email on announcement",
         "Send to relevant members",
@@ -2257,7 +2382,11 @@
       "category": "low",
       "priority": 81,
       "description": "Reply Notifications",
-      "test_ids": ["PLT-RPN-001", "PLT-RPN-002", "PLT-RPN-003"],
+      "test_ids": [
+        "PLT-RPN-001",
+        "PLT-RPN-002",
+        "PLT-RPN-003"
+      ],
       "steps": [
         "Notify on thread reply",
         "Notify on comment reply",
@@ -2280,7 +2409,11 @@
       "category": "low",
       "priority": 82,
       "description": "Mux Webhook Handler",
-      "test_ids": ["PLT-MUX-W-001", "PLT-MUX-W-002", "PLT-MUX-W-003"],
+      "test_ids": [
+        "PLT-MUX-W-001",
+        "PLT-MUX-W-002",
+        "PLT-MUX-W-003"
+      ],
       "steps": [
         "Handle video.asset.ready event",
         "Update lesson with playback_id",
@@ -2303,7 +2436,12 @@
       "category": "medium",
       "priority": 83,
       "description": "Quiz Grading & Results",
-      "test_ids": ["PLT-QIZ-G-001", "PLT-QIZ-G-002", "PLT-QIZ-G-003", "PLT-QIZ-G-004"],
+      "test_ids": [
+        "PLT-QIZ-G-001",
+        "PLT-QIZ-G-002",
+        "PLT-QIZ-G-003",
+        "PLT-QIZ-G-004"
+      ],
       "steps": [
         "Auto-grade multiple choice",
         "Calculate passing score",
@@ -2326,7 +2464,11 @@
       "category": "medium",
       "priority": 84,
       "description": "Offer Impression Analytics",
-      "test_ids": ["GRO-OIA-001", "GRO-OIA-002", "GRO-OIA-003"],
+      "test_ids": [
+        "GRO-OIA-001",
+        "GRO-OIA-002",
+        "GRO-OIA-003"
+      ],
       "steps": [
         "Track offer views",
         "Calculate impression to checkout rate",
@@ -2349,7 +2491,12 @@
       "category": "low",
       "priority": 85,
       "description": "Password Authentication",
-      "test_ids": ["PLT-PWD-001", "PLT-PWD-002", "PLT-PWD-003", "PLT-PWD-004"],
+      "test_ids": [
+        "PLT-PWD-001",
+        "PLT-PWD-002",
+        "PLT-PWD-003",
+        "PLT-PWD-004"
+      ],
       "steps": [
         "Enable password signup",
         "Password strength validation",
@@ -2372,7 +2519,11 @@
       "category": "medium",
       "priority": 86,
       "description": "Chat Reactions - Emoji Responses",
-      "test_ids": ["PLT-RXN-001", "PLT-RXN-002", "PLT-RXN-003"],
+      "test_ids": [
+        "PLT-RXN-001",
+        "PLT-RXN-002",
+        "PLT-RXN-003"
+      ],
       "steps": [
         "Create chat_reactions table",
         "Add reaction picker to messages",
@@ -2395,7 +2546,11 @@
       "category": "low",
       "priority": 87,
       "description": "Typing Indicators - Realtime",
-      "test_ids": ["PLT-TYP-001", "PLT-TYP-002", "PLT-TYP-003"],
+      "test_ids": [
+        "PLT-TYP-001",
+        "PLT-TYP-002",
+        "PLT-TYP-003"
+      ],
       "steps": [
         "Create chat_typing table",
         "Track typing start/stop",
@@ -2418,7 +2573,12 @@
       "category": "medium",
       "priority": 88,
       "description": "Chat Channels - Multiple per Space",
-      "test_ids": ["PLT-CHN-001", "PLT-CHN-002", "PLT-CHN-003", "PLT-CHN-004"],
+      "test_ids": [
+        "PLT-CHN-001",
+        "PLT-CHN-002",
+        "PLT-CHN-003",
+        "PLT-CHN-004"
+      ],
       "steps": [
         "Create chat_channels table",
         "Configure channels per space",
@@ -2441,7 +2601,11 @@
       "category": "medium",
       "priority": 89,
       "description": "Certificate PDF Generation",
-      "test_ids": ["PLT-PDF-C-001", "PLT-PDF-C-002", "PLT-PDF-C-003"],
+      "test_ids": [
+        "PLT-PDF-C-001",
+        "PLT-PDF-C-002",
+        "PLT-PDF-C-003"
+      ],
       "steps": [
         "Generate PDF certificate",
         "Include student name and course",
@@ -2464,7 +2628,11 @@
       "category": "low",
       "priority": 90,
       "description": "Certificate Verification Page",
-      "test_ids": ["PLT-VRF-001", "PLT-VRF-002", "PLT-VRF-003"],
+      "test_ids": [
+        "PLT-VRF-001",
+        "PLT-VRF-002",
+        "PLT-VRF-003"
+      ],
       "steps": [
         "Create /verify/[token] route",
         "Display certificate details",
@@ -2487,7 +2655,11 @@
       "category": "medium",
       "priority": 91,
       "description": "Auto-Certificate Generation Trigger",
-      "test_ids": ["PLT-ACG-001", "PLT-ACG-002", "PLT-ACG-003"],
+      "test_ids": [
+        "PLT-ACG-001",
+        "PLT-ACG-002",
+        "PLT-ACG-003"
+      ],
       "steps": [
         "Trigger on course completion",
         "Generate unique certificate number",
@@ -2510,7 +2682,12 @@
       "category": "medium",
       "priority": 92,
       "description": "Subscription History Tracking",
-      "test_ids": ["GRO-SHT-001", "GRO-SHT-002", "GRO-SHT-003", "GRO-SHT-004"],
+      "test_ids": [
+        "GRO-SHT-001",
+        "GRO-SHT-002",
+        "GRO-SHT-003",
+        "GRO-SHT-004"
+      ],
       "steps": [
         "Create subscription_history table",
         "Track plan changes",
@@ -2533,7 +2710,11 @@
       "category": "medium",
       "priority": 93,
       "description": "Churn Rate Analytics",
-      "test_ids": ["GRO-CHR-001", "GRO-CHR-002", "GRO-CHR-003"],
+      "test_ids": [
+        "GRO-CHR-001",
+        "GRO-CHR-002",
+        "GRO-CHR-003"
+      ],
       "steps": [
         "Calculate churn rate function",
         "Track churned subscribers",
@@ -2556,7 +2737,12 @@
       "category": "medium",
       "priority": 94,
       "description": "Notification Preferences",
-      "test_ids": ["PLT-NPR-001", "PLT-NPR-002", "PLT-NPR-003", "PLT-NPR-004"],
+      "test_ids": [
+        "PLT-NPR-001",
+        "PLT-NPR-002",
+        "PLT-NPR-003",
+        "PLT-NPR-004"
+      ],
       "steps": [
         "Create notification_preferences table",
         "Settings for email types",
@@ -2579,7 +2765,12 @@
       "category": "medium",
       "priority": 95,
       "description": "User Profiles with Avatars",
-      "test_ids": ["PLT-AVT-001", "PLT-AVT-002", "PLT-AVT-003", "PLT-AVT-004"],
+      "test_ids": [
+        "PLT-AVT-001",
+        "PLT-AVT-002",
+        "PLT-AVT-003",
+        "PLT-AVT-004"
+      ],
       "steps": [
         "Create profiles table",
         "Display name and bio fields",
@@ -2602,7 +2793,11 @@
       "category": "low",
       "priority": 96,
       "description": "Newsletter Subscription",
-      "test_ids": ["GRO-NWS-001", "GRO-NWS-002", "GRO-NWS-003"],
+      "test_ids": [
+        "GRO-NWS-001",
+        "GRO-NWS-002",
+        "GRO-NWS-003"
+      ],
       "steps": [
         "Newsletter signup form",
         "Store email in Resend audience",
@@ -2625,7 +2820,12 @@
       "category": "medium",
       "priority": 97,
       "description": "Video Progress Tracking",
-      "test_ids": ["PLT-VPT-001", "PLT-VPT-002", "PLT-VPT-003", "PLT-VPT-004"],
+      "test_ids": [
+        "PLT-VPT-001",
+        "PLT-VPT-002",
+        "PLT-VPT-003",
+        "PLT-VPT-004"
+      ],
       "steps": [
         "Track video watch position",
         "Store last watched timestamp",
@@ -2648,7 +2848,13 @@
       "category": "medium",
       "priority": 98,
       "description": "Full-Text Search Infrastructure",
-      "test_ids": ["PLT-FTS-001", "PLT-FTS-002", "PLT-FTS-003", "PLT-FTS-004", "PLT-FTS-005"],
+      "test_ids": [
+        "PLT-FTS-001",
+        "PLT-FTS-002",
+        "PLT-FTS-003",
+        "PLT-FTS-004",
+        "PLT-FTS-005"
+      ],
       "steps": [
         "Add tsvector columns to tables",
         "Create GIN indexes",
@@ -2672,7 +2878,11 @@
       "category": "low",
       "priority": 99,
       "description": "Realtime Subscriptions - Supabase",
-      "test_ids": ["PLT-RTS-001", "PLT-RTS-002", "PLT-RTS-003"],
+      "test_ids": [
+        "PLT-RTS-001",
+        "PLT-RTS-002",
+        "PLT-RTS-003"
+      ],
       "steps": [
         "Enable realtime on chat tables",
         "Subscribe to message inserts",
@@ -2695,7 +2905,12 @@
       "category": "low",
       "priority": 100,
       "description": "Drip Content Logic Library",
-      "test_ids": ["PLT-DCL-001", "PLT-DCL-002", "PLT-DCL-003", "PLT-DCL-004"],
+      "test_ids": [
+        "PLT-DCL-001",
+        "PLT-DCL-002",
+        "PLT-DCL-003",
+        "PLT-DCL-004"
+      ],
       "steps": [
         "Compute unlock dates",
         "Check lesson availability",
@@ -2718,7 +2933,13 @@
       "category": "critical",
       "priority": 101,
       "description": "Brief-to-Video Pipeline - JSON brief to rendered MP4",
-      "test_ids": ["VID-BRF-001", "VID-BRF-002", "VID-BRF-003", "VID-BRF-004", "VID-BRF-005"],
+      "test_ids": [
+        "VID-BRF-001",
+        "VID-BRF-002",
+        "VID-BRF-003",
+        "VID-BRF-004",
+        "VID-BRF-005"
+      ],
       "steps": [
         "Parse ContentBrief JSON schema",
         "Resolve all asset dependencies",
@@ -2743,7 +2964,12 @@
       "category": "critical",
       "priority": 102,
       "description": "AI Voice Cloning - IndexTTS-2 Integration",
-      "test_ids": ["VID-VOX-001", "VID-VOX-002", "VID-VOX-003", "VID-VOX-004"],
+      "test_ids": [
+        "VID-VOX-001",
+        "VID-VOX-002",
+        "VID-VOX-003",
+        "VID-VOX-004"
+      ],
       "steps": [
         "Connect to Hugging Face IndexTTS-2 space",
         "Upload voice reference WAV",
@@ -2767,7 +2993,12 @@
       "category": "critical",
       "priority": 103,
       "description": "Auto-Captioning - Whisper Word Timestamps",
-      "test_ids": ["VID-CAP-001", "VID-CAP-002", "VID-CAP-003", "VID-CAP-004"],
+      "test_ids": [
+        "VID-CAP-001",
+        "VID-CAP-002",
+        "VID-CAP-003",
+        "VID-CAP-004"
+      ],
       "steps": [
         "Send audio to OpenAI Whisper API",
         "Request word-level timestamps",
@@ -2790,7 +3021,12 @@
       "category": "high",
       "priority": 104,
       "description": "TikTok-Style Caption Renderer",
-      "test_ids": ["VID-TKC-001", "VID-TKC-002", "VID-TKC-003", "VID-TKC-004"],
+      "test_ids": [
+        "VID-TKC-001",
+        "VID-TKC-002",
+        "VID-TKC-003",
+        "VID-TKC-004"
+      ],
       "steps": [
         "Create AnimatedCaption component",
         "Word-by-word highlight animation",
@@ -2813,7 +3049,12 @@
       "category": "high",
       "priority": 105,
       "description": "AI Graphics Generation - DALL-E 3",
-      "test_ids": ["VID-IMG-001", "VID-IMG-002", "VID-IMG-003", "VID-IMG-004"],
+      "test_ids": [
+        "VID-IMG-001",
+        "VID-IMG-002",
+        "VID-IMG-003",
+        "VID-IMG-004"
+      ],
       "steps": [
         "Generate scene illustrations from prompts",
         "Create character graphics",
@@ -2836,7 +3077,12 @@
       "category": "high",
       "priority": 106,
       "description": "Character Consistency Engine",
-      "test_ids": ["VID-CHR-001", "VID-CHR-002", "VID-CHR-003", "VID-CHR-004"],
+      "test_ids": [
+        "VID-CHR-001",
+        "VID-CHR-002",
+        "VID-CHR-003",
+        "VID-CHR-004"
+      ],
       "steps": [
         "Define character traits schema",
         "Generate reference sheet",
@@ -2859,7 +3105,12 @@
       "category": "high",
       "priority": 107,
       "description": "Script Generation - GPT-4 Topic to Script",
-      "test_ids": ["VID-SCR-001", "VID-SCR-002", "VID-SCR-003", "VID-SCR-004"],
+      "test_ids": [
+        "VID-SCR-001",
+        "VID-SCR-002",
+        "VID-SCR-003",
+        "VID-SCR-004"
+      ],
       "steps": [
         "Accept topic or raw script input",
         "Generate structured brief via GPT-4",
@@ -2882,7 +3133,11 @@
       "category": "medium",
       "priority": 108,
       "description": "Sound Effects Generation - ElevenLabs",
-      "test_ids": ["VID-SFX-001", "VID-SFX-002", "VID-SFX-003"],
+      "test_ids": [
+        "VID-SFX-001",
+        "VID-SFX-002",
+        "VID-SFX-003"
+      ],
       "steps": [
         "Generate SFX from text prompts",
         "Fallback to Freesound library",
@@ -2905,7 +3160,12 @@
       "category": "medium",
       "priority": 109,
       "description": "B-Roll Fetching - Stock Media APIs",
-      "test_ids": ["VID-BRL-001", "VID-BRL-002", "VID-BRL-003", "VID-BRL-004"],
+      "test_ids": [
+        "VID-BRL-001",
+        "VID-BRL-002",
+        "VID-BRL-003",
+        "VID-BRL-004"
+      ],
       "steps": [
         "Query Pexels for video clips",
         "Query Pixabay for footage",
@@ -2928,7 +3188,13 @@
       "category": "high",
       "priority": 110,
       "description": "Explainer Video Format (explainer_v1)",
-      "test_ids": ["VID-EXP-001", "VID-EXP-002", "VID-EXP-003", "VID-EXP-004", "VID-EXP-005"],
+      "test_ids": [
+        "VID-EXP-001",
+        "VID-EXP-002",
+        "VID-EXP-003",
+        "VID-EXP-004",
+        "VID-EXP-005"
+      ],
       "steps": [
         "Hook scene (5s attention grabber)",
         "Context scene (10s problem setup)",
@@ -2953,7 +3219,12 @@
       "category": "medium",
       "priority": 111,
       "description": "GitHub Dev Vlog Format (devvlog_v1)",
-      "test_ids": ["VID-DVL-001", "VID-DVL-002", "VID-DVL-003", "VID-DVL-004"],
+      "test_ids": [
+        "VID-DVL-001",
+        "VID-DVL-002",
+        "VID-DVL-003",
+        "VID-DVL-004"
+      ],
       "steps": [
         "Hook (3-5s 'I just built X')",
         "Context (10-15s problem statement)",
@@ -2977,7 +3248,11 @@
       "category": "medium",
       "priority": 112,
       "description": "Shorts Format (shorts_v1)",
-      "test_ids": ["VID-SHT-001", "VID-SHT-002", "VID-SHT-003"],
+      "test_ids": [
+        "VID-SHT-001",
+        "VID-SHT-002",
+        "VID-SHT-003"
+      ],
       "steps": [
         "Viral hook opening",
         "Quick value delivery",
@@ -3000,7 +3275,12 @@
       "category": "medium",
       "priority": 113,
       "description": "Listicle Format (listicle_v1)",
-      "test_ids": ["VID-LST-001", "VID-LST-002", "VID-LST-003", "VID-LST-004"],
+      "test_ids": [
+        "VID-LST-001",
+        "VID-LST-002",
+        "VID-LST-003",
+        "VID-LST-004"
+      ],
       "steps": [
         "Hook with list preview",
         "Numbered list items",
@@ -3023,7 +3303,11 @@
       "category": "low",
       "priority": 114,
       "description": "Comparison Format (comparison_v1)",
-      "test_ids": ["VID-CMP-001", "VID-CMP-002", "VID-CMP-003"],
+      "test_ids": [
+        "VID-CMP-001",
+        "VID-CMP-002",
+        "VID-CMP-003"
+      ],
       "steps": [
         "Split screen layout",
         "X vs Y comparison",
@@ -3046,7 +3330,11 @@
       "category": "low",
       "priority": 115,
       "description": "UGC Recreation Format (ugc_v1)",
-      "test_ids": ["VID-UGC-001", "VID-UGC-002", "VID-UGC-003"],
+      "test_ids": [
+        "VID-UGC-001",
+        "VID-UGC-002",
+        "VID-UGC-003"
+      ],
       "steps": [
         "Analyze trending format",
         "Recreate structure",
@@ -3069,7 +3357,12 @@
       "category": "medium",
       "priority": 116,
       "description": "Static Ad Compositions",
-      "test_ids": ["VID-SAD-001", "VID-SAD-002", "VID-SAD-003", "VID-SAD-004"],
+      "test_ids": [
+        "VID-SAD-001",
+        "VID-SAD-002",
+        "VID-SAD-003",
+        "VID-SAD-004"
+      ],
       "steps": [
         "Instagram Post (1080x1080)",
         "Instagram Story (1080x1920)",
@@ -3094,7 +3387,12 @@
       "category": "medium",
       "priority": 117,
       "description": "Code Block Component",
-      "test_ids": ["VID-COD-001", "VID-COD-002", "VID-COD-003", "VID-COD-004"],
+      "test_ids": [
+        "VID-COD-001",
+        "VID-COD-002",
+        "VID-COD-003",
+        "VID-COD-004"
+      ],
       "steps": [
         "Syntax highlighting by language",
         "Typing animation effect",
@@ -3117,7 +3415,11 @@
       "category": "medium",
       "priority": 118,
       "description": "Terminal Animation Component",
-      "test_ids": ["VID-TRM-001", "VID-TRM-002", "VID-TRM-003"],
+      "test_ids": [
+        "VID-TRM-001",
+        "VID-TRM-002",
+        "VID-TRM-003"
+      ],
       "steps": [
         "Terminal window mockup",
         "Command typing animation",
@@ -3140,7 +3442,11 @@
       "category": "medium",
       "priority": 119,
       "description": "Browser Mockup Component",
-      "test_ids": ["VID-BRW-001", "VID-BRW-002", "VID-BRW-003"],
+      "test_ids": [
+        "VID-BRW-001",
+        "VID-BRW-002",
+        "VID-BRW-003"
+      ],
       "steps": [
         "Chrome-style browser frame",
         "URL bar with custom URL",
@@ -3163,7 +3469,10 @@
       "category": "low",
       "priority": 120,
       "description": "Git Commit Animation",
-      "test_ids": ["VID-GIT-001", "VID-GIT-002"],
+      "test_ids": [
+        "VID-GIT-001",
+        "VID-GIT-002"
+      ],
       "steps": [
         "Commit message display",
         "Hash animation",
@@ -3185,7 +3494,10 @@
       "category": "low",
       "priority": 121,
       "description": "PR Merge Animation",
-      "test_ids": ["VID-PRM-001", "VID-PRM-002"],
+      "test_ids": [
+        "VID-PRM-001",
+        "VID-PRM-002"
+      ],
       "steps": [
         "PR title and number",
         "Merge animation effect",
@@ -3207,7 +3519,12 @@
       "category": "high",
       "priority": 122,
       "description": "Scene Templates System",
-      "test_ids": ["VID-SCN-001", "VID-SCN-002", "VID-SCN-003", "VID-SCN-004"],
+      "test_ids": [
+        "VID-SCN-001",
+        "VID-SCN-002",
+        "VID-SCN-003",
+        "VID-SCN-004"
+      ],
       "steps": [
         "IntroScene template",
         "TopicScene template",
@@ -3231,7 +3548,12 @@
       "category": "medium",
       "priority": 123,
       "description": "Animation Presets Library",
-      "test_ids": ["VID-ANI-001", "VID-ANI-002", "VID-ANI-003", "VID-ANI-004"],
+      "test_ids": [
+        "VID-ANI-001",
+        "VID-ANI-002",
+        "VID-ANI-003",
+        "VID-ANI-004"
+      ],
       "steps": [
         "Fade animations",
         "Slide animations",
@@ -3255,7 +3577,11 @@
       "category": "medium",
       "priority": 124,
       "description": "Visual Effects - Particles & Glow",
-      "test_ids": ["VID-VFX-001", "VID-VFX-002", "VID-VFX-003"],
+      "test_ids": [
+        "VID-VFX-001",
+        "VID-VFX-002",
+        "VID-VFX-003"
+      ],
       "steps": [
         "Particle systems",
         "Glow effects",
@@ -3278,7 +3604,12 @@
       "category": "high",
       "priority": 125,
       "description": "Multi-Format Output System",
-      "test_ids": ["VID-MFO-001", "VID-MFO-002", "VID-MFO-003", "VID-MFO-004"],
+      "test_ids": [
+        "VID-MFO-001",
+        "VID-MFO-002",
+        "VID-MFO-003",
+        "VID-MFO-004"
+      ],
       "steps": [
         "9:16 vertical (TikTok/Reels)",
         "16:9 horizontal (YouTube)",
@@ -3301,7 +3632,12 @@
       "category": "high",
       "priority": 126,
       "description": "Brand Template System",
-      "test_ids": ["VID-BRD-001", "VID-BRD-002", "VID-BRD-003", "VID-BRD-004"],
+      "test_ids": [
+        "VID-BRD-001",
+        "VID-BRD-002",
+        "VID-BRD-003",
+        "VID-BRD-004"
+      ],
       "steps": [
         "Brand config JSON schema",
         "Colors, fonts, logos",
@@ -3325,7 +3661,13 @@
       "category": "high",
       "priority": 127,
       "description": "CLI Pipeline - npm run commands",
-      "test_ids": ["VID-CLI-001", "VID-CLI-002", "VID-CLI-003", "VID-CLI-004", "VID-CLI-005"],
+      "test_ids": [
+        "VID-CLI-001",
+        "VID-CLI-002",
+        "VID-CLI-003",
+        "VID-CLI-004",
+        "VID-CLI-005"
+      ],
       "steps": [
         "generate:explainer command",
         "generate:audio command",
@@ -3349,7 +3691,11 @@
       "category": "medium",
       "priority": 128,
       "description": "Batch Video Generation",
-      "test_ids": ["VID-BAT-001", "VID-BAT-002", "VID-BAT-003"],
+      "test_ids": [
+        "VID-BAT-001",
+        "VID-BAT-002",
+        "VID-BAT-003"
+      ],
       "steps": [
         "Queue multiple briefs",
         "Process sequentially",
@@ -3372,7 +3718,11 @@
       "category": "medium",
       "priority": 129,
       "description": "Timeline QA System",
-      "test_ids": ["VID-TQA-001", "VID-TQA-002", "VID-TQA-003"],
+      "test_ids": [
+        "VID-TQA-001",
+        "VID-TQA-002",
+        "VID-TQA-003"
+      ],
       "steps": [
         "Validate timeline synchronization",
         "Check audio/video alignment",
@@ -3395,7 +3745,11 @@
       "category": "medium",
       "priority": 130,
       "description": "Brief Validation System",
-      "test_ids": ["VID-BVL-001", "VID-BVL-002", "VID-BVL-003"],
+      "test_ids": [
+        "VID-BVL-001",
+        "VID-BVL-002",
+        "VID-BVL-003"
+      ],
       "steps": [
         "Validate JSON structure",
         "Check required fields",
@@ -3418,7 +3772,11 @@
       "category": "low",
       "priority": 131,
       "description": "YouTube Upload Automation",
-      "test_ids": ["VID-YTU-001", "VID-YTU-002", "VID-YTU-003"],
+      "test_ids": [
+        "VID-YTU-001",
+        "VID-YTU-002",
+        "VID-YTU-003"
+      ],
       "steps": [
         "Connect YouTube API",
         "Upload rendered video",
@@ -3441,7 +3799,11 @@
       "category": "low",
       "priority": 132,
       "description": "Thumbnail Generator",
-      "test_ids": ["VID-THM-001", "VID-THM-002", "VID-THM-003"],
+      "test_ids": [
+        "VID-THM-001",
+        "VID-THM-002",
+        "VID-THM-003"
+      ],
       "steps": [
         "Extract key frame",
         "Add text overlay",
@@ -3464,7 +3826,11 @@
       "category": "low",
       "priority": 133,
       "description": "A/B Testing Framework",
-      "test_ids": ["VID-ABT-001", "VID-ABT-002", "VID-ABT-003"],
+      "test_ids": [
+        "VID-ABT-001",
+        "VID-ABT-002",
+        "VID-ABT-003"
+      ],
       "steps": [
         "Generate video variants",
         "Track performance metrics",
@@ -3487,7 +3853,11 @@
       "category": "low",
       "priority": 134,
       "description": "Analytics Dashboard",
-      "test_ids": ["VID-ANA-001", "VID-ANA-002", "VID-ANA-003"],
+      "test_ids": [
+        "VID-ANA-001",
+        "VID-ANA-002",
+        "VID-ANA-003"
+      ],
       "steps": [
         "Track video performance",
         "Display engagement metrics",
@@ -3510,7 +3880,11 @@
       "category": "low",
       "priority": 135,
       "description": "Brand Template Marketplace",
-      "test_ids": ["VID-MKP-001", "VID-MKP-002", "VID-MKP-003"],
+      "test_ids": [
+        "VID-MKP-001",
+        "VID-MKP-002",
+        "VID-MKP-003"
+      ],
       "steps": [
         "Browse templates",
         "Purchase/download templates",
@@ -3533,7 +3907,11 @@
       "category": "low",
       "priority": 136,
       "description": "Real-Time Collaboration",
-      "test_ids": ["VID-RTC-001", "VID-RTC-002", "VID-RTC-003"],
+      "test_ids": [
+        "VID-RTC-001",
+        "VID-RTC-002",
+        "VID-RTC-003"
+      ],
       "steps": [
         "Multiple editors",
         "Live sync",
@@ -3556,7 +3934,10 @@
       "category": "medium",
       "priority": 137,
       "description": "Title Summarization - GPT-4",
-      "test_ids": ["VID-TTL-001", "VID-TTL-002"],
+      "test_ids": [
+        "VID-TTL-001",
+        "VID-TTL-002"
+      ],
       "steps": [
         "Generate hook_title from script",
         "Eye-catching summary",
@@ -3577,7 +3958,11 @@
       "category": "medium",
       "priority": 138,
       "description": "Attribution Logging",
-      "test_ids": ["VID-ATT-001", "VID-ATT-002", "VID-ATT-003"],
+      "test_ids": [
+        "VID-ATT-001",
+        "VID-ATT-002",
+        "VID-ATT-003"
+      ],
       "steps": [
         "Track stock media usage",
         "Log license requirements",
@@ -3600,7 +3985,11 @@
       "category": "medium",
       "priority": 139,
       "description": "Remotion Studio Preview",
-      "test_ids": ["VID-STU-001", "VID-STU-002", "VID-STU-003"],
+      "test_ids": [
+        "VID-STU-001",
+        "VID-STU-002",
+        "VID-STU-003"
+      ],
       "steps": [
         "npm run dev server",
         "Live composition preview",
@@ -3623,7 +4012,12 @@
       "category": "high",
       "priority": 140,
       "description": "Video Render Engine - Remotion",
-      "test_ids": ["VID-RND-001", "VID-RND-002", "VID-RND-003", "VID-RND-004"],
+      "test_ids": [
+        "VID-RND-001",
+        "VID-RND-002",
+        "VID-RND-003",
+        "VID-RND-004"
+      ],
       "steps": [
         "Configure Remotion 4.x",
         "H.264/H.265 output",
@@ -3646,7 +4040,12 @@
       "category": "high",
       "priority": 141,
       "description": "SFX Library Manifest System",
-      "test_ids": ["VID-SFM-001", "VID-SFM-002", "VID-SFM-003", "VID-SFM-004"],
+      "test_ids": [
+        "VID-SFM-001",
+        "VID-SFM-002",
+        "VID-SFM-003",
+        "VID-SFM-004"
+      ],
       "steps": [
         "Create manifest.json structure",
         "Define sfxId, file, tags, description",
@@ -3669,7 +4068,11 @@
       "category": "medium",
       "priority": 142,
       "description": "Beat Extractor - Script to Frames",
-      "test_ids": ["VID-BEX-001", "VID-BEX-002", "VID-BEX-003"],
+      "test_ids": [
+        "VID-BEX-001",
+        "VID-BEX-002",
+        "VID-BEX-003"
+      ],
       "steps": [
         "Parse script text",
         "Assign frame offsets using WPM",
@@ -3692,7 +4095,11 @@
       "category": "medium",
       "priority": 143,
       "description": "SFX Context Pack for LLM",
-      "test_ids": ["VID-SCP-001", "VID-SCP-002", "VID-SCP-003"],
+      "test_ids": [
+        "VID-SCP-001",
+        "VID-SCP-002",
+        "VID-SCP-003"
+      ],
       "steps": [
         "Generate compact sfxIndex",
         "Include rules for placement",
@@ -3715,7 +4122,11 @@
       "category": "medium",
       "priority": 144,
       "description": "Anti-Spam SFX Thinning",
-      "test_ids": ["VID-AST-001", "VID-AST-002", "VID-AST-003"],
+      "test_ids": [
+        "VID-AST-001",
+        "VID-AST-002",
+        "VID-AST-003"
+      ],
       "steps": [
         "Min 0.35s between SFX",
         "Max 2 SFX per second",
@@ -3738,7 +4149,12 @@
       "category": "high",
       "priority": 145,
       "description": "FFmpeg Audio Mixer",
-      "test_ids": ["VID-FAM-001", "VID-FAM-002", "VID-FAM-003", "VID-FAM-004"],
+      "test_ids": [
+        "VID-FAM-001",
+        "VID-FAM-002",
+        "VID-FAM-003",
+        "VID-FAM-004"
+      ],
       "steps": [
         "Combine voiceover + music + SFX",
         "Output audio_mix.wav",
@@ -3761,7 +4177,11 @@
       "category": "medium",
       "priority": 146,
       "description": "SfxLayer Remotion Component",
-      "test_ids": ["VID-SFL-001", "VID-SFL-002", "VID-SFL-003"],
+      "test_ids": [
+        "VID-SFL-001",
+        "VID-SFL-002",
+        "VID-SFL-003"
+      ],
       "steps": [
         "Map audio_events.json to Sequences",
         "Validate IDs against manifest",
@@ -3784,7 +4204,12 @@
       "category": "high",
       "priority": 147,
       "description": "YouTube Style Analyzer",
-      "test_ids": ["VID-YSA-001", "VID-YSA-002", "VID-YSA-003", "VID-YSA-004"],
+      "test_ids": [
+        "VID-YSA-001",
+        "VID-YSA-002",
+        "VID-YSA-003",
+        "VID-YSA-004"
+      ],
       "steps": [
         "Download YouTube video frames",
         "Analyze with AI vision (GPT-4o)",
@@ -3807,7 +4232,13 @@
       "category": "high",
       "priority": 148,
       "description": "TikTok Caption Styles (9 variants)",
-      "test_ids": ["VID-TCS-001", "VID-TCS-002", "VID-TCS-003", "VID-TCS-004", "VID-TCS-005"],
+      "test_ids": [
+        "VID-TCS-001",
+        "VID-TCS-002",
+        "VID-TCS-003",
+        "VID-TCS-004",
+        "VID-TCS-005"
+      ],
       "steps": [
         "Bouncy word animation",
         "Shake active word",
@@ -3835,7 +4266,12 @@
       "category": "medium",
       "priority": 149,
       "description": "AI Character Component",
-      "test_ids": ["VID-AIC-001", "VID-AIC-002", "VID-AIC-003", "VID-AIC-004"],
+      "test_ids": [
+        "VID-AIC-001",
+        "VID-AIC-002",
+        "VID-AIC-003",
+        "VID-AIC-004"
+      ],
       "steps": [
         "Load AI-generated character image",
         "Background removal (rembg)",
@@ -3858,7 +4294,10 @@
       "category": "low",
       "priority": 150,
       "description": "Background Gradient Component",
-      "test_ids": ["VID-BGC-001", "VID-BGC-002"],
+      "test_ids": [
+        "VID-BGC-001",
+        "VID-BGC-002"
+      ],
       "steps": [
         "Render gradient backgrounds",
         "Support linear and radial",
@@ -3880,7 +4319,10 @@
       "category": "low",
       "priority": 151,
       "description": "Progress Bar Component",
-      "test_ids": ["VID-PBC-001", "VID-PBC-002"],
+      "test_ids": [
+        "VID-PBC-001",
+        "VID-PBC-002"
+      ],
       "steps": [
         "Display video progress",
         "Customizable colors",
@@ -3902,7 +4344,12 @@
       "category": "medium",
       "priority": 152,
       "description": "Animated Captions Component",
-      "test_ids": ["VID-ACC-001", "VID-ACC-002", "VID-ACC-003", "VID-ACC-004"],
+      "test_ids": [
+        "VID-ACC-001",
+        "VID-ACC-002",
+        "VID-ACC-003",
+        "VID-ACC-004"
+      ],
       "steps": [
         "Word-by-word karaoke style",
         "Multiple animation styles",
@@ -3925,7 +4372,12 @@
       "category": "medium",
       "priority": 153,
       "description": "Before/After Video Ads (BlankLogo)",
-      "test_ids": ["VID-BAV-001", "VID-BAV-002", "VID-BAV-003", "VID-BAV-004"],
+      "test_ids": [
+        "VID-BAV-001",
+        "VID-BAV-002",
+        "VID-BAV-003",
+        "VID-BAV-004"
+      ],
       "steps": [
         "Before video (problem state)",
         "After video (solution state)",
@@ -3948,7 +4400,11 @@
       "category": "medium",
       "priority": 154,
       "description": "Video Pairs Management System",
-      "test_ids": ["VID-VPM-001", "VID-VPM-002", "VID-VPM-003"],
+      "test_ids": [
+        "VID-VPM-001",
+        "VID-VPM-002",
+        "VID-VPM-003"
+      ],
       "steps": [
         "Define video pairs in config",
         "Before/after source mapping",
@@ -3971,7 +4427,11 @@
       "category": "low",
       "priority": 155,
       "description": "Copy Matrix System (12 variants)",
-      "test_ids": ["VID-CMS-001", "VID-CMS-002", "VID-CMS-003"],
+      "test_ids": [
+        "VID-CMS-001",
+        "VID-CMS-002",
+        "VID-CMS-003"
+      ],
       "steps": [
         "6 problem-aware ad variants",
         "6 solution-aware ad variants",
@@ -3994,7 +4454,11 @@
       "category": "low",
       "priority": 156,
       "description": "Motion Canvas Integration",
-      "test_ids": ["VID-MCI-001", "VID-MCI-002", "VID-MCI-003"],
+      "test_ids": [
+        "VID-MCI-001",
+        "VID-MCI-002",
+        "VID-MCI-003"
+      ],
       "steps": [
         "Playwright headless renderer",
         "Two-pass pipeline (seed → capture → render)",
@@ -4017,7 +4481,11 @@
       "category": "low",
       "priority": 157,
       "description": "Visual Reveals System",
-      "test_ids": ["VID-VRS-001", "VID-VRS-002", "VID-VRS-003"],
+      "test_ids": [
+        "VID-VRS-001",
+        "VID-VRS-002",
+        "VID-VRS-003"
+      ],
       "steps": [
         "Capture visual element appearances",
         "Record timestamp and kind",
@@ -4040,7 +4508,12 @@
       "category": "medium",
       "priority": 158,
       "description": "Macro Cues System",
-      "test_ids": ["VID-MAC-001", "VID-MAC-002", "VID-MAC-003", "VID-MAC-004"],
+      "test_ids": [
+        "VID-MAC-001",
+        "VID-MAC-002",
+        "VID-MAC-003",
+        "VID-MAC-004"
+      ],
       "steps": [
         "Define macro → SFX mappings",
         "reveal_riser, impact_soft, text_ping, whoosh_fast",
@@ -4063,7 +4536,11 @@
       "category": "medium",
       "priority": 159,
       "description": "Hybrid Format DSL",
-      "test_ids": ["VID-HFD-001", "VID-HFD-002", "VID-HFD-003"],
+      "test_ids": [
+        "VID-HFD-001",
+        "VID-HFD-002",
+        "VID-HFD-003"
+      ],
       "steps": [
         "Define format block types",
         "keyword, bullet, code, error, success, cta",
@@ -4086,7 +4563,11 @@
       "category": "medium",
       "priority": 160,
       "description": "API Render Server",
-      "test_ids": ["VID-ARS-001", "VID-ARS-002", "VID-ARS-003"],
+      "test_ids": [
+        "VID-ARS-001",
+        "VID-ARS-002",
+        "VID-ARS-003"
+      ],
       "steps": [
         "HTTP endpoint for render requests",
         "Accept brief JSON",
@@ -4109,7 +4590,11 @@
       "category": "medium",
       "priority": 161,
       "description": "Stripe Pricing Video Composition",
-      "test_ids": ["VID-SPV-001", "VID-SPV-002", "VID-SPV-003"],
+      "test_ids": [
+        "VID-SPV-001",
+        "VID-SPV-002",
+        "VID-SPV-003"
+      ],
       "steps": [
         "Animated pricing cards",
         "Feature lists",
@@ -4132,7 +4617,10 @@
       "category": "low",
       "priority": 162,
       "description": "UGC Style Composition",
-      "test_ids": ["VID-UGC-C-001", "VID-UGC-C-002"],
+      "test_ids": [
+        "VID-UGC-C-001",
+        "VID-UGC-C-002"
+      ],
       "steps": [
         "User-generated content look",
         "Authentic feel",
@@ -4154,7 +4642,11 @@
       "category": "low",
       "priority": 163,
       "description": "Asset-Enhanced Compositions",
-      "test_ids": ["VID-AEC-001", "VID-AEC-002", "VID-AEC-003"],
+      "test_ids": [
+        "VID-AEC-001",
+        "VID-AEC-002",
+        "VID-AEC-003"
+      ],
       "steps": [
         "AI-generated icons and props",
         "DALL-E asset integration",
@@ -4177,7 +4669,10 @@
       "category": "low",
       "priority": 164,
       "description": "Benchmark Test Compositions",
-      "test_ids": ["VID-BTC-001", "VID-BTC-002"],
+      "test_ids": [
+        "VID-BTC-001",
+        "VID-BTC-002"
+      ],
       "steps": [
         "Performance benchmarking",
         "Caption styles benchmark",
@@ -4199,7 +4694,11 @@
       "category": "medium",
       "priority": 165,
       "description": "Audio Events Validation (Zod)",
-      "test_ids": ["VID-AEV-001", "VID-AEV-002", "VID-AEV-003"],
+      "test_ids": [
+        "VID-AEV-001",
+        "VID-AEV-002",
+        "VID-AEV-003"
+      ],
       "steps": [
         "SfxManifest schema validation",
         "AudioEvents schema validation",
@@ -4222,7 +4721,10 @@
       "category": "medium",
       "priority": 166,
       "description": "Audio Events Merge Utility",
-      "test_ids": ["VID-AEM-001", "VID-AEM-002"],
+      "test_ids": [
+        "VID-AEM-001",
+        "VID-AEM-002"
+      ],
       "steps": [
         "Merge base events + SFX events",
         "Maintain frame ordering",
@@ -4245,7 +4747,10 @@
       "category": "medium",
       "priority": 167,
       "description": "Toolkit Extraction Script",
-      "test_ids": ["VID-TES-001", "VID-TES-002"],
+      "test_ids": [
+        "VID-TES-001",
+        "VID-TES-002"
+      ],
       "steps": [
         "Extract video toolkit to new project",
         "Copy core files",
@@ -4268,7 +4773,10 @@
       "category": "low",
       "priority": 168,
       "description": "Aerospace Content Templates",
-      "test_ids": ["VID-ACT-001", "VID-ACT-002"],
+      "test_ids": [
+        "VID-ACT-001",
+        "VID-ACT-002"
+      ],
       "steps": [
         "Aircraft wings video template",
         "NASA footage integration",
@@ -4291,7 +4799,10 @@
       "category": "low",
       "priority": 169,
       "description": "EverReach Compilation Format",
-      "test_ids": ["VID-ERC-001", "VID-ERC-002"],
+      "test_ids": [
+        "VID-ERC-001",
+        "VID-ERC-002"
+      ],
       "steps": [
         "Custom compilation format",
         "Multiple clips combined",
@@ -4314,7 +4825,11 @@
       "category": "medium",
       "priority": 170,
       "description": "EverReach Static Ads Renderer",
-      "test_ids": ["VID-ESA-001", "VID-ESA-002", "VID-ESA-003"],
+      "test_ids": [
+        "VID-ESA-001",
+        "VID-ESA-002",
+        "VID-ESA-003"
+      ],
       "steps": [
         "Render EverReach static ads",
         "Multiple sizes",
@@ -4337,7 +4852,10 @@
       "category": "low",
       "priority": 171,
       "description": "Hugging Face Rate Limit Management",
-      "test_ids": ["VID-HFR-001", "VID-HFR-002"],
+      "test_ids": [
+        "VID-HFR-001",
+        "VID-HFR-002"
+      ],
       "steps": [
         "Track API usage",
         "Handle rate limits gracefully",
@@ -4360,7 +4878,11 @@
       "category": "medium",
       "priority": 172,
       "description": "Voice Cloning Test Suite",
-      "test_ids": ["VID-VCT-001", "VID-VCT-002", "VID-VCT-003"],
+      "test_ids": [
+        "VID-VCT-001",
+        "VID-VCT-002",
+        "VID-VCT-003"
+      ],
       "steps": [
         "Test IndexTTS-2 API",
         "Test multiple voice models",
@@ -4383,7 +4905,11 @@
       "category": "medium",
       "priority": 173,
       "description": "AI Asset Generator (DALL-E)",
-      "test_ids": ["VID-AAG-001", "VID-AAG-002", "VID-AAG-003"],
+      "test_ids": [
+        "VID-AAG-001",
+        "VID-AAG-002",
+        "VID-AAG-003"
+      ],
       "steps": [
         "Generate icons from prompts",
         "Generate props and backgrounds",
@@ -4406,7 +4932,10 @@
       "category": "low",
       "priority": 174,
       "description": "Voiceover Generator for Aircraft",
-      "test_ids": ["VID-VAC-001", "VID-VAC-002"],
+      "test_ids": [
+        "VID-VAC-001",
+        "VID-VAC-002"
+      ],
       "steps": [
         "Generate aircraft-specific voiceovers",
         "Technical narration style",
@@ -4429,7 +4958,10 @@
       "category": "low",
       "priority": 175,
       "description": "Format Generator Script",
-      "test_ids": ["VID-FGS-001", "VID-FGS-002"],
+      "test_ids": [
+        "VID-FGS-001",
+        "VID-FGS-002"
+      ],
       "steps": [
         "Generate format from script.txt",
         "Seed visual reveals",
@@ -4452,7 +4984,12 @@
       "category": "high",
       "priority": 176,
       "description": "Animation Presets Library (40+ animations)",
-      "test_ids": ["VID-APL-001", "VID-APL-002", "VID-APL-003", "VID-APL-004"],
+      "test_ids": [
+        "VID-APL-001",
+        "VID-APL-002",
+        "VID-APL-003",
+        "VID-APL-004"
+      ],
       "steps": [
         "Entrance animations (fadeIn, slideUp, popIn, bounceIn, zoomIn, flipIn, typewriter, glitchIn)",
         "Exit animations (fadeOut, slideOutUp, popOut, zoomOut)",
@@ -4476,7 +5013,11 @@
       "category": "medium",
       "priority": 177,
       "description": "Custom Easing Functions Library",
-      "test_ids": ["VID-CEF-001", "VID-CEF-002", "VID-CEF-003"],
+      "test_ids": [
+        "VID-CEF-001",
+        "VID-CEF-002",
+        "VID-CEF-003"
+      ],
       "steps": [
         "Sine easings (easeInSine, easeOutSine, easeInOutSine)",
         "Exponential easings (easeInExpo, easeOutExpo, easeInOutExpo)",
@@ -4501,7 +5042,11 @@
       "category": "medium",
       "priority": 178,
       "description": "Layout Utilities System",
-      "test_ids": ["VID-LUS-001", "VID-LUS-002", "VID-LUS-003"],
+      "test_ids": [
+        "VID-LUS-001",
+        "VID-LUS-002",
+        "VID-LUS-003"
+      ],
       "steps": [
         "Center positioning helpers",
         "Safe area calculations for mobile/TV",
@@ -4527,7 +5072,13 @@
       "category": "high",
       "priority": 179,
       "description": "Visual Effects Components (17 effects)",
-      "test_ids": ["VID-VEC-001", "VID-VEC-002", "VID-VEC-003", "VID-VEC-004", "VID-VEC-005"],
+      "test_ids": [
+        "VID-VEC-001",
+        "VID-VEC-002",
+        "VID-VEC-003",
+        "VID-VEC-004",
+        "VID-VEC-005"
+      ],
       "steps": [
         "FloatingParticles - animated particle system",
         "GlowOrb - pulsing glow effects",
@@ -4562,7 +5113,11 @@
       "category": "medium",
       "priority": 180,
       "description": "Color Palettes & Utilities",
-      "test_ids": ["VID-CPU-001", "VID-CPU-002", "VID-CPU-003"],
+      "test_ids": [
+        "VID-CPU-001",
+        "VID-CPU-002",
+        "VID-CPU-003"
+      ],
       "steps": [
         "6 preset palettes (midnight, ocean, forest, sunset, lavender, minimal)",
         "hexToRgba() converter",
@@ -4586,7 +5141,12 @@
       "category": "medium",
       "priority": 181,
       "description": "Scene Templates (7 scene types)",
-      "test_ids": ["VID-STT-001", "VID-STT-002", "VID-STT-003", "VID-STT-004"],
+      "test_ids": [
+        "VID-STT-001",
+        "VID-STT-002",
+        "VID-STT-003",
+        "VID-STT-004"
+      ],
       "steps": [
         "IntroScene - opening with title, subtitle, hook",
         "TopicScene - main content with heading, body, bullets",
@@ -4612,7 +5172,13 @@
       "category": "high",
       "priority": 182,
       "description": "Video Format Definitions (5 formats)",
-      "test_ids": ["VID-VFD-001", "VID-VFD-002", "VID-VFD-003", "VID-VFD-004", "VID-VFD-005"],
+      "test_ids": [
+        "VID-VFD-001",
+        "VID-VFD-002",
+        "VID-VFD-003",
+        "VID-VFD-004",
+        "VID-VFD-005"
+      ],
       "steps": [
         "explainer_v1 - educational content format",
         "listicle_v1 - top N lists format",
@@ -4636,7 +5202,10 @@
       "category": "medium",
       "priority": 183,
       "description": "WhisperX Caption Converter",
-      "test_ids": ["VID-WCC-001", "VID-WCC-002"],
+      "test_ids": [
+        "VID-WCC-001",
+        "VID-WCC-002"
+      ],
       "steps": [
         "Parse WhisperX JSON output",
         "Convert to Remotion CaptionData format",
@@ -4659,7 +5228,12 @@
       "category": "high",
       "priority": 184,
       "description": "Voice Cloning Workflow (IndexTTS-2 + Fallback)",
-      "test_ids": ["VID-VCW-001", "VID-VCW-002", "VID-VCW-003", "VID-VCW-004"],
+      "test_ids": [
+        "VID-VCW-001",
+        "VID-VCW-002",
+        "VID-VCW-003",
+        "VID-VCW-004"
+      ],
       "steps": [
         "IndexTTS-2 Hugging Face integration",
         "handle_file() for audio uploads",
@@ -4683,7 +5257,10 @@
       "category": "medium",
       "priority": 185,
       "description": "Word Timestamp Generator",
-      "test_ids": ["VID-WTG-001", "VID-WTG-002"],
+      "test_ids": [
+        "VID-WTG-001",
+        "VID-WTG-002"
+      ],
       "steps": [
         "Upload audio to OpenAI Whisper API",
         "Request verbose_json with word granularity",
@@ -4706,7 +5283,10 @@
       "category": "low",
       "priority": 186,
       "description": "Animation Style Presets (6 styles)",
-      "test_ids": ["VID-ASP-001", "VID-ASP-002"],
+      "test_ids": [
+        "VID-ASP-001",
+        "VID-ASP-002"
+      ],
       "steps": [
         "professional - fadeIn/fadeOut, smooth",
         "energetic - bounceIn/popOut, bounce",
@@ -4730,7 +5310,10 @@
       "category": "low",
       "priority": 187,
       "description": "Duration Calculator Utility",
-      "test_ids": ["VID-DCU-001", "VID-DCU-002"],
+      "test_ids": [
+        "VID-DCU-001",
+        "VID-DCU-002"
+      ],
       "steps": [
         "Calculate frame duration from seconds",
         "FPS-aware conversions",
@@ -4751,7 +5334,10 @@
       "category": "low",
       "priority": 188,
       "description": "Font Configuration System",
-      "test_ids": ["VID-FCS-001", "VID-FCS-002"],
+      "test_ids": [
+        "VID-FCS-001",
+        "VID-FCS-002"
+      ],
       "steps": [
         "Font family definitions",
         "Weight and style mappings",
@@ -4772,7 +5358,13 @@
       "category": "medium",
       "priority": 189,
       "description": "Individual Animation Modules",
-      "test_ids": ["VID-IAM-001", "VID-IAM-002", "VID-IAM-003", "VID-IAM-004", "VID-IAM-005"],
+      "test_ids": [
+        "VID-IAM-001",
+        "VID-IAM-002",
+        "VID-IAM-003",
+        "VID-IAM-004",
+        "VID-IAM-005"
+      ],
       "steps": [
         "bounce.ts - spring-based bounce",
         "fadeIn.ts - opacity transitions",
@@ -4795,7 +5387,11 @@
       "category": "medium",
       "priority": 190,
       "description": "Enhanced Intro Scene with VFX",
-      "test_ids": ["VID-EIS-001", "VID-EIS-002", "VID-EIS-003"],
+      "test_ids": [
+        "VID-EIS-001",
+        "VID-EIS-002",
+        "VID-EIS-003"
+      ],
       "steps": [
         "5 animation styles (cinematic, energetic, minimal, glitch, neon)",
         "Floating particles layer",
@@ -4821,7 +5417,10 @@
       "category": "low",
       "priority": 191,
       "description": "Static Ads Compositions",
-      "test_ids": ["VID-SAC-001", "VID-SAC-002"],
+      "test_ids": [
+        "VID-SAC-001",
+        "VID-SAC-002"
+      ],
       "steps": [
         "Multiple ad size templates",
         "Brand-consistent layouts",
@@ -4843,7 +5442,10 @@
       "category": "medium",
       "priority": 192,
       "description": "Full Video Demo Composition",
-      "test_ids": ["VID-FVD-001", "VID-FVD-002"],
+      "test_ids": [
+        "VID-FVD-001",
+        "VID-FVD-002"
+      ],
       "steps": [
         "Showcase all capabilities",
         "Multiple scene types",
@@ -4865,7 +5467,11 @@
       "category": "low",
       "priority": 193,
       "description": "ElevenLabs TTS & SFX Integration",
-      "test_ids": ["VID-ELI-001", "VID-ELI-002", "VID-ELI-003"],
+      "test_ids": [
+        "VID-ELI-001",
+        "VID-ELI-002",
+        "VID-ELI-003"
+      ],
       "steps": [
         "Sound effects generation from text prompts",
         "Text-to-speech with multiple voices",
@@ -4888,7 +5494,12 @@
       "category": "medium",
       "priority": 194,
       "description": "Free Media API Stack",
-      "test_ids": ["VID-FMA-001", "VID-FMA-002", "VID-FMA-003", "VID-FMA-004"],
+      "test_ids": [
+        "VID-FMA-001",
+        "VID-FMA-002",
+        "VID-FMA-003",
+        "VID-FMA-004"
+      ],
       "steps": [
         "Pexels API integration (200/hr, 20k/mo)",
         "Pixabay API integration (5000/hr)",
@@ -4913,7 +5524,10 @@
       "category": "medium",
       "priority": 195,
       "description": "Asset Attribution Tracking",
-      "test_ids": ["VID-AAT-001", "VID-AAT-002"],
+      "test_ids": [
+        "VID-AAT-001",
+        "VID-AAT-002"
+      ],
       "steps": [
         "Per-asset metadata storage",
         "License type tracking",
@@ -4929,6 +5543,808 @@
       "passes": true,
       "implemented_at": "2026-01-17",
       "notes": "public/assets/sfx/CREDITS.md. License rules for CC0, CC-BY, CC-BY-SA, CC-BY-NC."
+    },
+    {
+      "id": "feat-196",
+      "epic": "Phase 5: New Features",
+      "category": "high",
+      "priority": 196,
+      "description": "Affiliate System - Core Schema",
+      "test_ids": [
+        "NEW-AFF-001"
+      ],
+      "steps": [
+        "Create affiliates table",
+        "Referral codes",
+        "Commission tracking"
+      ],
+      "acceptance_criteria": [
+        "Schema migrated",
+        "RLS policies set"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-197",
+      "epic": "Phase 5: New Features",
+      "category": "high",
+      "priority": 197,
+      "description": "Affiliate Dashboard",
+      "test_ids": [
+        "NEW-AFF-002"
+      ],
+      "steps": [
+        "Earnings view",
+        "Link generator",
+        "Payout history"
+      ],
+      "acceptance_criteria": [
+        "Dashboard renders",
+        "Stats accurate"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-198",
+      "epic": "Phase 5: New Features",
+      "category": "high",
+      "priority": 198,
+      "description": "Affiliate Payout Processing",
+      "test_ids": [
+        "NEW-AFF-003"
+      ],
+      "steps": [
+        "Payout requests",
+        "Admin approval",
+        "Stripe payouts"
+      ],
+      "acceptance_criteria": [
+        "Payouts process",
+        "History tracked"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-199",
+      "epic": "Phase 5: New Features",
+      "category": "medium",
+      "priority": 199,
+      "description": "Direct Messaging System",
+      "test_ids": [
+        "NEW-DM-001"
+      ],
+      "steps": [
+        "DM schema",
+        "Real-time chat",
+        "Notification system"
+      ],
+      "acceptance_criteria": [
+        "Messages send/receive",
+        "Real-time updates"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-200",
+      "epic": "Phase 5: New Features",
+      "category": "medium",
+      "priority": 200,
+      "description": "DM Thread Management",
+      "test_ids": [
+        "NEW-DM-002"
+      ],
+      "steps": [
+        "Thread list",
+        "Unread counts",
+        "Archive threads"
+      ],
+      "acceptance_criteria": [
+        "Threads organized",
+        "Unread badges"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-201",
+      "epic": "Phase 5: New Features",
+      "category": "medium",
+      "priority": 201,
+      "description": "Learning Streaks",
+      "test_ids": [
+        "NEW-STR-001"
+      ],
+      "steps": [
+        "Daily activity tracking",
+        "Streak calculation",
+        "UI display"
+      ],
+      "acceptance_criteria": [
+        "Streaks increment",
+        "Freeze works"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-202",
+      "epic": "Phase 5: New Features",
+      "category": "medium",
+      "priority": 202,
+      "description": "Streak Notifications",
+      "test_ids": [
+        "NEW-STR-002"
+      ],
+      "steps": [
+        "Reminder emails",
+        "Push notifications",
+        "Streak milestones"
+      ],
+      "acceptance_criteria": [
+        "Reminders sent",
+        "Milestones celebrated"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-203",
+      "epic": "Phase 5: New Features",
+      "category": "low",
+      "priority": 203,
+      "description": "Achievement System",
+      "test_ids": [
+        "NEW-ACH-001"
+      ],
+      "steps": [
+        "Achievement definitions",
+        "Progress tracking",
+        "Unlock logic"
+      ],
+      "acceptance_criteria": [
+        "Achievements unlock",
+        "Progress visible"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-204",
+      "epic": "Phase 5: New Features",
+      "category": "low",
+      "priority": 204,
+      "description": "Achievement Badges UI",
+      "test_ids": [
+        "NEW-ACH-002"
+      ],
+      "steps": [
+        "Badge display",
+        "Profile showcase",
+        "Share achievements"
+      ],
+      "acceptance_criteria": [
+        "Badges render",
+        "Share works"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-205",
+      "epic": "Phase 5: New Features",
+      "category": "medium",
+      "priority": 205,
+      "description": "Community Leaderboards",
+      "test_ids": [
+        "NEW-LDR-001"
+      ],
+      "steps": [
+        "Points system",
+        "Weekly/monthly boards",
+        "Ranking display"
+      ],
+      "acceptance_criteria": [
+        "Rankings calculated",
+        "Board renders"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-206",
+      "epic": "Phase 6: Testing",
+      "category": "critical",
+      "priority": 206,
+      "description": "Stripe Webhooks E2E Tests",
+      "test_ids": [
+        "TEST-STRIPE-001",
+        "TEST-STRIPE-002"
+      ],
+      "steps": [
+        "Webhook signature verification",
+        "Payment flow",
+        "Subscription events"
+      ],
+      "acceptance_criteria": [
+        "All webhook types tested",
+        "Error handling verified"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-207",
+      "epic": "Phase 6: Testing",
+      "category": "critical",
+      "priority": 207,
+      "description": "Order Bumps E2E Tests",
+      "test_ids": [
+        "TEST-BUMP-001"
+      ],
+      "steps": [
+        "Bump display",
+        "Add to cart",
+        "Checkout integration"
+      ],
+      "acceptance_criteria": [
+        "Bump adds correctly",
+        "Price updates"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-208",
+      "epic": "Phase 6: Testing",
+      "category": "critical",
+      "priority": 208,
+      "description": "File Storage E2E Tests",
+      "test_ids": [
+        "TEST-FILE-001"
+      ],
+      "steps": [
+        "Upload flow",
+        "Download flow",
+        "Delete flow"
+      ],
+      "acceptance_criteria": [
+        "All operations work",
+        "Errors handled"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-209",
+      "epic": "Phase 6: Testing",
+      "category": "critical",
+      "priority": 209,
+      "description": "Mux Upload E2E Tests",
+      "test_ids": [
+        "TEST-MUX-001"
+      ],
+      "steps": [
+        "Video upload",
+        "Processing status",
+        "Playback test"
+      ],
+      "acceptance_criteria": [
+        "Upload succeeds",
+        "Video plays"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-210",
+      "epic": "Phase 6: Testing",
+      "category": "high",
+      "priority": 210,
+      "description": "Drip Content E2E Tests",
+      "test_ids": [
+        "TEST-DRIP-001"
+      ],
+      "steps": [
+        "Drip schedule setup",
+        "Content unlock",
+        "Notification triggers"
+      ],
+      "acceptance_criteria": [
+        "Content drips correctly",
+        "Timing accurate"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-211",
+      "epic": "Phase 6: Testing",
+      "category": "high",
+      "priority": 211,
+      "description": "Abandoned Checkout E2E Tests",
+      "test_ids": [
+        "TEST-ABAND-001"
+      ],
+      "steps": [
+        "Cart abandonment detection",
+        "Email trigger",
+        "Recovery flow"
+      ],
+      "acceptance_criteria": [
+        "Detection works",
+        "Emails sent"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-212",
+      "epic": "Phase 5: New Features",
+      "category": "medium",
+      "priority": 212,
+      "description": "Gap Analysis - Unimplemented Features Review",
+      "test_ids": [
+        "GAP-001"
+      ],
+      "steps": [
+        "Audit 18 unimplemented features",
+        "Prioritize by impact",
+        "Create implementation plan"
+      ],
+      "acceptance_criteria": [
+        "All gaps documented",
+        "Priorities assigned"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-213",
+      "epic": "Phase 5: New Features",
+      "category": "high",
+      "priority": 213,
+      "description": "Student Progress Tracking Improvements",
+      "test_ids": [
+        "GAP-PROG-001"
+      ],
+      "steps": [
+        "Enhanced completion tracking",
+        "Time spent metrics",
+        "Quiz score aggregation"
+      ],
+      "acceptance_criteria": [
+        "Metrics accurate",
+        "Dashboard updated"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-214",
+      "epic": "Phase 5: New Features",
+      "category": "high",
+      "priority": 214,
+      "description": "Instructor Analytics Dashboard",
+      "test_ids": [
+        "GAP-INST-001"
+      ],
+      "steps": [
+        "Revenue breakdown",
+        "Student engagement",
+        "Course performance"
+      ],
+      "acceptance_criteria": [
+        "Charts render",
+        "Data accurate"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-215",
+      "epic": "Phase 5: New Features",
+      "category": "medium",
+      "priority": 215,
+      "description": "Bulk Student Import",
+      "test_ids": [
+        "GAP-BULK-001"
+      ],
+      "steps": [
+        "CSV upload",
+        "Validation",
+        "Enrollment creation"
+      ],
+      "acceptance_criteria": [
+        "Import works",
+        "Errors reported"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-216",
+      "epic": "Phase 6: Testing",
+      "category": "high",
+      "priority": 216,
+      "description": "API Route Coverage Expansion",
+      "test_ids": [
+        "TEST-API-001"
+      ],
+      "steps": [
+        "Map 80+ routes",
+        "Write missing tests",
+        "Achieve 80% coverage"
+      ],
+      "acceptance_criteria": [
+        "Coverage meets target",
+        "CI passes"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-217",
+      "epic": "Phase 6: Testing",
+      "category": "medium",
+      "priority": 217,
+      "description": "Test Data Factories",
+      "test_ids": [
+        "TEST-FAC-001"
+      ],
+      "steps": [
+        "Create user factories",
+        "Course factories",
+        "Order factories"
+      ],
+      "acceptance_criteria": [
+        "Factories generate valid data",
+        "Tests use factories"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-218",
+      "epic": "Phase 6: Testing",
+      "category": "medium",
+      "priority": 218,
+      "description": "Visual Regression Tests",
+      "test_ids": [
+        "TEST-VIS-001"
+      ],
+      "steps": [
+        "Screenshot comparisons",
+        "Component snapshots",
+        "CI integration"
+      ],
+      "acceptance_criteria": [
+        "Regressions detected",
+        "Baselines updated"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-219",
+      "epic": "Phase 5: New Features",
+      "category": "low",
+      "priority": 219,
+      "description": "Course Completion Certificates",
+      "test_ids": [
+        "NEW-CERT-001"
+      ],
+      "steps": [
+        "Certificate template",
+        "Generation logic",
+        "Download/share"
+      ],
+      "acceptance_criteria": [
+        "PDF generates",
+        "Share works"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-220",
+      "epic": "Phase 5: New Features",
+      "category": "low",
+      "priority": 220,
+      "description": "Discussion Forums",
+      "test_ids": [
+        "NEW-FOR-001"
+      ],
+      "steps": [
+        "Forum schema",
+        "Thread CRUD",
+        "Reply system"
+      ],
+      "acceptance_criteria": [
+        "Forums work",
+        "Moderation available"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-221",
+      "epic": "Phase 5: New Features",
+      "category": "medium",
+      "priority": 221,
+      "description": "Course Reviews & Ratings",
+      "test_ids": [
+        "NEW-REV-001"
+      ],
+      "steps": [
+        "Review submission",
+        "Star ratings",
+        "Review moderation"
+      ],
+      "acceptance_criteria": [
+        "Reviews display",
+        "Ratings aggregate"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-222",
+      "epic": "Phase 5: New Features",
+      "category": "medium",
+      "priority": 222,
+      "description": "Instructor Messaging",
+      "test_ids": [
+        "NEW-INS-001"
+      ],
+      "steps": [
+        "Message instructor button",
+        "Response management",
+        "Notification triggers"
+      ],
+      "acceptance_criteria": [
+        "Messages delivered",
+        "Responses work"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-223",
+      "epic": "Phase 5: New Features",
+      "category": "low",
+      "priority": 223,
+      "description": "Bookmarking & Notes",
+      "test_ids": [
+        "NEW-NOTE-001"
+      ],
+      "steps": [
+        "Bookmark lessons",
+        "Add notes",
+        "Notes search"
+      ],
+      "acceptance_criteria": [
+        "Bookmarks save",
+        "Notes retrievable"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-224",
+      "epic": "Phase 5: New Features",
+      "category": "medium",
+      "priority": 224,
+      "description": "Multi-Currency Support",
+      "test_ids": [
+        "NEW-CUR-001"
+      ],
+      "steps": [
+        "Currency selector",
+        "Price conversion",
+        "Stripe multi-currency"
+      ],
+      "acceptance_criteria": [
+        "Prices display in currency",
+        "Checkout works"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-225",
+      "epic": "Phase 5: New Features",
+      "category": "low",
+      "priority": 225,
+      "description": "Gift Purchases",
+      "test_ids": [
+        "NEW-GIFT-001"
+      ],
+      "steps": [
+        "Gift flow",
+        "Recipient email",
+        "Redemption code"
+      ],
+      "acceptance_criteria": [
+        "Gift sends",
+        "Redemption works"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-226",
+      "epic": "Phase 6: Testing",
+      "category": "high",
+      "priority": 226,
+      "description": "Performance Testing Suite",
+      "test_ids": [
+        "TEST-PERF-001"
+      ],
+      "steps": [
+        "Load testing",
+        "Response time benchmarks",
+        "Database query analysis"
+      ],
+      "acceptance_criteria": [
+        "Benchmarks established",
+        "Regressions detected"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-227",
+      "epic": "Phase 6: Testing",
+      "category": "medium",
+      "priority": 227,
+      "description": "Accessibility Testing",
+      "test_ids": [
+        "TEST-A11Y-001"
+      ],
+      "steps": [
+        "Axe integration",
+        "Keyboard navigation",
+        "Screen reader testing"
+      ],
+      "acceptance_criteria": [
+        "WCAG 2.1 AA compliance",
+        "Issues logged"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-228",
+      "epic": "Phase 5: New Features",
+      "category": "high",
+      "priority": 228,
+      "description": "Webhook Event Logs",
+      "test_ids": [
+        "NEW-HOOK-001"
+      ],
+      "steps": [
+        "Event logging",
+        "Admin viewer",
+        "Retry mechanism"
+      ],
+      "acceptance_criteria": [
+        "Events logged",
+        "Retries work"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-229",
+      "epic": "Phase 5: New Features",
+      "category": "medium",
+      "priority": 229,
+      "description": "Advanced Search",
+      "test_ids": [
+        "NEW-SRCH-001"
+      ],
+      "steps": [
+        "Full-text search",
+        "Filters",
+        "Search analytics"
+      ],
+      "acceptance_criteria": [
+        "Search returns results",
+        "Filters work"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-230",
+      "epic": "Phase 5: New Features",
+      "category": "low",
+      "priority": 230,
+      "description": "Content Scheduling",
+      "test_ids": [
+        "NEW-SCHED-001"
+      ],
+      "steps": [
+        "Schedule content",
+        "Auto-publish",
+        "Timezone handling"
+      ],
+      "acceptance_criteria": [
+        "Content publishes on time",
+        "Timezones respected"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-231",
+      "epic": "Phase 5: New Features",
+      "category": "medium",
+      "priority": 231,
+      "description": "Batch Email Campaigns",
+      "test_ids": [
+        "NEW-EMAIL-001"
+      ],
+      "steps": [
+        "Segment selection",
+        "Template builder",
+        "Send tracking"
+      ],
+      "acceptance_criteria": [
+        "Emails send",
+        "Opens tracked"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-232",
+      "epic": "Phase 5: New Features",
+      "category": "low",
+      "priority": 232,
+      "description": "Student Groups/Cohorts",
+      "test_ids": [
+        "NEW-GRP-001"
+      ],
+      "steps": [
+        "Group creation",
+        "Bulk enrollment",
+        "Group analytics"
+      ],
+      "acceptance_criteria": [
+        "Groups work",
+        "Bulk actions succeed"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-233",
+      "epic": "Phase 5: New Features",
+      "category": "medium",
+      "priority": 233,
+      "description": "Course Cloning",
+      "test_ids": [
+        "NEW-CLONE-001"
+      ],
+      "steps": [
+        "Deep copy course",
+        "Include content",
+        "Update references"
+      ],
+      "acceptance_criteria": [
+        "Clone creates new course",
+        "Content copied"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-234",
+      "epic": "Phase 6: Testing",
+      "category": "high",
+      "priority": 234,
+      "description": "Error Boundary Testing",
+      "test_ids": [
+        "TEST-ERR-001"
+      ],
+      "steps": [
+        "Component error boundaries",
+        "Fallback UI",
+        "Error reporting"
+      ],
+      "acceptance_criteria": [
+        "Errors caught",
+        "Fallbacks display"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat-235",
+      "epic": "Phase 6: Testing",
+      "category": "medium",
+      "priority": 235,
+      "description": "Mobile Responsive Testing",
+      "test_ids": [
+        "TEST-MOB-001"
+      ],
+      "steps": [
+        "Viewport testing",
+        "Touch interactions",
+        "Mobile-specific flows"
+      ],
+      "acceptance_criteria": [
+        "Mobile layouts work",
+        "Touch targets adequate"
+      ],
+      "passes": false
     }
-  ]
+  ],
+  "completed_features": 152
 }
