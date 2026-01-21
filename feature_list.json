@@ -4,6 +4,7 @@
   "created": "2026-01-13",
   "updated": "2026-01-17",
   "total_features": 235,
+  "completed_features": 152,
   "total_tests": 300,
   "phases": {
     "phase0_mvp": "Core course selling: auth, payments, course delivery, admin CMS, tracking, email",
@@ -6345,6 +6346,5 @@
       ],
       "passes": false
     }
-  ],
-  "completed_features": 152
+  ]
 }
