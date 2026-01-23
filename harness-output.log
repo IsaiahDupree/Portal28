@@ -358,3 +358,11 @@
 2026-01-23T17:12:52.502Z 📋 Adaptive delay: enabled (sawtooth 1-5 min)
 2026-01-23T17:12:52.511Z ❌ Feature list validation failed: Features missing required fields (id, name)
 2026-01-23T17:12:52.511Z 📋 Expected at: /Users/isaiahdupree/Documents/Software/Portal28/feature_list.json
+2026-01-23T18:19:09.267Z 🚀 Agent Harness v2 Starting
+2026-01-23T18:19:09.273Z 📋 Project root: /Users/isaiahdupree/Documents/Software/Portal28
+2026-01-23T18:19:09.273Z 📋 Max sessions: 100
+2026-01-23T18:19:09.273Z 📋 Mode: Until complete
+2026-01-23T18:19:09.273Z 📋 Session delay: 5 minutes between sessions
+2026-01-23T18:19:09.273Z 📋 Adaptive delay: enabled (sawtooth 1-5 min)
+2026-01-23T18:19:09.274Z ❌ Feature list validation failed: Features missing required fields (id, name)
+2026-01-23T18:19:09.275Z 📋 Expected at: /Users/isaiahdupree/Documents/Software/Portal28/feature_list.json
