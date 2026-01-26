@@ -4,7 +4,10 @@ import { redirect } from "next/navigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { GraduationCap, ShoppingCart, Users, DollarSign, TrendingUp, Plus, Shield, BarChart3, Crown } from "lucide-react";
+import { PageHeader } from "@/components/ui/page-header";
+import { StatCard, StatCardGrid } from "@/components/ui/stat-card";
+import { EmptyState } from "@/components/ui/empty-state";
+import { GraduationCap, ShoppingCart, Users, DollarSign, TrendingUp, Plus, Shield, BarChart3, Crown, FileX } from "lucide-react";
 import { getCurrentMRR, getChurnRate } from "@/lib/db/mrr";
 
 export default async function AdminPage() {
@@ -55,94 +58,49 @@ export default async function AdminPage() {
 
   return (
     <div className="space-y-6">
-      {/* Page Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
-          <p className="text-muted-foreground">
-            Welcome back! Here's an overview of your academy.
-          </p>
-        </div>
-        <Button asChild>
-          <Link href="/admin/courses/new">
-            <Plus className="mr-2 h-4 w-4" />
-            New Course
-          </Link>
-        </Button>
-      </div>
+      {/* Page Header - Using new reusable component */}
+      <PageHeader
+        title="Dashboard"
+        description="Welcome back! Here's an overview of your academy."
+        actions={
+          <Button asChild>
+            <Link href="/admin/courses/new">
+              <Plus className="mr-2 h-4 w-4" />
+              New Course
+            </Link>
+          </Button>
+        }
+      />
 
-      {/* Stats Cards */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">MRR</CardTitle>
-            <TrendingUp className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">${(mrrData.current_mrr / 100).toFixed(0)}</div>
-            <p className="text-xs text-muted-foreground">
-              {mrrData.subscriber_count} active subscribers
-            </p>
-            {mrrData.growth_rate !== 0 && (
-              <p className="text-xs text-green-600 mt-1">
-                {mrrData.growth_rate > 0 ? '+' : ''}{mrrData.growth_rate.toFixed(1)}% growth
-              </p>
-            )}
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
-            <DollarSign className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">${(totalRevenue / 100).toFixed(2)}</div>
-            <p className="text-xs text-muted-foreground">
-              From {orders?.length || 0} orders
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Courses</CardTitle>
-            <GraduationCap className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{courses?.length || 0}</div>
-            <p className="text-xs text-muted-foreground">
-              {courses?.filter(c => c.status === "published").length || 0} published
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Users</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{totalUsers || 0}</div>
-            <p className="text-xs text-muted-foreground">
-              Churn: {churnData.churn_rate.toFixed(1)}%
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Orders</CardTitle>
-            <ShoppingCart className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{orders?.length || 0}</div>
-            <p className="text-xs text-muted-foreground">
-              Recent transactions
-            </p>
-          </CardContent>
-        </Card>
-      </div>
+      {/* Stats Cards - Using new reusable StatCard components */}
+      <StatCardGrid columns={4}>
+        <StatCard
+          title="MRR"
+          value={`$${(mrrData.current_mrr / 100).toFixed(0)}`}
+          description={`${mrrData.subscriber_count} active subscribers`}
+          change={mrrData.growth_rate !== 0 ? `${mrrData.growth_rate > 0 ? '+' : ''}${mrrData.growth_rate.toFixed(1)}%` : undefined}
+          changeType={mrrData.growth_rate > 0 ? "positive" : mrrData.growth_rate < 0 ? "negative" : "neutral"}
+          icon={TrendingUp}
+        />
+        <StatCard
+          title="Total Revenue"
+          value={`$${(totalRevenue / 100).toFixed(2)}`}
+          description={`From ${orders?.length || 0} orders`}
+          icon={DollarSign}
+        />
+        <StatCard
+          title="Courses"
+          value={courses?.length || 0}
+          description={`${courses?.filter(c => c.status === "published").length || 0} published`}
+          icon={GraduationCap}
+        />
+        <StatCard
+          title="Users"
+          value={totalUsers || 0}
+          description={`Churn: ${churnData.churn_rate.toFixed(1)}%`}
+          icon={Users}
+        />
+      </StatCardGrid>
 
       {/* Quick Actions */}
       <div className="grid gap-4 md:grid-cols-3">
@@ -204,7 +162,17 @@ export default async function AdminPage() {
           </CardHeader>
           <CardContent>
             {!courses || courses.length === 0 ? (
-              <p className="text-sm text-muted-foreground">No courses yet.</p>
+              <EmptyState
+                icon={FileX}
+                title="No courses yet"
+                description="Create your first course to get started"
+                action={
+                  <Button asChild size="sm">
+                    <Link href="/admin/courses/new">Create Course</Link>
+                  </Button>
+                }
+                className="min-h-[200px] border-0"
+              />
             ) : (
               <div className="space-y-3">
                 {courses.slice(0, 5).map((c) => (

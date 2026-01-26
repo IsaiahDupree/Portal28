@@ -6,6 +6,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { PageHeader } from "@/components/ui/page-header";
+import { StatCard, StatCardGrid } from "@/components/ui/stat-card";
+import { EmptyState } from "@/components/ui/empty-state";
 import { BookOpen, Users, MessageSquare, Trophy, ArrowRight } from "lucide-react";
 
 export default async function AppHome() {
@@ -49,60 +52,39 @@ export default async function AppHome() {
 
   return (
     <div className="space-y-6">
-      {/* Welcome Header */}
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">Welcome back!</h1>
-        <p className="text-muted-foreground">
-          Continue your learning journey with Portal28.
-        </p>
-      </div>
+      {/* Welcome Header - Using reusable component */}
+      <PageHeader
+        title="Welcome back!"
+        description="Continue your learning journey with Portal28."
+      />
 
-      {/* Quick Stats */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">My Courses</CardTitle>
-            <BookOpen className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{courses?.length || 0}</div>
-            <p className="text-xs text-muted-foreground">Enrolled courses</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Community</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">Active</div>
-            <p className="text-xs text-muted-foreground">Member status</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Forums</CardTitle>
-            <MessageSquare className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">0</div>
-            <p className="text-xs text-muted-foreground">New discussions</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Progress</CardTitle>
-            <Trophy className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{overallProgress}%</div>
-            <p className="text-xs text-muted-foreground">Overall completion</p>
-          </CardContent>
-        </Card>
-      </div>
+      {/* Quick Stats - Using reusable StatCard components */}
+      <StatCardGrid columns={4}>
+        <StatCard
+          title="My Courses"
+          value={courses?.length || 0}
+          description="Enrolled courses"
+          icon={BookOpen}
+        />
+        <StatCard
+          title="Community"
+          value="Active"
+          description="Member status"
+          icon={Users}
+        />
+        <StatCard
+          title="Forums"
+          value={0}
+          description="New discussions"
+          icon={MessageSquare}
+        />
+        <StatCard
+          title="Progress"
+          value={`${overallProgress}%`}
+          description="Overall completion"
+          icon={Trophy}
+        />
+      </StatCardGrid>
 
       {/* My Courses */}
       <Card>
@@ -117,16 +99,17 @@ export default async function AppHome() {
         </CardHeader>
         <CardContent>
           {!courses || courses.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-8 text-center">
-              <BookOpen className="h-12 w-12 text-muted-foreground mb-4" />
-              <h3 className="font-semibold mb-2">No courses yet</h3>
-              <p className="text-sm text-muted-foreground mb-4">
-                Start your learning journey by enrolling in a course.
-              </p>
-              <Button asChild>
-                <Link href="/courses">Browse Courses</Link>
-              </Button>
-            </div>
+            <EmptyState
+              icon={BookOpen}
+              title="No courses yet"
+              description="Start your learning journey by enrolling in a course."
+              action={
+                <Button asChild>
+                  <Link href="/courses">Browse Courses</Link>
+                </Button>
+              }
+              className="min-h-[200px] border-0"
+            />
           ) : (
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
               {courses.map((c) => {

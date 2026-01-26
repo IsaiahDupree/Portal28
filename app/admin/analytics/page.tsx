@@ -10,6 +10,9 @@ import {
 } from "@/lib/db/analytics";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { PageHeader } from "@/components/ui/page-header";
+import { StatCard, StatCardGrid } from "@/components/ui/stat-card";
+import { EmptyState } from "@/components/ui/empty-state";
 import {
   DollarSign,
   ShoppingCart,
@@ -17,6 +20,7 @@ import {
   Eye,
   Download,
   ArrowLeft,
+  BarChart3,
 } from "lucide-react";
 import { RevenueChart } from "@/components/analytics/RevenueChart";
 import { ConversionFunnel } from "@/components/analytics/ConversionFunnel";
@@ -62,97 +66,45 @@ export default async function AdminAnalyticsPage({
 
   return (
     <div className="space-y-6">
-      {/* Page Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <div className="flex items-center gap-2 mb-1">
-            <Link href="/admin">
-              <Button variant="ghost" size="sm">
-                <ArrowLeft className="h-4 w-4 mr-1" />
-                Admin
-              </Button>
-            </Link>
+      {/* Page Header - Using reusable component */}
+      <PageHeader
+        title="Sales Analytics"
+        description="Revenue, conversions, and offer performance"
+        actions={
+          <div className="flex items-center gap-3">
+            <TimeFilterButtons currentDays={days} />
+            <ExportButton days={days} />
           </div>
-          <h1 className="text-3xl font-bold tracking-tight">Sales Analytics</h1>
-          <p className="text-muted-foreground">
-            Revenue, conversions, and offer performance
-          </p>
-        </div>
-        <div className="flex items-center gap-3">
-          <TimeFilterButtons currentDays={days} />
-          <ExportButton days={days} />
-        </div>
-      </div>
+        }
+      />
 
-      {/* Stats Cards */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
-            <DollarSign className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              ${(stats.totalRevenue / 100).toFixed(2)}
-            </div>
-            <p className="text-xs text-muted-foreground">
-              Last {days} days
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Orders</CardTitle>
-            <ShoppingCart className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{stats.totalOrders}</div>
-            <p className="text-xs text-muted-foreground">
-              Completed purchases
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Impressions</CardTitle>
-            <Eye className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{stats.totalImpressions}</div>
-            <p className="text-xs text-muted-foreground">
-              Offer views
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Checkouts</CardTitle>
-            <TrendingUp className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{stats.totalCheckouts}</div>
-            <p className="text-xs text-muted-foreground">
-              Checkout attempts
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Conversion</CardTitle>
-            <TrendingUp className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{stats.conversionRate}%</div>
-            <p className="text-xs text-muted-foreground">
-              Checkout to purchase
-            </p>
-          </CardContent>
-        </Card>
-      </div>
+      {/* Stats Cards - Using reusable StatCard components */}
+      <StatCardGrid columns={4}>
+        <StatCard
+          title="Total Revenue"
+          value={`$${(stats.totalRevenue / 100).toFixed(2)}`}
+          description={`Last ${days} days`}
+          icon={DollarSign}
+        />
+        <StatCard
+          title="Orders"
+          value={stats.totalOrders}
+          description="Completed purchases"
+          icon={ShoppingCart}
+        />
+        <StatCard
+          title="Impressions"
+          value={stats.totalImpressions}
+          description="Offer views"
+          icon={Eye}
+        />
+        <StatCard
+          title="Conversion"
+          value={`${stats.conversionRate}%`}
+          description="Checkout to purchase"
+          icon={TrendingUp}
+        />
+      </StatCardGrid>
 
       {/* Charts Row */}
       <div className="grid gap-6 md:grid-cols-2">

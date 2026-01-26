@@ -7,6 +7,8 @@ import LessonCompleteButton from "@/components/progress/LessonCompleteButton";
 import { LessonVideoPlayer } from "@/components/courses/LessonVideoPlayer";
 import { LessonNotes } from "@/components/courses/LessonNotes";
 import { LessonComments } from "@/components/courses/LessonComments";
+import { LessonChapters } from "@/components/courses/LessonChapters";
+import { LessonQuiz } from "@/components/courses/LessonQuiz";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -100,6 +102,34 @@ export default async function LessonPage({ params }: { params: { id: string } })
       .eq("id", auth.user.id)
       .single();
     userData = data;
+  }
+
+  // Get lesson chapters
+  const { data: chapters } = await supabase
+    .from("lesson_chapters")
+    .select("id, timestamp_seconds, title, summary")
+    .eq("lesson_id", lesson.id)
+    .order("sort_order", { ascending: true });
+
+  // Get quiz for this lesson
+  const { data: quizData } = await supabase
+    .from("quizzes")
+    .select("id, title, description, passing_score")
+    .eq("lesson_id", lesson.id)
+    .single();
+
+  let quiz = null;
+  if (quizData) {
+    const { data: questions } = await supabase
+      .from("quiz_questions")
+      .select("id, question, options, correct_index, explanation")
+      .eq("quiz_id", quizData.id)
+      .order("sort_order", { ascending: true });
+    
+    quiz = {
+      ...quizData,
+      questions: questions || []
+    };
   }
 
   function getDownloadIcon(type?: string) {
@@ -264,12 +294,25 @@ export default async function LessonPage({ params }: { params: { id: string } })
 
         {/* Sidebar */}
         <div className="space-y-6">
+          {/* Chapters */}
+          {chapters && chapters.length > 0 && (
+            <LessonChapters chapters={chapters} />
+          )}
+
           {/* Notes */}
           <LessonNotes
             lessonId={lesson.id}
             userId={auth.user?.id}
             initialNotes={userNotes}
           />
+
+          {/* Quiz */}
+          {quiz && quiz.questions.length > 0 && (
+            <LessonQuiz
+              quiz={quiz}
+              userId={auth.user?.id}
+            />
+          )}
         </div>
       </div>
     </main>

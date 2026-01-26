@@ -1,6 +1,12 @@
 import Link from "next/link";
 import { supabaseServer } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { PageHeader } from "@/components/ui/page-header";
+import { EmptyState } from "@/components/ui/empty-state";
+import { Plus, GraduationCap, CheckCircle, Link as LinkIcon } from "lucide-react";
 
 export default async function AdminCoursesPage() {
   const supabase = supabaseServer();
@@ -24,89 +30,94 @@ export default async function AdminCoursesPage() {
     .order("created_at", { ascending: false });
 
   return (
-    <main style={{ maxWidth: 900, margin: "0 auto", padding: 24 }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
-        <h1>Courses</h1>
-        <div style={{ display: "flex", gap: 12 }}>
-          <Link href="/admin">← Admin</Link>
-          <Link
-            href="/admin/courses/new"
-            style={{
-              backgroundColor: "#111",
-              color: "#fff",
-              padding: "8px 16px",
-              borderRadius: 6,
-              textDecoration: "none",
-              fontSize: 14
-            }}
-          >
-            + New Course
-          </Link>
-        </div>
-      </div>
+    <div className="space-y-6">
+      <PageHeader
+        title="Courses"
+        description="Manage your course catalog"
+        actions={
+          <Button asChild>
+            <Link href="/admin/courses/new">
+              <Plus className="mr-2 h-4 w-4" />
+              New Course
+            </Link>
+          </Button>
+        }
+      />
 
       {!courses || courses.length === 0 ? (
-        <div style={{ padding: 48, textAlign: "center", backgroundColor: "#f5f5f5", borderRadius: 8 }}>
-          <p style={{ margin: 0, color: "#666" }}>No courses yet.</p>
-          <Link href="/admin/courses/new" style={{ color: "#111", fontWeight: 500 }}>
-            Create your first course →
-          </Link>
-        </div>
+        <EmptyState
+          icon={GraduationCap}
+          title="No courses yet"
+          description="Create your first course to start teaching"
+          action={
+            <Button asChild>
+              <Link href="/admin/courses/new">
+                <Plus className="mr-2 h-4 w-4" />
+                Create Course
+              </Link>
+            </Button>
+          }
+        />
       ) : (
-        <table style={{ width: "100%", borderCollapse: "collapse" }}>
-          <thead>
-            <tr>
-              <th style={{ textAlign: "left", padding: 12, borderBottom: "2px solid #ddd" }}>Title</th>
-              <th style={{ textAlign: "left", padding: 12, borderBottom: "2px solid #ddd" }}>Slug</th>
-              <th style={{ textAlign: "left", padding: 12, borderBottom: "2px solid #ddd" }}>Price</th>
-              <th style={{ textAlign: "left", padding: 12, borderBottom: "2px solid #ddd" }}>Status</th>
-              <th style={{ textAlign: "left", padding: 12, borderBottom: "2px solid #ddd" }}>Stripe</th>
-              <th style={{ textAlign: "right", padding: 12, borderBottom: "2px solid #ddd" }}>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {courses.map((course) => (
-              <tr key={course.id}>
-                <td style={{ padding: 12, borderBottom: "1px solid #eee" }}>
-                  <strong>{course.title}</strong>
-                </td>
-                <td style={{ padding: 12, borderBottom: "1px solid #eee", color: "#666" }}>
-                  /{course.slug}
-                </td>
-                <td style={{ padding: 12, borderBottom: "1px solid #eee" }}>
-                  {course.price_cents ? `$${(course.price_cents / 100).toFixed(2)}` : "—"}
-                </td>
-                <td style={{ padding: 12, borderBottom: "1px solid #eee" }}>
-                  <span
-                    style={{
-                      display: "inline-block",
-                      padding: "4px 8px",
-                      borderRadius: 4,
-                      fontSize: 12,
-                      fontWeight: 500,
-                      backgroundColor: course.status === "published" ? "#d4edda" : "#f8d7da",
-                      color: course.status === "published" ? "#155724" : "#721c24"
-                    }}
-                  >
-                    {course.status}
-                  </span>
-                </td>
-                <td style={{ padding: 12, borderBottom: "1px solid #eee", color: "#666", fontSize: 12 }}>
-                  {course.stripe_price_id ? "✓ Connected" : "—"}
-                </td>
-                <td style={{ padding: 12, borderBottom: "1px solid #eee", textAlign: "right" }}>
-                  <Link
-                    href={`/admin/courses/${course.id}`}
-                    style={{ color: "#111", textDecoration: "underline" }}
-                  >
-                    Edit
-                  </Link>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <Card>
+          <CardHeader>
+            <CardTitle>All Courses ({courses.length})</CardTitle>
+          </CardHeader>
+          <CardContent className="p-0">
+            <div className="rounded-lg border overflow-hidden">
+              <table className="w-full text-sm">
+                <thead className="bg-muted">
+                  <tr>
+                    <th className="text-left p-4 font-medium">Title</th>
+                    <th className="text-left p-4 font-medium">Slug</th>
+                    <th className="text-left p-4 font-medium">Price</th>
+                    <th className="text-left p-4 font-medium">Status</th>
+                    <th className="text-left p-4 font-medium">Stripe</th>
+                    <th className="text-right p-4 font-medium">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {courses.map((course) => (
+                    <tr key={course.id} className="border-t hover:bg-muted/50 transition-colors">
+                      <td className="p-4">
+                        <span className="font-medium">{course.title}</span>
+                      </td>
+                      <td className="p-4 text-muted-foreground">
+                        /{course.slug}
+                      </td>
+                      <td className="p-4">
+                        {course.price_cents ? `$${(course.price_cents / 100).toFixed(2)}` : "—"}
+                      </td>
+                      <td className="p-4">
+                        <Badge variant={course.status === "published" ? "success" : "secondary"}>
+                          {course.status}
+                        </Badge>
+                      </td>
+                      <td className="p-4">
+                        {course.stripe_price_id ? (
+                          <span className="flex items-center gap-1 text-brand-green text-xs">
+                            <CheckCircle className="h-3 w-3" />
+                            Connected
+                          </span>
+                        ) : (
+                          <span className="text-muted-foreground">—</span>
+                        )}
+                      </td>
+                      <td className="p-4 text-right">
+                        <Button variant="ghost" size="sm" asChild>
+                          <Link href={`/admin/courses/${course.id}`}>
+                            Edit
+                          </Link>
+                        </Button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </CardContent>
+        </Card>
       )}
-    </main>
+    </div>
   );
 }

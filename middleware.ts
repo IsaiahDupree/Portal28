@@ -2,6 +2,16 @@ import { NextResponse, type NextRequest } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 
 export async function middleware(req: NextRequest) {
+  // Handle auth callback code on any page - redirect to /auth/callback
+  const code = req.nextUrl.searchParams.get("code");
+  if (code && !req.nextUrl.pathname.startsWith("/auth/callback")) {
+    const callbackUrl = new URL("/auth/callback", req.url);
+    callbackUrl.searchParams.set("code", code);
+    const next = req.nextUrl.searchParams.get("next");
+    if (next) callbackUrl.searchParams.set("next", next);
+    return NextResponse.redirect(callbackUrl);
+  }
+
   const res = NextResponse.next();
 
   // Add Content Security Policy (CSP) headers for XSS protection
@@ -58,11 +68,23 @@ export async function middleware(req: NextRequest) {
 
   if (pathname.startsWith("/admin")) {
     if (!user) return NextResponse.redirect(new URL("/login", req.url));
+    
+    // Check role from public.users table (more reliable than session metadata)
+    const { data: userData } = await supabase
+      .from("users")
+      .select("role")
+      .eq("id", user.id)
+      .single();
+    
+    const role = userData?.role || user.user_metadata?.role || "student";
+    if (role !== "admin" && role !== "teacher") {
+      return NextResponse.redirect(new URL("/app?error=unauthorized", req.url));
+    }
   }
 
   return res;
 }
 
 export const config = {
-  matcher: ["/app/:path*", "/admin/:path*"]
+  matcher: ["/", "/app/:path*", "/admin/:path*"]
 };
