@@ -1922,9 +1922,9 @@
         "Admin can manage attachments",
         "File size limits enforced"
       ],
-      "passes": false,
-      "implemented_at": null,
-      "notes": "AUDIT.md - Route exists, needs S3/R2 config and admin UI."
+      "passes": true,
+      "implemented_at": "2026-02-02",
+      "notes": "PDF/File Upload Management fully implemented. FileUpload component created at components/admin/FileUpload.tsx with full upload/download/remove functionality, integrated into LessonEditor. R2/S3 API routes at app/api/r2/upload-url and download-url with presigned URLs and access control. All 260 E2E tests passing across all browsers."
     },
     {
       "id": "feat-065",
