@@ -3,7 +3,7 @@
 
 [api]
 enabled = true
-port = 28321
+port = 54821
 schemas = ["public", "graphql_public"]
 extra_search_path = ["public", "extensions"]
 max_rows = 1000
@@ -13,12 +13,12 @@ enabled = false
 
 [db]
 port = 28322
-shadow_port = 28320
+shadow_port = 54820
 major_version = 15
 
 [db.pooler]
 enabled = false
-port = 28329
+port = 54829
 pool_mode = "transaction"
 default_pool_size = 20
 max_client_conn = 100
@@ -30,7 +30,7 @@ max_header_length = 4096
 
 [studio]
 enabled = true
-port = 28323
+port = 54823
 api_url = "http://127.0.0.1"
 openai_api_key = ""
 
@@ -38,7 +38,7 @@ openai_api_key = ""
 enabled = true
 port = 28324
 smtp_port = 28325
-pop3_port = 28326
+pop3_port = 54824
 
 [storage]
 enabled = true
@@ -96,11 +96,11 @@ enabled = false
 [edge_runtime]
 enabled = true
 policy = "oneshot"
-inspector_port = 8083
+inspector_port = 8583
 
 [analytics]
 enabled = false
-port = 28327
+port = 54827
 backend = "postgres"
 
 [experimental]
