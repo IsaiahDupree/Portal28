@@ -10,6 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ArrowLeft, Save, Loader2, Check, Video, FileText, Plus, Trash2, Eye, Lock } from "lucide-react";
+import { MuxVideoUpload } from "@/components/admin/MuxVideoUpload";
 
 interface Lesson {
   id: string;
@@ -76,14 +77,37 @@ export function LessonEditor({ lesson: initialLesson, course }: { lesson: Lesson
         <Input value={lesson.title} onChange={(e) => updateLesson({ title: e.target.value })} placeholder="Lesson title" className="text-2xl font-bold border-none p-0 h-auto focus-visible:ring-0" />
 
         {lesson.lesson_type === "multimedia" && (
-          <Card>
-            <CardHeader><CardTitle className="flex items-center gap-2"><Video className="h-5 w-5" />Video</CardTitle></CardHeader>
-            <CardContent className="space-y-4">
-              <Input value={lesson.video_url || ""} onChange={(e) => updateLesson({ video_url: e.target.value })} placeholder="Video URL (YouTube, Vimeo, etc.)" />
-              {lesson.video_url && <div className="aspect-video rounded-lg overflow-hidden bg-black"><iframe src={lesson.video_url} className="w-full h-full" allow="autoplay; fullscreen" allowFullScreen /></div>}
-              <div className="flex items-center gap-2"><Label>Duration (min)</Label><Input type="number" className="w-20" value={lesson.duration_minutes || ""} onChange={(e) => updateLesson({ duration_minutes: parseInt(e.target.value) || undefined })} /></div>
-            </CardContent>
-          </Card>
+          <>
+            <MuxVideoUpload
+              lessonId={lesson.id}
+              currentVideoUrl={lesson.video_url}
+              onUploadComplete={(assetId, playbackId) => {
+                updateLesson({ video_url: `https://stream.mux.com/${playbackId}` });
+              }}
+            />
+            <Card>
+              <CardHeader>
+                <CardTitle>Or Use External Video URL</CardTitle>
+                <CardDescription>Enter a URL for YouTube, Vimeo, or other video platforms</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <Input
+                  value={lesson.video_url || ""}
+                  onChange={(e) => updateLesson({ video_url: e.target.value })}
+                  placeholder="Video URL (YouTube, Vimeo, etc.)"
+                />
+                <div className="flex items-center gap-2">
+                  <Label>Duration (min)</Label>
+                  <Input
+                    type="number"
+                    className="w-20"
+                    value={lesson.duration_minutes || ""}
+                    onChange={(e) => updateLesson({ duration_minutes: parseInt(e.target.value) || undefined })}
+                  />
+                </div>
+              </CardContent>
+            </Card>
+          </>
         )}
 
         <Card>
