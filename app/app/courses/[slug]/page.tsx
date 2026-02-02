@@ -5,7 +5,8 @@ import { userHasCourseAccess } from "@/lib/entitlements/hasAccess";
 import { getCourseProgress } from "@/lib/progress/lessonProgress";
 import { Progress } from "@/components/ui/progress";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { CheckCircle2, Circle } from "lucide-react";
+import { CheckCircle2, Circle, Lock } from "lucide-react";
+import { computeUnlockedAt, formatTimeUntilUnlock, isLessonUnlocked } from "@/lib/drip";
 
 export default async function CourseOutlinePage({ params }: { params: { slug: string } }) {
   const supabase = supabaseServer();
@@ -33,6 +34,16 @@ export default async function CourseOutlinePage({ params }: { params: { slug: st
   }
 
   const outline = await getCourseOutline(course.id);
+
+  // Get enrollment info (for drip calculations)
+  const { data: enrollment } = await supabase
+    .from("enrollments")
+    .select("purchased_at")
+    .eq("user_id", user.id)
+    .eq("course_id", course.id)
+    .single();
+
+  const enrolledAt = enrollment?.purchased_at ? new Date(enrollment.purchased_at) : null;
 
   // Get lesson progress for this course
   const { data: lessonProgressData } = await supabase
@@ -91,20 +102,46 @@ export default async function CourseOutlinePage({ params }: { params: { slug: st
               <ul className="space-y-2">
                 {m.lessons.map((l) => {
                   const isCompleted = completedLessons.has(l.id);
+
+                  // Check if lesson is locked by drip schedule
+                  const isLocked = enrolledAt && l.drip_type && l.drip_type !== "immediate"
+                    ? !isLessonUnlocked(enrolledAt, l.drip_type, l.drip_value)
+                    : false;
+
+                  const unlockedAt = isLocked && enrolledAt
+                    ? computeUnlockedAt(enrolledAt, l.drip_type!, l.drip_value)
+                    : null;
+
                   return (
                     <li key={l.id}>
                       <Link
                         href={`/app/lesson/${l.id}`}
-                        className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent transition-colors"
+                        className={`flex items-center gap-3 p-3 rounded-lg transition-colors ${
+                          isLocked ? "cursor-not-allowed opacity-60" : "hover:bg-accent"
+                        }`}
+                        onClick={(e) => {
+                          if (isLocked) {
+                            e.preventDefault();
+                          }
+                        }}
                       >
                         {isCompleted ? (
                           <CheckCircle2 className="h-5 w-5 text-green-600 flex-shrink-0" />
+                        ) : isLocked ? (
+                          <Lock className="h-5 w-5 text-amber-500 flex-shrink-0" />
                         ) : (
                           <Circle className="h-5 w-5 text-muted-foreground flex-shrink-0" />
                         )}
-                        <span className={isCompleted ? "text-muted-foreground" : ""}>
-                          {l.title}
-                        </span>
+                        <div className="flex-1 min-w-0">
+                          <span className={isCompleted ? "text-muted-foreground" : ""}>
+                            {l.title}
+                          </span>
+                          {isLocked && unlockedAt && (
+                            <p className="text-xs text-amber-600 mt-0.5">
+                              {formatTimeUntilUnlock(unlockedAt)}
+                            </p>
+                          )}
+                        </div>
                       </Link>
                     </li>
                   );

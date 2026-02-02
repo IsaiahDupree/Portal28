@@ -44,7 +44,7 @@ export async function getCourseOutline(courseId: string) {
   const moduleIds = (modules ?? []).map((m) => m.id);
   const { data: lessons, error: lErr } = await supabase
     .from("lessons")
-    .select("id,module_id,title,sort_order")
+    .select("id,module_id,title,sort_order,drip_type,drip_value")
     .in("module_id", moduleIds.length ? moduleIds : ["00000000-0000-0000-0000-000000000000"])
     .order("sort_order", { ascending: true });
 
