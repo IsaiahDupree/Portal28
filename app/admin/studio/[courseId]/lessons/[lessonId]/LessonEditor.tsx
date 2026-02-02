@@ -11,6 +11,15 @@ import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ArrowLeft, Save, Loader2, Check, Video, FileText, Plus, Trash2, Eye, Lock } from "lucide-react";
 import { MuxVideoUpload } from "@/components/admin/MuxVideoUpload";
+import { FileUpload } from "@/components/admin/FileUpload";
+
+interface FileAttachment {
+  key: string;
+  filename: string;
+  size: number;
+  contentType: string;
+  uploadedAt: string;
+}
 
 interface Lesson {
   id: string;
@@ -18,7 +27,7 @@ interface Lesson {
   lesson_type: string;
   video_url?: string;
   content_html?: string;
-  downloads?: any[];
+  downloads?: FileAttachment[];
   drip_type: string;
   drip_value?: string;
   is_published: boolean;
@@ -116,6 +125,12 @@ export function LessonEditor({ lesson: initialLesson, course }: { lesson: Lesson
             <Textarea value={lesson.content_html || ""} onChange={(e) => updateLesson({ content_html: e.target.value })} placeholder="Lesson content (supports HTML)" className="min-h-[200px]" />
           </CardContent>
         </Card>
+
+        <FileUpload
+          lessonId={lesson.id}
+          currentFiles={lesson.downloads}
+          onFilesChange={(files) => updateLesson({ downloads: files })}
+        />
 
         <Card>
           <CardHeader><CardTitle>Settings</CardTitle></CardHeader>
