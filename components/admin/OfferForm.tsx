@@ -146,6 +146,7 @@ export default function OfferForm({
             <option value="membership">Membership</option>
             <option value="course">Course</option>
             <option value="bundle">Bundle</option>
+            <option value="order_bump">Order Bump</option>
           </select>
         </div>
       </div>

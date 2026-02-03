@@ -13,12 +13,14 @@ export function BuyButton({
   courseId,
   price,
   className,
-  variant = "default"
+  variant = "default",
+  useCheckoutPage = true,
 }: {
   courseId: string;
   price?: string;
   className?: string;
   variant?: "default" | "secondary" | "outline" | "ghost" | "link" | "destructive";
+  useCheckoutPage?: boolean;
 }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -31,6 +33,13 @@ export function BuyButton({
       const event_id = makeEventId();
       track("InitiateCheckout", { content_ids: [courseId] });
 
+      // If using custom checkout page with order bumps, redirect there
+      if (useCheckoutPage) {
+        window.location.href = `/checkout/${courseId}`;
+        return;
+      }
+
+      // Otherwise, go directly to Stripe (legacy flow)
       const res = await fetch("/api/stripe/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
