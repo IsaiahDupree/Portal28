@@ -11,6 +11,25 @@ export default async function BundlesPage() {
     .eq("is_active", true)
     .order("created_at", { ascending: false });
 
+  // Fetch all course details for bundles
+  const bundlesWithCourses = await Promise.all(
+    (bundles ?? []).map(async (bundle: any) => {
+      const payload = bundle.payload ?? {};
+      const courseIds = payload.courseIds ?? [];
+
+      if (courseIds.length === 0) {
+        return { ...bundle, courses: [] };
+      }
+
+      const { data: courses } = await supabase
+        .from("courses")
+        .select("id,title,slug,description")
+        .in("id", courseIds);
+
+      return { ...bundle, courses: courses ?? [] };
+    })
+  );
+
   return (
     <div className="space-y-6">
       <div>
@@ -21,10 +40,7 @@ export default async function BundlesPage() {
       </div>
 
       <div className="grid md:grid-cols-2 gap-6">
-        {(bundles ?? []).map((bundle: any) => {
-          const payload = bundle.payload ?? {};
-          const courseIds = payload.courseIds ?? [];
-
+        {bundlesWithCourses.map((bundle: any) => {
           return (
             <BundleCard
               key={bundle.key}
@@ -33,7 +49,7 @@ export default async function BundlesPage() {
               subtitle={bundle.subtitle}
               priceLabel={bundle.price_label}
               compareAtLabel={bundle.compare_at_label}
-              courses={courseIds.map((id: string) => ({ id, title: id, slug: id }))}
+              courses={bundle.courses}
               bullets={bundle.bullets ?? []}
               badge={bundle.badge}
               ctaText={bundle.cta_text}
@@ -42,7 +58,7 @@ export default async function BundlesPage() {
         })}
       </div>
 
-      {(!bundles || bundles.length === 0) && (
+      {bundlesWithCourses.length === 0 && (
         <div className="text-center py-12 text-muted-foreground">
           No bundles available at the moment.
         </div>

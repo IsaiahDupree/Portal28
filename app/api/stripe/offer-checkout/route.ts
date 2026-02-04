@@ -96,21 +96,12 @@ export async function POST(req: NextRequest) {
     priceId = course.stripe_price_id;
     mode = "payment";
   } else if (kind === "bundle") {
-    const courseSlug = payload.courseSlug as string;
-    const tier = payload.tier as string;
-    const trialDays = (payload.trialDays as number) || 0;
-
-    const { data: course } = await supabase
-      .from("courses")
-      .select("stripe_price_id")
-      .eq("slug", courseSlug)
-      .single();
-
-    if (!course?.stripe_price_id) {
-      return NextResponse.json({ error: "Course not purchasable" }, { status: 404 });
+    // Bundles have their own stripe_price_id in the offers table
+    if (!offer.stripe_price_id) {
+      return NextResponse.json({ error: "Bundle price not configured" }, { status: 400 });
     }
 
-    priceId = course.stripe_price_id;
+    priceId = offer.stripe_price_id;
     mode = "payment";
   } else {
     return NextResponse.json({ error: "Unknown offer kind" }, { status: 400 });
@@ -145,6 +136,10 @@ export async function POST(req: NextRequest) {
       kind,
       user_id: user?.id || "",
       placement_key: placementKey || "",
+      // For bundles, include courseIds as JSON string
+      ...(kind === "bundle" && payload.courseIds
+        ? { bundle_course_ids: JSON.stringify(payload.courseIds) }
+        : {}),
     },
   };
 

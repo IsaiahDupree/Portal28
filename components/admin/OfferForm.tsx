@@ -15,6 +15,7 @@ type Offer = {
   compare_at_label: string | null;
   bullets: string[];
   payload: Record<string, any>;
+  stripe_price_id: string | null;
   is_active: boolean;
 };
 
@@ -39,6 +40,7 @@ export default function OfferForm({
   const [compareAtLabel, setCompareAtLabel] = useState(offer.compare_at_label || "");
   const [bullets, setBullets] = useState(JSON.stringify(offer.bullets, null, 2));
   const [payload, setPayload] = useState(JSON.stringify(offer.payload, null, 2));
+  const [stripePriceId, setStripePriceId] = useState(offer.stripe_price_id || "");
   const [isActive, setIsActive] = useState(offer.is_active);
 
   async function handleSubmit(e: React.FormEvent) {
@@ -76,6 +78,7 @@ export default function OfferForm({
       compare_at_label: compareAtLabel || null,
       bullets: bulletsJson,
       payload: payloadJson,
+      stripe_price_id: stripePriceId || null,
       is_active: isActive,
     };
 
@@ -238,9 +241,26 @@ export default function OfferForm({
           rows={6}
         />
         <p className="text-xs text-gray-500 mt-1">
-          membership: {"{"} tier, interval {"}"} | course: {"{"} courseSlug {"}"} | bundle: {"{"} courseSlug, tier, trialDays {"}"}
+          membership: {"{"} tier, interval {"}"} | course: {"{"} courseSlug {"}"} | bundle: {"{"} courseIds: ["uuid1", "uuid2"] {"}"}
         </p>
       </div>
+
+      {kind === "bundle" && (
+        <div>
+          <label className="block text-sm font-medium mb-1">Stripe Price ID (Required for Bundles)</label>
+          <input
+            type="text"
+            value={stripePriceId}
+            onChange={(e) => setStripePriceId(e.target.value)}
+            className="w-full border rounded-lg p-2 font-mono text-sm"
+            placeholder="price_xxx"
+            required={kind === "bundle"}
+          />
+          <p className="text-xs text-gray-500 mt-1">
+            Create a bundle product in Stripe Dashboard and paste the price ID here
+          </p>
+        </div>
+      )}
 
       <label className="flex items-center gap-2">
         <input

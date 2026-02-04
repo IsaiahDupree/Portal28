@@ -24,10 +24,14 @@ export async function POST(req: Request) {
   if (event.type === "checkout.session.completed") {
     const session = event.data.object as Stripe.Checkout.Session;
     const courseId = session.metadata?.course_id;
-    const event_id = session.metadata?.event_id;
+    const bundleCourseIds = session.metadata?.bundle_course_ids
+      ? JSON.parse(session.metadata.bundle_course_ids)
+      : null;
+    const kind = session.metadata?.kind || null;
+    const event_id = session.metadata?.event_id || session.metadata?.meta_event_id;
     const userId = session.metadata?.user_id || null;
     const email = session.customer_details?.email || null;
-    
+
     // Email attribution tracking (eid = email send ID)
     const emailSendId = session.metadata?.eid || null;
     const emailProgramId = session.metadata?.email_program_id || null;
@@ -72,7 +76,8 @@ export async function POST(req: Request) {
       }
     }
 
-    if (courseId && event_id) {
+    // Handle both single course purchases and bundle purchases
+    if ((courseId || bundleCourseIds) && event_id) {
       const { data: existing } = await supabaseAdmin
         .from("orders")
         .select("id,status")
@@ -100,38 +105,64 @@ export async function POST(req: Request) {
           })
           .eq("stripe_session_id", session.id);
 
-        await supabaseAdmin.from("entitlements").insert({
-          course_id: courseId,
+        // Grant entitlements for all courses (single or bundle)
+        const courseIdsToGrant = bundleCourseIds || [courseId];
+        const entitlements = courseIdsToGrant.map((cid: string) => ({
+          course_id: cid,
           user_id: userId || null,
           email,
           status: "active"
-        });
+        }));
+
+        await supabaseAdmin.from("entitlements").insert(entitlements);
 
         await sendCapiPurchase({
           event_id,
           value: amountTotal,
           currency: currency.toLowerCase(),
           email: email ?? undefined,
-          content_ids: [courseId]
+          content_ids: courseIdsToGrant
         });
 
-        // Send course access email
+        // Send course access email(s)
         if (email) {
-          const { data: course } = await supabaseAdmin
-            .from("courses")
-            .select("title,slug")
-            .eq("id", courseId)
-            .single();
+          if (kind === "bundle" && bundleCourseIds) {
+            // For bundles, send a bundle access email with all courses
+            const { data: courses } = await supabaseAdmin
+              .from("courses")
+              .select("title,slug")
+              .in("id", bundleCourseIds);
 
-          if (course) {
-            try {
-              await sendCourseAccessEmail({
-                to: email,
-                courseName: course.title,
-                courseSlug: course.slug
-              });
-            } catch (emailErr) {
-              console.error("Failed to send course access email:", emailErr);
+            if (courses && courses.length > 0) {
+              try {
+                // Send bundle email with first course, mentioning it's a bundle
+                await sendCourseAccessEmail({
+                  to: email,
+                  courseName: `Bundle: ${courses.map(c => c.title).join(", ")}`,
+                  courseSlug: courses[0].slug
+                });
+              } catch (emailErr) {
+                console.error("Failed to send bundle access email:", emailErr);
+              }
+            }
+          } else if (courseId) {
+            // Single course purchase
+            const { data: course } = await supabaseAdmin
+              .from("courses")
+              .select("title,slug")
+              .eq("id", courseId)
+              .single();
+
+            if (course) {
+              try {
+                await sendCourseAccessEmail({
+                  to: email,
+                  courseName: course.title,
+                  courseSlug: course.slug
+                });
+              } catch (emailErr) {
+                console.error("Failed to send course access email:", emailErr);
+              }
             }
           }
 
