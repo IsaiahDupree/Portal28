@@ -40,7 +40,7 @@ CREATE INDEX IF NOT EXISTS idx_lesson_chapters_lesson ON lesson_chapters(lesson_
 
 -- Add AI-generated flag to existing tables
 ALTER TABLE lesson_notes ADD COLUMN IF NOT EXISTS is_ai_generated BOOLEAN DEFAULT false;
-ALTER TABLE quizzes ADD COLUMN IF NOT EXISTS is_ai_generated BOOLEAN DEFAULT false;
+ALTER TABLE quiz_questions ADD COLUMN IF NOT EXISTS is_ai_generated BOOLEAN DEFAULT false;
 
 -- RLS Policies for ai_analysis_jobs
 ALTER TABLE ai_analysis_jobs ENABLE ROW LEVEL SECURITY;

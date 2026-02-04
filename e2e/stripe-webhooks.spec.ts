@@ -417,9 +417,9 @@ test.describe("Stripe Webhooks E2E", () => {
       expect(ordersError).toBeNull();
       expect(orders).toBeDefined();
 
-      // Verify entitlements have created_at
+      // Verify entitlements have granted_at
       const { data: entitlements, error: entitlementsError } =
-        await supabaseAdmin.from("entitlements").select("id, created_at").limit(1);
+        await supabaseAdmin.from("entitlements").select("id, granted_at").limit(1);
 
       expect(entitlementsError).toBeNull();
       expect(entitlements).toBeDefined();
