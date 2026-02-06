@@ -148,9 +148,9 @@ test.describe("Abandoned Checkout - Recovery Emails", () => {
   test.describe("GRO-ACR-004: Recovery Email Sequence", () => {
     test("should send first recovery email within 1 hour", async () => {
       // Requirement: Recovery email sent within 1hr of abandonment
-      // Check email_messages table for abandoned_checkout emails
+      // Check email_sends table for abandoned_checkout emails
       const { data: emails, error } = await supabaseAdmin
-        .from("email_messages")
+        .from("email_sends")
         .select("*")
         .eq("template", "abandoned_checkout")
         .limit(1);
@@ -178,8 +178,8 @@ test.describe("Abandoned Checkout - Recovery Emails", () => {
       // Respect email preferences and unsubscribes
       const { data: contacts, error } = await supabaseAdmin
         .from("email_contacts")
-        .select("email, is_subscribed")
-        .eq("is_subscribed", false)
+        .select("email, unsubscribed")
+        .eq("unsubscribed", true)
         .limit(1);
 
       expect(error).toBeNull();
@@ -306,7 +306,7 @@ test.describe("Abandoned Checkout - Analytics and Optimization", () => {
       // Total $ from recovered checkouts
       const { data: recoveredOrders, error } = await supabaseAdmin
         .from("orders")
-        .select("amount, metadata")
+        .select("amount")
         .eq("status", "paid")
         .limit(1);
 
