@@ -132,10 +132,12 @@ describe("Certificate API - GET /api/certificates (PLT-CRT-002)", () => {
       },
     ];
 
-    mockSupabase.order.mockResolvedValue({
-      data: mockCertificates,
-      error: null,
-    });
+    // Mock needs to support chaining: query.eq().eq()
+    const mockQuery = {
+      then: (resolve: any) => resolve({ data: mockCertificates, error: null }),
+    };
+    mockSupabase.eq.mockReturnValue(mockQuery);
+    mockSupabase.order.mockReturnValue(mockSupabase);
 
     await GET(mockReq as any);
 

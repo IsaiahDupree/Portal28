@@ -16,14 +16,23 @@ jest.mock("@/lib/supabase/server", () => ({
     from: jest.fn(() => ({
       select: jest.fn(() => ({
         eq: jest.fn(() => ({
-          gte: jest.fn(() => ({
-            head: true,
-            count: "exact",
+          gte: jest.fn(() => Promise.resolve({
+            count: 0,
+            data: [],
+            error: null,
           })),
+        })),
+        gte: jest.fn(() => Promise.resolve({
+          count: 0,
+          data: [],
+          error: null,
         })),
       })),
     })),
-    rpc: jest.fn(),
+    rpc: jest.fn(() => Promise.resolve({
+      data: [],
+      error: null,
+    })),
   })),
 }));
 
