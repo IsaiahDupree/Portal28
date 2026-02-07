@@ -20,13 +20,18 @@ const SAFE_TAGS = new Set([
 // Dangerous tags that should always be removed
 const DANGEROUS_TAGS = ["script", "style", "iframe", "object", "embed", "form", "input", "textarea", "button", "meta", "link", "base"];
 
-// Dangerous attribute patterns
+// Dangerous attribute patterns - match attribute name and value
 const DANGEROUS_ATTR_PATTERNS = [
-  /\bon\w+\s*=/gi, // Event handlers like onclick=
-  /javascript:/gi,
-  /vbscript:/gi,
-  /data:/gi,
-  /expression\s*\(/gi,
+  /\s*on\w+\s*=\s*["'][^"']*["']/gi, // Event handlers like onclick="..." or onclick='...'
+  /\s*on\w+\s*=\s*[^\s>]*/gi, // Event handlers without quotes
+  /\s*href\s*=\s*["']javascript:[^"']*["']/gi, // javascript: in href
+  /\s*href\s*=\s*javascript:[^\s>]*/gi,
+  /\s*src\s*=\s*["']javascript:[^"']*["']/gi, // javascript: in src
+  /\s*src\s*=\s*javascript:[^\s>]*/gi,
+  /\s*src\s*=\s*["']data:[^"']*["']/gi, // data: URIs in src (can execute scripts)
+  /\s*src\s*=\s*data:[^\s>]*/gi,
+  /\s*style\s*=\s*["'][^"']*expression\s*\([^"']*["']/gi, // CSS expressions
+  /\s*style\s*=\s*[^\s>]*expression\s*\([^\s>]*/gi,
 ];
 
 /**
