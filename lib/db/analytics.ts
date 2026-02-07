@@ -35,6 +35,34 @@ export type OfferAnalytics = {
   revenue: number;
 };
 
+export type CohortAnalytics = {
+  cohort_date: string;
+  cohort_size: number;
+  total_revenue: number;
+  avg_ltv: number;
+  retention_week_1: number;
+  retention_week_2: number;
+  retention_week_4: number;
+  retention_week_8: number;
+  retention_week_12: number;
+};
+
+export type CohortRetentionPoint = {
+  week_number: number;
+  retention_rate: number;
+  active_users: number;
+  total_users: number;
+};
+
+export type CohortLTVComparison = {
+  cohort_date: string;
+  cohort_size: number;
+  total_revenue: number;
+  avg_ltv: number;
+  median_ltv: number;
+  max_ltv: number;
+};
+
 /**
  * Get revenue over time grouped by day/week/month
  */
@@ -202,4 +230,70 @@ export async function getDashboardStats(days: number = 30) {
     totalCheckouts: totalCheckouts || 0,
     conversionRate: Math.round(conversionRate * 100) / 100,
   };
+}
+
+/**
+ * Get cohort analytics data with retention and LTV metrics
+ */
+export async function getCohortAnalytics(
+  cohortPeriod: "week" | "month" = "month",
+  limit: number = 12
+): Promise<CohortAnalytics[]> {
+  const supabase = supabaseServer();
+
+  const { data, error } = await supabase.rpc("get_cohort_analytics", {
+    p_cohort_period: cohortPeriod,
+    p_limit: limit,
+  });
+
+  if (error) {
+    console.error("Error fetching cohort analytics:", error);
+    return [];
+  }
+
+  return data ?? [];
+}
+
+/**
+ * Get retention curve for a specific cohort
+ */
+export async function getCohortRetentionCurve(
+  cohortDate: string,
+  cohortPeriod: "week" | "month" = "month"
+): Promise<CohortRetentionPoint[]> {
+  const supabase = supabaseServer();
+
+  const { data, error } = await supabase.rpc("get_cohort_retention_curve", {
+    p_cohort_date: cohortDate,
+    p_cohort_period: cohortPeriod,
+  });
+
+  if (error) {
+    console.error("Error fetching cohort retention curve:", error);
+    return [];
+  }
+
+  return data ?? [];
+}
+
+/**
+ * Get LTV comparison across cohorts
+ */
+export async function getCohortLTVComparison(
+  cohortPeriod: "week" | "month" = "month",
+  limit: number = 6
+): Promise<CohortLTVComparison[]> {
+  const supabase = supabaseServer();
+
+  const { data, error } = await supabase.rpc("get_cohort_ltv_comparison", {
+    p_cohort_period: cohortPeriod,
+    p_limit: limit,
+  });
+
+  if (error) {
+    console.error("Error fetching cohort LTV comparison:", error);
+    return [];
+  }
+
+  return data ?? [];
 }

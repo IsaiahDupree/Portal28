@@ -8,6 +8,9 @@ import {
   getTopCourses,
   getOfferAnalytics,
   getDashboardStats,
+  getCohortAnalytics,
+  getCohortRetentionCurve,
+  getCohortLTVComparison,
 } from "@/lib/db/analytics";
 
 // Mock Supabase
@@ -349,6 +352,169 @@ describe("Analytics Functions", () => {
       expect(Array.isArray(revenue)).toBe(true);
       expect(Array.isArray(courses)).toBe(true);
       expect(Array.isArray(offers)).toBe(true);
+    });
+  });
+
+  describe("GRO-COH-001: Cohort grouping", () => {
+    it("should group users by signup cohort", async () => {
+      const cohorts = await getCohortAnalytics("month", 12);
+
+      expect(Array.isArray(cohorts)).toBe(true);
+
+      if (cohorts.length > 0) {
+        expect(cohorts[0]).toHaveProperty("cohort_date");
+        expect(cohorts[0]).toHaveProperty("cohort_size");
+        expect(cohorts[0]).toHaveProperty("total_revenue");
+        expect(cohorts[0]).toHaveProperty("avg_ltv");
+      }
+    });
+
+    it("should support weekly cohort grouping", async () => {
+      const cohorts = await getCohortAnalytics("week", 12);
+
+      expect(Array.isArray(cohorts)).toBe(true);
+    });
+
+    it("should support monthly cohort grouping", async () => {
+      const cohorts = await getCohortAnalytics("month", 6);
+
+      expect(Array.isArray(cohorts)).toBe(true);
+    });
+
+    it("should respect limit parameter", async () => {
+      const cohorts = await getCohortAnalytics("month", 5);
+
+      expect(cohorts.length).toBeLessThanOrEqual(5);
+    });
+
+    it("should order cohorts by date descending (newest first)", async () => {
+      const cohorts = await getCohortAnalytics("month", 12);
+
+      // Cohorts should be in descending order (newest first)
+      for (let i = 1; i < cohorts.length; i++) {
+        expect(cohorts[i].cohort_date <= cohorts[i - 1].cohort_date).toBe(true);
+      }
+    });
+  });
+
+  describe("GRO-COH-002: Retention calculation", () => {
+    it("should calculate retention rates at different intervals", async () => {
+      const cohorts = await getCohortAnalytics("month", 12);
+
+      if (cohorts.length > 0) {
+        expect(cohorts[0]).toHaveProperty("retention_week_1");
+        expect(cohorts[0]).toHaveProperty("retention_week_2");
+        expect(cohorts[0]).toHaveProperty("retention_week_4");
+        expect(cohorts[0]).toHaveProperty("retention_week_8");
+        expect(cohorts[0]).toHaveProperty("retention_week_12");
+      }
+    });
+
+    it("should return retention rates as percentages (0-100)", async () => {
+      const cohorts = await getCohortAnalytics("month", 12);
+
+      cohorts.forEach((cohort) => {
+        expect(cohort.retention_week_1).toBeGreaterThanOrEqual(0);
+        expect(cohort.retention_week_1).toBeLessThanOrEqual(100);
+        expect(cohort.retention_week_2).toBeGreaterThanOrEqual(0);
+        expect(cohort.retention_week_2).toBeLessThanOrEqual(100);
+        expect(cohort.retention_week_4).toBeGreaterThanOrEqual(0);
+        expect(cohort.retention_week_4).toBeLessThanOrEqual(100);
+        expect(cohort.retention_week_8).toBeGreaterThanOrEqual(0);
+        expect(cohort.retention_week_8).toBeLessThanOrEqual(100);
+        expect(cohort.retention_week_12).toBeGreaterThanOrEqual(0);
+        expect(cohort.retention_week_12).toBeLessThanOrEqual(100);
+      });
+    });
+
+    it("should fetch retention curve for a specific cohort", async () => {
+      const cohorts = await getCohortAnalytics("month", 1);
+
+      if (cohorts.length > 0) {
+        const curve = await getCohortRetentionCurve(cohorts[0].cohort_date, "month");
+
+        expect(Array.isArray(curve)).toBe(true);
+
+        if (curve.length > 0) {
+          expect(curve[0]).toHaveProperty("week_number");
+          expect(curve[0]).toHaveProperty("retention_rate");
+          expect(curve[0]).toHaveProperty("active_users");
+          expect(curve[0]).toHaveProperty("total_users");
+        }
+      }
+    });
+
+    it("should calculate retention curve with proper week progression", async () => {
+      const cohorts = await getCohortAnalytics("month", 1);
+
+      if (cohorts.length > 0) {
+        const curve = await getCohortRetentionCurve(cohorts[0].cohort_date, "month");
+
+        // Week numbers should increment properly
+        curve.forEach((point, index) => {
+          expect(point.week_number).toBe(index);
+        });
+      }
+    });
+  });
+
+  describe("GRO-COH-003: LTV comparison", () => {
+    it("should calculate LTV metrics by cohort", async () => {
+      const ltvData = await getCohortLTVComparison("month", 6);
+
+      expect(Array.isArray(ltvData)).toBe(true);
+
+      if (ltvData.length > 0) {
+        expect(ltvData[0]).toHaveProperty("cohort_date");
+        expect(ltvData[0]).toHaveProperty("cohort_size");
+        expect(ltvData[0]).toHaveProperty("total_revenue");
+        expect(ltvData[0]).toHaveProperty("avg_ltv");
+        expect(ltvData[0]).toHaveProperty("median_ltv");
+        expect(ltvData[0]).toHaveProperty("max_ltv");
+      }
+    });
+
+    it("should calculate average LTV correctly", async () => {
+      const ltvData = await getCohortLTVComparison("month", 6);
+
+      ltvData.forEach((cohort) => {
+        expect(cohort.avg_ltv).toBeGreaterThanOrEqual(0);
+        // Avg LTV should be total_revenue / cohort_size
+        if (cohort.cohort_size > 0) {
+          const expectedAvg = cohort.total_revenue / cohort.cohort_size;
+          expect(Math.abs(cohort.avg_ltv - expectedAvg)).toBeLessThan(1);
+        }
+      });
+    });
+
+    it("should calculate median LTV", async () => {
+      const ltvData = await getCohortLTVComparison("month", 6);
+
+      ltvData.forEach((cohort) => {
+        expect(cohort.median_ltv).toBeGreaterThanOrEqual(0);
+      });
+    });
+
+    it("should calculate max LTV", async () => {
+      const ltvData = await getCohortLTVComparison("month", 6);
+
+      ltvData.forEach((cohort) => {
+        expect(cohort.max_ltv).toBeGreaterThanOrEqual(0);
+        // Max LTV should be >= average LTV and median LTV
+        expect(cohort.max_ltv).toBeGreaterThanOrEqual(cohort.avg_ltv);
+        expect(cohort.max_ltv).toBeGreaterThanOrEqual(cohort.median_ltv);
+      });
+    });
+
+    it("should handle cohorts with zero revenue", async () => {
+      const ltvData = await getCohortLTVComparison("month", 6);
+
+      // Should not error on cohorts with no purchases
+      ltvData.forEach((cohort) => {
+        expect(isFinite(cohort.avg_ltv)).toBe(true);
+        expect(isFinite(cohort.median_ltv)).toBe(true);
+        expect(isFinite(cohort.max_ltv)).toBe(true);
+      });
     });
   });
 });

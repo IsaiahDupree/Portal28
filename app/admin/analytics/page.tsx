@@ -66,6 +66,34 @@ export default async function AdminAnalyticsPage({
 
   return (
     <div className="space-y-6">
+      {/* Navigation Tabs */}
+      <div className="flex gap-2 border-b">
+        <Link
+          href="/admin/analytics"
+          className="px-4 py-2 border-b-2 border-primary font-medium"
+        >
+          Sales
+        </Link>
+        <Link
+          href="/admin/analytics/cohorts"
+          className="px-4 py-2 text-muted-foreground hover:text-foreground"
+        >
+          Cohorts
+        </Link>
+        <Link
+          href="/admin/analytics/enrollments"
+          className="px-4 py-2 text-muted-foreground hover:text-foreground"
+        >
+          Enrollments
+        </Link>
+        <Link
+          href="/admin/analytics/upsells"
+          className="px-4 py-2 text-muted-foreground hover:text-foreground"
+        >
+          Upsells
+        </Link>
+      </div>
+
       {/* Page Header - Using reusable component */}
       <PageHeader
         title="Sales Analytics"
