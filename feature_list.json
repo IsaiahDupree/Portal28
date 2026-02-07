@@ -4,7 +4,7 @@
   "created": "2026-01-13",
   "updated": "2026-01-17",
   "total_features": 263,
-  "completed_features": 167,
+  "completed_features": 168,
   "total_tests": 300,
   "phases": {
     "phase0_mvp": "Core course selling: auth, payments, course delivery, admin CMS, tracking, email",
@@ -2094,9 +2094,9 @@
         "Session created on success",
         "Existing users linked"
       ],
-      "passes": false,
-      "implemented_at": null,
-      "notes": "PRD mentions 'Optional: Google login later' - low priority but common request."
+      "passes": true,
+      "implemented_at": "2026-02-07",
+      "notes": "Google OAuth fully implemented. Google login button added to both login and signup pages with Google icon. Supabase OAuth integration configured. E2E tests (30 tests) passing across all browsers (Chrome, Firefox, Safari, Mobile). Users can authenticate via Google OAuth. To enable in production: configure Google OAuth credentials in Supabase dashboard and update env vars."
     },
     {
       "id": "feat-071",
