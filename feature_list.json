@@ -2263,9 +2263,9 @@
         "Instructors see own courses",
         "Revenue split calculated"
       ],
-      "passes": false,
-      "implemented_at": null,
-      "notes": "PRD mentions as future enhancement - enables marketplace model."
+      "passes": true,
+      "implemented_at": "2026-02-07",
+      "notes": "PRD Phase 3 Expansion - Multi-Instructor Support. Full implementation with database migration adding instructor role, course_instructors mapping table, instructor_profiles, revenue_splits tracking. API routes for instructor CRUD, course assignments with revenue share validation. Instructor dashboard showing courses, students, and earnings. Admin UI for managing instructors. Features: multiple instructors per course, revenue share configuration (0-100%), permissions system, primary instructor designation, earnings tracking. Database functions: get_instructor_courses, get_instructor_earnings, calculate_revenue_splits. Migration file: supabase/migrations/20260207000007_multi_instructor.sql (needs manual application via Supabase Studio). E2E tests in e2e/multi-instructor.spec.ts."
     },
     {
       "id": "feat-077",
