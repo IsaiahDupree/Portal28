@@ -21,18 +21,28 @@ export async function POST(req: NextRequest) {
 
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://portal28.academy";
 
+    // Get affiliate code from cookie if present
+    const affiliateCode = req.cookies.get("p28_affiliate")?.value;
+
+    const metadata: Record<string, string> = {
+      kind: "course",
+      course_slug: courseSlug,
+      user_id: userId ?? "",
+      meta_event_id: metaEventId ?? "",
+      source: source ?? "course_page",
+    };
+
+    // Add affiliate code to metadata if present
+    if (affiliateCode) {
+      metadata.affiliate_code = affiliateCode;
+    }
+
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
       line_items: [{ price: priceId, quantity: 1 }],
       success_url: `${siteUrl}/thanks/course?session_id={CHECKOUT_SESSION_ID}&course=${courseSlug}`,
       cancel_url: `${siteUrl}/courses/${courseSlug}`,
-      metadata: {
-        kind: "course",
-        course_slug: courseSlug,
-        user_id: userId ?? "",
-        meta_event_id: metaEventId ?? "",
-        source: source ?? "course_page"
-      },
+      metadata,
       allow_promotion_codes: true
     });
 

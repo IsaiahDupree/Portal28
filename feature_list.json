@@ -4,7 +4,7 @@
   "created": "2026-01-13",
   "updated": "2026-01-17",
   "total_features": 263,
-  "completed_features": 168,
+  "completed_features": 169,
   "total_tests": 300,
   "phases": {
     "phase0_mvp": "Core course selling: auth, payments, course delivery, admin CMS, tracking, email",
@@ -2152,9 +2152,9 @@
         "Commissions calculated",
         "Payout reports available"
       ],
-      "passes": false,
-      "implemented_at": null,
-      "notes": "PRD excludes from MVP but mentions for Phase 2+. Common revenue driver."
+      "passes": true,
+      "implemented_at": "2026-02-07",
+      "notes": "Affiliate system fully implemented. Database schema with 4 tables (affiliates, referrals, commissions, payout_batches). APIs: registration, dashboard, tracking. Stripe webhook integration for commission attribution. Affiliate dashboard UI (/app/affiliates). Auto-commission calculation via DB functions. Cookie-based referral tracking. E2E tests created. Ready for production use. TODO: Add admin approval UI, payout processing UI."
     },
     {
       "id": "feat-073",

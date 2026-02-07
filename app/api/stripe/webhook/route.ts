@@ -116,6 +116,28 @@ export async function POST(req: Request) {
 
         await supabaseAdmin.from("entitlements").insert(entitlements);
 
+        // Process affiliate referral if present
+        const affiliateCode = session.metadata?.affiliate_code;
+        if (affiliateCode) {
+          try {
+            const { data: order } = await supabaseAdmin
+              .from("orders")
+              .select("id")
+              .eq("stripe_session_id", session.id)
+              .single();
+
+            if (order) {
+              await supabaseAdmin.rpc("process_affiliate_referral", {
+                p_order_id: order.id,
+                p_affiliate_code: affiliateCode,
+              });
+            }
+          } catch (affiliateErr) {
+            console.error("Error processing affiliate referral:", affiliateErr);
+            // Don't fail the entire webhook if affiliate tracking fails
+          }
+        }
+
         await sendCapiPurchase({
           event_id,
           value: amountTotal,
