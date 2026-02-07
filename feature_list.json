@@ -2208,9 +2208,9 @@
         "Confirmations sent",
         "Video call links generated"
       ],
-      "passes": false,
-      "implemented_at": null,
-      "notes": "PRD Phase 2 'Apps' system includes Coaching bookings."
+      "passes": true,
+      "implemented_at": "2026-02-07",
+      "notes": "PRD Phase 2 'Apps' system includes Coaching bookings. Coaching bookings system fully implemented. Database schema with 2 tables (coaching_slots, coaching_bookings). API routes: GET/POST /api/coaching/slots, GET/PATCH/DELETE /api/coaching/slots/[slotId], GET/POST /api/coaching/bookings, GET/PATCH/DELETE /api/coaching/bookings/[bookingId]. Admin UI: /admin/coaching (slot management). Student UI: /app/coaching (browse and book sessions). Features: coach availability management, slot booking, capacity management, video call integration, reminders. Cron job for email reminders (/api/cron/coaching-reminders). E2E tests in e2e/coaching-bookings.spec.ts (45+ test cases). Database functions: get_available_coaching_slots, get_coaching_bookings_needing_reminders. RLS policies for access control. Supports one-on-one, group, and workshop sessions. Pricing support (free or paid). Virtual, physical, and hybrid location types. Booking status management (pending, confirmed, cancelled, completed, no_show). TODO: Integrate with Stripe for paid sessions, add calendar sync (iCal), recurring availability slots."
     },
     {
       "id": "feat-075",
@@ -2235,9 +2235,9 @@
         "Download works",
         "Categories filter"
       ],
-      "passes": false,
-      "implemented_at": null,
-      "notes": "PRD Phase 2 'Apps' system includes Templates vault."
+      "passes": true,
+      "implemented_at": "2026-02-07",
+      "notes": "PRD Phase 2 Apps system - Templates vault. Full implementation with database migration, API routes, user and admin UIs, category filtering, download/copy functionality, access control, and E2E tests. Migration file: supabase/migrations/20260207000006_templates_vault.sql (needs manual application via Supabase Studio)."
     },
     {
       "id": "feat-076",
