@@ -1,10 +1,32 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Script from "next/script";
+import { hasConsent } from "@/lib/cookies/consent";
 
 export function MetaPixel() {
+  const [shouldLoad, setShouldLoad] = useState(false);
   const pixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID;
+
+  useEffect(() => {
+    // Check if user has consented to marketing cookies
+    const checkConsent = () => {
+      setShouldLoad(hasConsent("marketing"));
+    };
+
+    // Check consent on mount
+    checkConsent();
+
+    // Listen for consent changes
+    window.addEventListener("consentChanged", checkConsent);
+
+    return () => {
+      window.removeEventListener("consentChanged", checkConsent);
+    };
+  }, []);
+
   if (!pixelId || pixelId.trim() === "") return null;
+  if (!shouldLoad) return null; // Don't load until consent given
 
   return (
     <>

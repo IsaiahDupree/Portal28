@@ -1,5 +1,6 @@
 import "./globals.css";
 import { MetaPixel } from "@/lib/meta/MetaPixel";
+import { CookieConsentBanner } from "@/components/legal/CookieConsentBanner";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -70,6 +71,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <MetaPixel />
         {children}
+        <CookieConsentBanner />
       </body>
     </html>
   );
