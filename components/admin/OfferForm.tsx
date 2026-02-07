@@ -21,6 +21,9 @@ type Offer = {
   description?: string | null;
   parent_offer_key?: string | null;
   expires_minutes?: number | null;
+  starts_at?: string | null;
+  ends_at?: string | null;
+  show_countdown?: boolean;
 };
 
 export default function OfferForm({
@@ -52,6 +55,11 @@ export default function OfferForm({
   const [description, setDescription] = useState(offer.description || "");
   const [parentOfferKey, setParentOfferKey] = useState(offer.parent_offer_key || "");
   const [expiresMinutes, setExpiresMinutes] = useState(offer.expires_minutes?.toString() || "30");
+
+  // Limited-time offer fields
+  const [startsAt, setStartsAt] = useState(offer.starts_at || "");
+  const [endsAt, setEndsAt] = useState(offer.ends_at || "");
+  const [showCountdown, setShowCountdown] = useState(offer.show_countdown || false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -103,6 +111,11 @@ export default function OfferForm({
     if (kind === "upsell") {
       body.expires_minutes = parseInt(expiresMinutes) || 30;
     }
+
+    // Add time-bounded offer fields
+    body.starts_at = startsAt || null;
+    body.ends_at = endsAt || null;
+    body.show_countdown = showCountdown;
 
     const res = await fetch("/api/admin/offers/upsert", {
       method: "POST",
@@ -349,6 +362,55 @@ export default function OfferForm({
           </p>
         </div>
       )}
+
+      {/* Limited-Time Offer Settings */}
+      <div className="border-t pt-6 space-y-4">
+        <h3 className="text-lg font-medium">Limited-Time Offer Settings</h3>
+
+        <div className="grid md:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium mb-1">Start Date & Time</label>
+            <input
+              type="datetime-local"
+              value={startsAt}
+              onChange={(e) => setStartsAt(e.target.value)}
+              className="w-full border rounded-lg p-2"
+            />
+            <p className="text-xs text-gray-500 mt-1">
+              When offer becomes available (blank = immediately)
+            </p>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-1">End Date & Time</label>
+            <input
+              type="datetime-local"
+              value={endsAt}
+              onChange={(e) => setEndsAt(e.target.value)}
+              className="w-full border rounded-lg p-2"
+            />
+            <p className="text-xs text-gray-500 mt-1">
+              When offer expires (blank = never expires)
+            </p>
+          </div>
+        </div>
+
+        <label className="flex items-center gap-2">
+          <input
+            type="checkbox"
+            checked={showCountdown}
+            onChange={(e) => setShowCountdown(e.target.checked)}
+          />
+          <span className="text-sm">Show countdown timer on offer card</span>
+        </label>
+
+        {endsAt && (
+          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 text-sm">
+            <strong>⚠️ Important:</strong> Offers with an end date will be automatically
+            deactivated when they expire. The countdown timer creates urgency and increases conversions.
+          </div>
+        )}
+      </div>
 
       <label className="flex items-center gap-2">
         <input

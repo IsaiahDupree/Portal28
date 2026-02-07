@@ -4,7 +4,7 @@
   "created": "2026-01-13",
   "updated": "2026-01-17",
   "total_features": 263,
-  "completed_features": 166,
+  "completed_features": 167,
   "total_tests": 300,
   "phases": {
     "phase0_mvp": "Core course selling: auth, payments, course delivery, admin CMS, tracking, email",
@@ -1785,9 +1785,9 @@
         "Expired offers hidden",
         "Urgency increases conversions"
       ],
-      "passes": false,
-      "implemented_at": null,
-      "notes": "PRD Phase 1 Growth feature - time-limited promotions for urgency."
+      "passes": true,
+      "implemented_at": "2026-02-07",
+      "notes": "IMPLEMENTED: Limited-time offers with countdown timers and auto-expiration. Migration adds starts_at, ends_at, show_countdown columns. CountdownTimer component with multiple display modes. OfferCard shows countdown and urgency messaging. Admin UI for setting time bounds. Cron job /api/cron/expire-offers auto-deactivates expired offers. E2E tests verify timer display, expiration logic, and urgency features."
     },
     {
       "id": "feat-060",
