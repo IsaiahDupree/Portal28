@@ -3,6 +3,7 @@ import { notFound, redirect } from "next/navigation";
 import { supabaseServer } from "@/lib/supabase/server";
 import CourseEditForm from "./CourseEditForm";
 import ModulesEditor from "./ModulesEditor";
+import { PreviewTokenManager } from "@/components/admin/PreviewTokenManager";
 
 interface Props {
   params: { id: string };
@@ -59,6 +60,10 @@ export default async function EditCoursePage({ params }: Props) {
           <h2>Modules & Lessons</h2>
           <ModulesEditor courseId={course.id} modules={modules || []} />
         </section>
+      </div>
+
+      <div style={{ marginTop: 32 }}>
+        <PreviewTokenManager courseId={course.id} />
       </div>
     </main>
   );

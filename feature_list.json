@@ -1951,8 +1951,8 @@
         "Watermark indicates preview mode",
         "Expired tokens rejected"
       ],
-      "passes": false,
-      "implemented_at": null,
+      "passes": true,
+      "implemented_at": "2026-02-07",
       "notes": "AUDIT.md - Token system exists in 0017_preview_tokens.sql, preview route needed."
     },
     {
