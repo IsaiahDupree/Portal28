@@ -17,6 +17,10 @@ type Offer = {
   payload: Record<string, any>;
   stripe_price_id: string | null;
   is_active: boolean;
+  headline?: string | null;
+  description?: string | null;
+  parent_offer_key?: string | null;
+  expires_minutes?: number | null;
 };
 
 export default function OfferForm({
@@ -43,6 +47,12 @@ export default function OfferForm({
   const [stripePriceId, setStripePriceId] = useState(offer.stripe_price_id || "");
   const [isActive, setIsActive] = useState(offer.is_active);
 
+  // Order bump / Upsell specific fields
+  const [headline, setHeadline] = useState(offer.headline || "");
+  const [description, setDescription] = useState(offer.description || "");
+  const [parentOfferKey, setParentOfferKey] = useState(offer.parent_offer_key || "");
+  const [expiresMinutes, setExpiresMinutes] = useState(offer.expires_minutes?.toString() || "30");
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
@@ -67,7 +77,7 @@ export default function OfferForm({
       return;
     }
 
-    const body = {
+    const body: any = {
       key: key.toLowerCase().replace(/[^a-z0-9-_]/g, ""),
       kind,
       title,
@@ -81,6 +91,18 @@ export default function OfferForm({
       stripe_price_id: stripePriceId || null,
       is_active: isActive,
     };
+
+    // Add order_bump / upsell specific fields
+    if (kind === "order_bump" || kind === "upsell") {
+      body.headline = headline || null;
+      body.description = description || null;
+      body.parent_offer_key = parentOfferKey || null;
+    }
+
+    // Add upsell specific fields
+    if (kind === "upsell") {
+      body.expires_minutes = parseInt(expiresMinutes) || 30;
+    }
 
     const res = await fetch("/api/admin/offers/upsert", {
       method: "POST",
@@ -150,9 +172,75 @@ export default function OfferForm({
             <option value="course">Course</option>
             <option value="bundle">Bundle</option>
             <option value="order_bump">Order Bump</option>
+            <option value="upsell">Upsell (Post-Purchase)</option>
           </select>
         </div>
       </div>
+
+      {/* Order Bump / Upsell Specific Fields */}
+      {(kind === "order_bump" || kind === "upsell") && (
+        <div className="border-t pt-6 space-y-4">
+          <h3 className="text-lg font-medium">
+            {kind === "order_bump" ? "Order Bump" : "Upsell"} Settings
+          </h3>
+
+          <div>
+            <label className="block text-sm font-medium mb-1">Headline</label>
+            <input
+              type="text"
+              value={headline}
+              onChange={(e) => setHeadline(e.target.value)}
+              className="w-full border rounded-lg p-2"
+              placeholder={kind === "upsell" ? "Wait! Don't miss this exclusive offer" : "Add this to your order"}
+            />
+            <p className="text-xs text-gray-500 mt-1">Bold headline shown in the {kind === "upsell" ? "modal" : "checkout"}</p>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-1">Description</label>
+            <textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              className="w-full border rounded-lg p-2"
+              rows={3}
+              placeholder="Supporting description text"
+            />
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium mb-1">Parent Offer Key</label>
+              <input
+                type="text"
+                value={parentOfferKey}
+                onChange={(e) => setParentOfferKey(e.target.value)}
+                className="w-full border rounded-lg p-2"
+                placeholder="course-fb-ads-101"
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                {kind === "upsell"
+                  ? "Trigger after this offer is purchased (blank = show after any purchase)"
+                  : "Show this bump with this parent offer"}
+              </p>
+            </div>
+
+            {kind === "upsell" && (
+              <div>
+                <label className="block text-sm font-medium mb-1">Expires (minutes)</label>
+                <input
+                  type="number"
+                  value={expiresMinutes}
+                  onChange={(e) => setExpiresMinutes(e.target.value)}
+                  className="w-full border rounded-lg p-2"
+                  min="1"
+                  max="60"
+                />
+                <p className="text-xs text-gray-500 mt-1">How long the upsell offer remains valid</p>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       <div>
         <label className="block text-sm font-medium mb-1">Title</label>

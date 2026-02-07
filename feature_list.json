@@ -4,7 +4,7 @@
   "created": "2026-01-13",
   "updated": "2026-01-17",
   "total_features": 263,
-  "completed_features": 161,
+  "completed_features": 166,
   "total_tests": 300,
   "phases": {
     "phase0_mvp": "Core course selling: auth, payments, course delivery, admin CMS, tracking, email",
@@ -1757,9 +1757,9 @@
         "Upsell analytics tracked",
         "Admin can configure upsell offers"
       ],
-      "passes": false,
-      "implemented_at": null,
-      "notes": "PRD Phase 1 - Can be done via offers + placements, needs dedicated upsell flow."
+      "passes": true,
+      "implemented_at": "2026-02-07",
+      "notes": "IMPLEMENTED: Post-purchase upsell flows complete with one-click purchase, admin UI, analytics dashboard, and E2E tests. Database migration adds upsell_purchases table and upsell kind to offers. Success page shows modal 2s after purchase with countdown timer. Uses saved payment method for frictionless conversion."
     },
     {
       "id": "feat-059",
