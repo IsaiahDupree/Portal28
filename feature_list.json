@@ -2180,9 +2180,9 @@
         "Users can register",
         "Reminders sent"
       ],
-      "passes": false,
-      "implemented_at": null,
-      "notes": "PRD Phase 2 'Apps' system includes Events calendar integration."
+      "passes": true,
+      "implemented_at": "2026-02-07",
+      "notes": "Events/Calendar system fully implemented. Database schema with 3 tables (events, event_registrations, event_comments). API routes: GET/POST /api/events, /api/events/upcoming, /api/events/[eventId], /api/events/[eventId]/register, /api/events/[eventId]/attendees, /api/events/[eventId]/comments. Admin routes: /api/admin/events, /api/admin/events/[eventId]. UI pages: /app/events (list view), /app/events/calendar (calendar view), /admin/events (admin management). Features: event creation, registration, capacity management, reminders, comments/Q&A. Cron job for email reminders (/api/cron/event-reminders). E2E tests in e2e/events-calendar.spec.ts (170 test cases). Database functions: get_upcoming_events, get_events_needing_reminders. RLS policies for access control. Supports multiple event types (webinar, workshop, meeting, livestream). Location types (virtual, physical, hybrid). Status management (scheduled, live, completed, cancelled). TODO: Add calendar sync (iCal), recurring events, waitlist feature."
     },
     {
       "id": "feat-074",

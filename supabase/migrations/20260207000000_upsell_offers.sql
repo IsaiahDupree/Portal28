@@ -133,7 +133,7 @@ values
     '$197',
     '["20+ advanced video lessons", "Exclusive templates & scripts", "Private community access", "Weekly live Q&A sessions", "Lifetime access & updates"]'::jsonb,
     '{"courseSlug": "advanced-fb-ads"}'::jsonb,
-    'course-fb-ads-101', -- Trigger after purchasing FB Ads 101
+    null, -- Trigger after purchasing FB Ads 101 - TODO: set to actual offer key when available
     30,
     true
   ),
