@@ -4554,8 +4554,8 @@
         "Style customizable",
         "DSL parseable"
       ],
-      "passes": false,
-      "implemented_at": null,
+      "passes": true,
+      "implemented_at": "2026-02-07",
       "notes": "Pending per PRD. src/format/hybrid-types.ts."
     },
     {
