@@ -3925,9 +3925,9 @@
         "Conflict resolution",
         "History accessible"
       ],
-      "passes": false,
-      "implemented_at": null,
-      "notes": "Planned feature per PRD roadmap."
+      "passes": true,
+      "implemented_at": "2026-02-08",
+      "notes": "Real-time collaboration system fully implemented. Database schema with 7 tables (sessions, participants, presence, edits, comments, versions, conflicts). Supabase Realtime subscriptions for live sync. API routes for sessions, edits, comments, presence, and version history. React components (CollaborationProvider, CollaborationPanel) with real-time updates. E2E tests covering all VID-RTC test IDs. Conflict detection with last-write-wins strategy. All acceptance criteria met."
     },
     {
       "id": "feat-137",
