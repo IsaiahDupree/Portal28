@@ -497,6 +497,16 @@ class TrackingSDK {
       console.log('[Tracking]', event.event, event.properties);
     }
 
+    // META-003: Map event to Meta Pixel standard events
+    // Dynamic import to avoid circular dependencies
+    import('@/lib/meta/eventMapping')
+      .then(({ mapEventToMetaPixel }) => {
+        mapEventToMetaPixel(event.event, event.properties);
+      })
+      .catch(() => {
+        // Silently fail if Meta Pixel mapping not available
+      });
+
     // Send to API endpoint
     fetch('/api/tracking/events', {
       method: 'POST',

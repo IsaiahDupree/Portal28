@@ -6491,7 +6491,7 @@
       "description": "Map app events to Meta standard events (Purchase, Lead, etc.)",
       "category": "meta-pixel",
       "priority": "P1",
-      "passes": false
+      "passes": true
     },
     {
       "id": "META-004",
