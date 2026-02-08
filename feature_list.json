@@ -6551,7 +6551,7 @@
       "description": "Attribution spine: email → click → session → conversion with first-party cookie",
       "category": "growth-data-plane",
       "priority": "P1",
-      "passes": false
+      "passes": true
     },
     {
       "id": "GDP-007",
