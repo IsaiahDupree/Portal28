@@ -508,26 +508,45 @@ class TrackingSDK {
     }
 
     // META-003: Map event to Meta Pixel standard events
-    // Dynamic import to avoid circular dependencies
+    // GDP-010: Get event ID from Pixel for CAPI deduplication
     import('@/lib/meta/eventMapping')
       .then(({ mapEventToMetaPixel }) => {
-        mapEventToMetaPixel(event.event, event.properties);
+        const eventID = mapEventToMetaPixel(event.event, event.properties);
+
+        // GDP-010: Include event ID in server event for CAPI deduplication
+        if (eventID) {
+          event.properties = {
+            ...event.properties,
+            meta_event_id: eventID,
+          };
+        }
+
+        // Send to API endpoint with event ID
+        fetch('/api/tracking/events', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(event),
+          keepalive: true, // Ensure event is sent even if page unloads
+        }).catch((error) => {
+          console.error('[Tracking] Failed to send event:', error);
+        });
       })
       .catch(() => {
         // Silently fail if Meta Pixel mapping not available
+        // Still send event to server without event ID
+        fetch('/api/tracking/events', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(event),
+          keepalive: true,
+        }).catch((error) => {
+          console.error('[Tracking] Failed to send event:', error);
+        });
       });
-
-    // Send to API endpoint
-    fetch('/api/tracking/events', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(event),
-      keepalive: true, // Ensure event is sent even if page unloads
-    }).catch((error) => {
-      console.error('[Tracking] Failed to send event:', error);
-    });
   }
 
   /**

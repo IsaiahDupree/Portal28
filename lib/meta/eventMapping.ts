@@ -1,9 +1,10 @@
 /**
  * Maps Portal28 tracking events to Meta Pixel standard events
  * META-003: Map app events to Meta standard events (Purchase, Lead, etc.)
+ * GDP-010: Generate unique event IDs for Pixel + CAPI deduplication
  */
 
-import { track } from './pixel';
+import { track, generateEventId } from './pixel';
 import { Events } from '@/lib/tracking';
 
 // Meta Pixel Standard Events:
@@ -19,12 +20,16 @@ import { Events } from '@/lib/tracking';
 
 /**
  * Map Portal28 event to Meta Pixel event
+ * GDP-010: Returns the generated event ID for CAPI deduplication
  */
 export function mapEventToMetaPixel(
   eventName: string,
   properties: Record<string, any> = {}
-): void {
-  if (typeof window === 'undefined') return;
+): string | undefined {
+  if (typeof window === 'undefined') return undefined;
+
+  // GDP-010: Generate unique event ID for deduplication
+  const eventID = generateEventId();
 
   switch (eventName) {
     // CompleteRegistration: When user successfully logs in/signs up
@@ -33,15 +38,15 @@ export function mapEventToMetaPixel(
       track('CompleteRegistration', {
         status: 'success',
         method: properties.method || 'email',
-      });
-      break;
+      }, eventID);
+      return eventID;
 
     case Events.SIGNUP_START:
       track('Lead', {
         content_name: 'Signup Started',
         content_category: 'activation',
-      });
-      break;
+      }, eventID);
+      return eventID;
 
     // ViewContent: When viewing course/product pages
     case Events.COURSE_PREVIEW:
@@ -50,8 +55,8 @@ export function mapEventToMetaPixel(
         content_ids: properties.course_id ? [properties.course_id] : [],
         content_type: 'product',
         content_name: properties.title || properties.course_id,
-      });
-      break;
+      }, eventID);
+      return eventID;
 
     // InitiateCheckout: When starting checkout process
     case Events.CHECKOUT_STARTED:
@@ -59,8 +64,8 @@ export function mapEventToMetaPixel(
         content_ids: properties.course_id ? [properties.course_id] : [],
         value: properties.amount ? properties.amount / 100 : 0,
         currency: properties.currency || 'USD',
-      });
-      break;
+      }, eventID);
+      return eventID;
 
     // Purchase: When purchase is completed
     case Events.PURCHASE_COMPLETED:
@@ -73,8 +78,8 @@ export function mapEventToMetaPixel(
         value: properties.amount ? properties.amount / 100 : 0,
         currency: properties.currency || 'USD',
         content_type: 'product',
-      });
-      break;
+      }, eventID);
+      return eventID;
 
     // Lead: Newsletter signups, contact forms
     case Events.LANDING_VIEW:
@@ -85,7 +90,8 @@ export function mapEventToMetaPixel(
           content_category: 'acquisition',
           source: properties.utm_source,
           campaign: properties.utm_campaign,
-        });
+        }, eventID);
+        return eventID;
       }
       break;
 
@@ -94,24 +100,24 @@ export function mapEventToMetaPixel(
       track('CompleteRegistration', {
         status: 'lesson_completed',
         content_name: properties.lesson_id,
-      });
-      break;
+      }, eventID);
+      return eventID;
 
     case Events.COURSE_PUBLISHED:
       track('Lead', {
         content_name: 'Course Published',
         content_category: 'core_value',
         course_id: properties.course_id,
-      });
-      break;
+      }, eventID);
+      return eventID;
 
     case Events.SUBSCRIPTION_STARTED:
       track('Subscribe', {
         value: properties.amount ? properties.amount / 100 : 0,
         currency: 'USD',
         predicted_ltv: (properties.amount ? properties.amount / 100 : 0) * 12,
-      });
-      break;
+      }, eventID);
+      return eventID;
 
     // Default: Don't track non-mapped events
     default:
@@ -119,5 +125,8 @@ export function mapEventToMetaPixel(
       if (process.env.NODE_ENV === 'development') {
         console.log('[Meta Pixel] No mapping for event:', eventName);
       }
+      return undefined;
   }
+
+  return undefined;
 }
