@@ -20,6 +20,7 @@ interface AnnouncementFormProps {
     is_pinned: boolean;
     tags: string[];
     published_at?: string | null;
+    send_email?: boolean;
   };
 }
 
@@ -35,6 +36,7 @@ export function AnnouncementForm({ spaceId, announcement }: AnnouncementFormProp
   const [tags, setTags] = useState<string[]>(announcement?.tags || []);
   const [tagInput, setTagInput] = useState("");
   const [publishNow, setPublishNow] = useState(!!announcement?.published_at);
+  const [sendEmail, setSendEmail] = useState(announcement?.send_email || false);
 
   const handleAddTag = () => {
     const trimmedTag = tagInput.trim().toLowerCase();
@@ -62,6 +64,7 @@ export function AnnouncementForm({ spaceId, announcement }: AnnouncementFormProp
         is_pinned: isPinned,
         tags,
         published_at: saveAsDraft ? null : (publishNow ? new Date().toISOString() : announcement?.published_at || new Date().toISOString()),
+        send_email: sendEmail,
       };
 
       const url = announcement
@@ -179,6 +182,19 @@ export function AnnouncementForm({ spaceId, announcement }: AnnouncementFormProp
             />
             <Label htmlFor="publish_now" className="font-normal cursor-pointer">
               Publish immediately
+            </Label>
+          </div>
+
+          <div className="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              id="send_email"
+              checked={sendEmail}
+              onChange={(e) => setSendEmail(e.target.checked)}
+              className="rounded border-gray-300"
+            />
+            <Label htmlFor="send_email" className="font-normal cursor-pointer">
+              Send email notification to members
             </Label>
           </div>
 

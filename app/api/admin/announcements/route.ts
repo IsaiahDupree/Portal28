@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { createBulkNotifications } from '@/lib/notifications/createNotification'
+import { sendAnnouncementToAll } from '@/lib/email/sendAnnouncementEmail'
 
 const createAnnouncementSchema = z.object({
   title: z.string().min(1).max(255),
@@ -11,6 +12,7 @@ const createAnnouncementSchema = z.object({
   is_pinned: z.boolean().default(false),
   tags: z.array(z.string()).default([]),
   published_at: z.string().datetime().nullable().optional(),
+  send_email: z.boolean().default(false),
 })
 
 /**
@@ -140,6 +142,7 @@ export async function POST(request: NextRequest) {
         is_pinned: data.is_pinned,
         tags: data.tags,
         published_at: data.published_at || null,
+        send_email: data.send_email,
       })
       .select()
       .single()
@@ -179,6 +182,13 @@ export async function POST(request: NextRequest) {
             console.error('Failed to create announcement notifications:', err)
           )
         }
+      }
+
+      // Send email notifications if requested
+      if (data.send_email && announcement) {
+        sendAnnouncementToAll(announcement.id).catch(err =>
+          console.error('Failed to send announcement emails:', err)
+        )
       }
     }
 

@@ -2373,9 +2373,9 @@
         "Content included",
         "Unsubscribe works"
       ],
-      "passes": false,
-      "implemented_at": null,
-      "notes": "PRD Phase 2 Community - Announcements with email notify option."
+      "passes": true,
+      "implemented_at": "2026-02-08",
+      "notes": "PRD Phase 2 Community - Announcements with email notify option. Fully implemented with database migration adding send_email toggle, email_sent_at, email_recipients_count columns. Created email_unsubscribes and email_preferences tables for opt-out management. Built AnnouncementEmail React component template with unsubscribe link. Implemented sendAnnouncementEmail and sendAnnouncementToAll functions with batching and rate limiting. Created unsubscribe page and API routes for preference management. Updated admin UI with email notification checkbox. E2E tests cover all acceptance criteria (PLT-ANN-E-001 through PLT-ANN-E-003)."
     },
     {
       "id": "feat-081",
