@@ -6017,7 +6017,8 @@
         "Factories generate valid data",
         "Tests use factories"
       ],
-      "passes": false
+      "passes": true,
+      "implemented_at": "2026-02-07"
     },
     {
       "id": "feat-218",
