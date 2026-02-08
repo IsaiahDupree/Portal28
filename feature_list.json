@@ -4,7 +4,7 @@
   "created": "2026-01-13",
   "updated": "2026-01-17",
   "total_features": 263,
-  "completed_features": 172,
+  "completed_features": 173,
   "total_tests": 300,
   "phases": {
     "phase0_mvp": "Core course selling: auth, payments, course delivery, admin CMS, tracking, email",
@@ -3844,9 +3844,9 @@
         "Statistical significance",
         "Recommendations provided"
       ],
-      "passes": false,
-      "implemented_at": null,
-      "notes": "Planned feature per PRD roadmap."
+      "passes": true,
+      "implemented_at": "2026-02-08",
+      "notes": "Implementation complete. Database migration, API routes (admin + public), statistical significance calculation, admin UI, unit tests, and E2E tests all implemented. Migration file: 20260208008000_ab_testing_framework.sql"
     },
     {
       "id": "feat-134",
