@@ -6408,7 +6408,8 @@
       "description": "Install and initialize user event tracking SDK from ACD",
       "category": "tracking",
       "priority": "P1",
-      "passes": false
+      "passes": true,
+      "implemented_at": "2026-02-08"
     },
     {
       "id": "TRACK-002",
