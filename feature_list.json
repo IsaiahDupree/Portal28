@@ -6145,7 +6145,8 @@
         "Bookmarks save",
         "Notes retrievable"
       ],
-      "passes": false
+      "passes": true,
+      "implemented_at": "2026-02-08"
     },
     {
       "id": "feat-224",

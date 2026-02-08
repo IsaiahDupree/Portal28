@@ -9,6 +9,7 @@ import { LessonNotes } from "@/components/courses/LessonNotes";
 import { LessonComments } from "@/components/courses/LessonComments";
 import { LessonChapters } from "@/components/courses/LessonChapters";
 import { LessonQuiz } from "@/components/courses/LessonQuiz";
+import { LessonBookmarkButton } from "@/components/courses/LessonBookmarkButton";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -162,11 +163,14 @@ export default async function LessonPage({ params }: { params: { id: string } })
           )}
         </div>
         {auth.user && (
-          <LessonCompleteButton
-            lessonId={lesson.id}
-            courseId={course!.id}
-            isCompleted={isCompleted}
-          />
+          <div className="flex items-center gap-2">
+            <LessonBookmarkButton lessonId={lesson.id} />
+            <LessonCompleteButton
+              lessonId={lesson.id}
+              courseId={course!.id}
+              isCompleted={isCompleted}
+            />
+          </div>
         )}
       </div>
 
