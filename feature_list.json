@@ -2290,9 +2290,9 @@
         "Configuration saves",
         "Third-party apps integrate"
       ],
-      "passes": false,
-      "implemented_at": null,
-      "notes": "PRD Phase 2+ - App marketplace for extensibility."
+      "passes": true,
+      "implemented_at": "2026-02-08",
+      "notes": "App Marketplace fully implemented. Database schema extends existing widgets system with installations, ratings, and usage tracking. API routes for browsing, installing, configuring apps. Frontend UI with filtering, search, and ratings. E2E tests created for all flows."
     },
     {
       "id": "feat-078",
