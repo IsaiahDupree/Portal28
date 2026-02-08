@@ -5649,7 +5649,9 @@
         "Threads organized",
         "Unread badges"
       ],
-      "passes": false
+      "passes": true,
+      "implemented_at": "2026-02-08",
+      "notes": "DM thread management fully implemented. Thread list with sorting by most recent, per-thread and global unread counts via RPC functions. Archive/unarchive API route (/api/dm/threads/[id]/archive) with dm_thread_participants.is_archived field. DMThreadList component with active/archived tabs, unread badges, archive buttons. E2E tests (8 tests) covering NEW-DM-002. All acceptance criteria met."
     },
     {
       "id": "feat-201",
