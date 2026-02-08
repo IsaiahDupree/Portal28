@@ -6038,7 +6038,8 @@
         "Regressions detected",
         "Baselines updated"
       ],
-      "passes": false
+      "passes": true,
+      "implemented_at": "2026-02-07"
     },
     {
       "id": "feat-219",

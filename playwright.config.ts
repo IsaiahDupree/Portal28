@@ -35,6 +35,24 @@ export default defineConfig({
     trace: "on-first-retry",
     screenshot: "only-on-failure",
   },
+  // Visual regression test configuration
+  expect: {
+    toHaveScreenshot: {
+      // Maximum pixel difference threshold
+      maxDiffPixels: 100,
+      // Maximum percentage of different pixels
+      maxDiffPixelRatio: 0.01,
+      // Pixel comparison threshold (0-1)
+      threshold: 0.2,
+      // Animation handling
+      animations: "disabled",
+      // Scale comparison
+      scale: "css",
+    },
+  },
+  // Screenshot storage
+  snapshotDir: "./e2e/__screenshots__",
+  snapshotPathTemplate: "{snapshotDir}/{testFilePath}/{arg}{ext}",
   projects: [
     {
       name: "chromium",

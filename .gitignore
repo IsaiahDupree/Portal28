@@ -39,6 +39,10 @@ next-env.d.ts
 
 # Testing
 coverage/
+test-results/
+playwright-report/
+# Keep baseline screenshots in version control
+# e2e/__screenshots__/ should be committed
 
 # Supabase
 .supabase/

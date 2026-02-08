@@ -1,0 +1,189 @@
+name: Visual Regression Testing
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+env:
+  NODE_VERSION: '20'
+
+jobs:
+  visual-regression:
+    name: Visual Regression Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Fetch previous commit for comparison
+          fetch-depth: 2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps chromium firefox webkit
+
+      - name: Setup Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Start Supabase
+        run: supabase start
+
+      - name: Run Visual Regression Tests
+        run: npx playwright test visual-regression --project=chromium
+        env:
+          NEXT_PUBLIC_SITE_URL: http://localhost:2828
+          NEXT_PUBLIC_SUPABASE_URL: http://127.0.0.1:28321
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0
+
+      - name: Upload screenshots on failure
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: visual-regression-screenshots
+          path: |
+            e2e/__screenshots__/
+            test-results/
+          retention-days: 7
+
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: visual-regression-report
+          path: playwright-report
+          retention-days: 7
+
+      - name: Comment PR with results
+        if: github.event_name == 'pull_request' && failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## ⚠️ Visual Regression Test Failures
+
+              Visual regression tests detected differences in screenshots.
+
+              **Action Required:**
+              1. Review the screenshots in the artifacts
+              2. If changes are intentional, update baselines: \`npm run test:visual:update\`
+              3. If changes are bugs, fix the visual issues
+
+              [View Artifacts](https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId})`
+            });
+
+  visual-regression-multi-browser:
+    name: Visual Regression (Multi-Browser)
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    strategy:
+      matrix:
+        browser: [chromium, firefox, webkit]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright Browser - ${{ matrix.browser }}
+        run: npx playwright install --with-deps ${{ matrix.browser }}
+
+      - name: Setup Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Start Supabase
+        run: supabase start
+
+      - name: Run Visual Regression Tests - ${{ matrix.browser }}
+        run: npx playwright test visual-regression --project=${{ matrix.browser }}
+        env:
+          NEXT_PUBLIC_SITE_URL: http://localhost:2828
+          NEXT_PUBLIC_SUPABASE_URL: http://127.0.0.1:28321
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0
+
+      - name: Upload screenshots - ${{ matrix.browser }}
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: screenshots-${{ matrix.browser }}
+          path: |
+            e2e/__screenshots__/
+            test-results/
+          retention-days: 7
+
+  update-baselines:
+    name: Update Visual Baselines
+    runs-on: ubuntu-latest
+    # Only run on manual workflow dispatch
+    if: github.event_name == 'workflow_dispatch'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Setup Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Start Supabase
+        run: supabase start
+
+      - name: Update visual baselines
+        run: npx playwright test visual-regression --update-snapshots --project=chromium
+        env:
+          NEXT_PUBLIC_SITE_URL: http://localhost:2828
+          NEXT_PUBLIC_SUPABASE_URL: http://127.0.0.1:28321
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0
+
+      - name: Commit updated baselines
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add e2e/__screenshots__/
+          git commit -m "chore: update visual regression baselines" || echo "No changes to commit"
+          git push
+
+# Allow manual trigger
+on:
+  workflow_dispatch:
+    inputs:
+      update_baselines:
+        description: 'Update baseline screenshots'
+        required: false
+        type: boolean
+        default: false
