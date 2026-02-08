@@ -4,6 +4,9 @@
 -- media processing, quizzes, drip rules, and progress tracking
 -- =============================================
 
+-- Enable pgcrypto extension for gen_random_bytes
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
 -- Workspaces (multi-tenant support)
 create table if not exists public.workspaces (
   id uuid primary key default gen_random_uuid(),

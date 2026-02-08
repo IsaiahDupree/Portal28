@@ -3,6 +3,7 @@ import Stripe from "stripe";
 import { supabaseAdmin } from "@/lib/supabase/admin";
 import { sendCapiPurchase } from "@/lib/meta/capi";
 import { sendCourseAccessEmail } from "@/lib/email/sendCourseAccessEmail";
+import { enrollInAutomation } from "@/lib/email/automation-scheduler";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -195,6 +196,28 @@ export async function POST(req: Request) {
               { email, is_customer: true, source: "purchase" },
               { onConflict: "email" }
             );
+
+          // Enroll in onboarding automation
+          const { data: onboardingAutomation } = await supabaseAdmin
+            .from("email_automations")
+            .select("id")
+            .eq("trigger_event", "purchase_completed")
+            .eq("status", "active")
+            .single();
+
+          if (onboardingAutomation) {
+            await enrollInAutomation(
+              onboardingAutomation.id,
+              email,
+              userId,
+              {
+                course_id: courseId,
+                bundle_course_ids: bundleCourseIds,
+                purchase_amount: amountTotal,
+                purchase_date: new Date().toISOString()
+              }
+            );
+          }
         }
 
         // Update email program stats with attributed revenue

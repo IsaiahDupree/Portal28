@@ -2346,8 +2346,8 @@
         "Check-ins sent on schedule",
         "Completion nudges work"
       ],
-      "passes": false,
-      "implemented_at": null,
+      "passes": true,
+      "implemented_at": "2026-02-07",
       "notes": "PRD Phase 1 - Email sequences for onboarding, completion nudges."
     },
     {
