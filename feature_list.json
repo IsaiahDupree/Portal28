@@ -6475,7 +6475,7 @@
       "description": "Install Facebook Pixel script in app layout",
       "category": "meta-pixel",
       "priority": "P1",
-      "passes": false
+      "passes": true
     },
     {
       "id": "META-002",
