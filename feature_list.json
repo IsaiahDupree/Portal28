@@ -3239,9 +3239,9 @@
         "Code blocks render correctly",
         "Terminal animations work"
       ],
-      "passes": false,
-      "implemented_at": null,
-      "notes": "In progress per PRD roadmap. Needs CodeBlock and TerminalOutput components."
+      "passes": true,
+      "implemented_at": "2026-02-07",
+      "notes": "Implemented CodeBlock, TerminalOutput, and DevVlogTemplate components with full test coverage (53 tests passing)"
     },
     {
       "id": "feat-112",
