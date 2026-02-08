@@ -5755,7 +5755,8 @@
         "Rankings calculated",
         "Board renders"
       ],
-      "passes": false
+      "passes": true,
+      "implemented_at": "2026-02-07"
     },
     {
       "id": "feat-206",
