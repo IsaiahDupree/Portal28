@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { supabaseBrowser } from "@/lib/supabase/browser";
+import { tracking } from "@/lib/tracking";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -32,6 +33,11 @@ export default function SignupPage() {
   const [success, setSuccess] = useState(false);
   const [err, setErr] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  // Track signup_start when page loads (TRACK-003)
+  useEffect(() => {
+    tracking.activation.signupStart('email');
+  }, []);
 
   async function handleSignup(e: React.FormEvent) {
     e.preventDefault();
@@ -72,6 +78,9 @@ export default function SignupPage() {
   async function signUpWithGoogle() {
     setErr(null);
     setLoading(true);
+
+    // Track signup with Google (TRACK-003)
+    tracking.activation.signupStart('google');
 
     const supabase = supabaseBrowser();
     const { error } = await supabase.auth.signInWithOAuth({

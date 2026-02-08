@@ -6426,7 +6426,8 @@
       "description": "Track signup_start, login_success, activation_complete",
       "category": "tracking",
       "priority": "P1",
-      "passes": false
+      "passes": true,
+      "implemented_at": "2026-02-08"
     },
     {
       "id": "TRACK-004",

@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { supabaseBrowser } from "@/lib/supabase/browser";
+import { tracking } from "@/lib/tracking";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -47,6 +48,8 @@ export default function LoginPage() {
     if (error) {
       setErr(error.message);
     } else {
+      // Track login success (TRACK-003)
+      tracking.activation.loginSuccess('password');
       router.push("/app");
     }
   }
@@ -66,7 +69,10 @@ export default function LoginPage() {
 
     setLoading(false);
     if (error) setErr(error.message);
-    else setSent(true);
+    else {
+      setSent(true);
+      // Login success will be tracked when user clicks magic link
+    }
   }
 
   async function signInWithGoogle() {
@@ -90,6 +96,7 @@ export default function LoginPage() {
       setErr(error.message);
     }
     // On success, Supabase will redirect to Google OAuth page
+    // Login success will be tracked on redirect callback
   }
 
   return (

@@ -10,6 +10,7 @@ import { PageHeader } from "@/components/ui/page-header";
 import { StatCard, StatCardGrid } from "@/components/ui/stat-card";
 import { EmptyState } from "@/components/ui/empty-state";
 import { BookOpen, Users, MessageSquare, Trophy, ArrowRight, Clock, Award } from "lucide-react";
+import { ActivationTracker } from "@/components/tracking/ActivationTracker";
 
 export default async function AppHome() {
   const supabase = supabaseServer();
@@ -65,6 +66,9 @@ export default async function AppHome() {
 
   return (
     <div className="space-y-6">
+      {/* Track activation events (TRACK-003) */}
+      <ActivationTracker userId={user.id} email={email} />
+
       {/* Welcome Header - Using reusable component */}
       <PageHeader
         title="Welcome back!"
