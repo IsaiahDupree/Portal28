@@ -5692,7 +5692,8 @@
         "Reminders sent",
         "Milestones celebrated"
       ],
-      "passes": false
+      "passes": true,
+      "implemented_at": "2026-02-07"
     },
     {
       "id": "feat-203",
