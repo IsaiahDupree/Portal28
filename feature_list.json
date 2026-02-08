@@ -6523,7 +6523,7 @@
       "description": "Configure custom audiences based on user behavior",
       "category": "meta-pixel",
       "priority": "P2",
-      "passes": false
+      "passes": true
     },
     {
       "id": "META-008",
