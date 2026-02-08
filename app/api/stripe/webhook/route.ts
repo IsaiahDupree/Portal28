@@ -6,6 +6,7 @@ import { sendCourseAccessEmail } from "@/lib/email/sendCourseAccessEmail";
 import { enrollInAutomation } from "@/lib/email/automation-scheduler";
 import { processWebhookWithLogging } from "@/lib/webhooks/logger";
 import { trackServerEvent } from "@/lib/tracking/server";
+import { syncStripeSubscriptionEvent, handleSubscriptionCanceled } from "@/lib/growth-data-plane/subscription";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -307,6 +308,9 @@ async function processStripeEvent(event: Stripe.Event) {
         trial_end: subscription.trial_end ? new Date(subscription.trial_end * 1000).toISOString() : null
       }, { onConflict: "stripe_subscription_id" });
 
+      // GDP-007 & GDP-008: Sync subscription to Growth Data Plane
+      await syncStripeSubscriptionEvent(subscription, event.type);
+
       // TRACK-005: Track subscription started event (only for new subscriptions)
       if (event.type === "customer.subscription.created") {
         await trackServerEvent('subscription_started', {
@@ -353,11 +357,14 @@ async function processStripeEvent(event: Stripe.Event) {
     // Update subscription status
     await supabaseAdmin
       .from("subscriptions")
-      .update({ 
+      .update({
         status: "canceled",
         canceled_at: new Date().toISOString()
       })
       .eq("stripe_subscription_id", subscription.id);
+
+    // GDP-007: Sync cancellation to Growth Data Plane
+    await handleSubscriptionCanceled(subscription);
 
     // Revoke membership entitlement
     if (userId) {
