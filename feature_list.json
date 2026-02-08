@@ -5605,7 +5605,9 @@
         "Payouts process",
         "History tracked"
       ],
-      "passes": false
+      "passes": true,
+      "implemented_at": "2026-02-07",
+      "notes": "Affiliate payout processing fully implemented. API routes for payout requests (/api/affiliates/payout/request), admin approval/rejection (/api/admin/affiliates/payouts/approve, reject), and Stripe integration (/api/admin/affiliates/payouts/process). Database schema with affiliate_payout_requests table and RPC functions. Balance validation, minimum thresholds ($50), duplicate request prevention. Comprehensive E2E test suite (22 tests) covering NEW-AFF-003 test ID. All acceptance criteria met."
     },
     {
       "id": "feat-199",
