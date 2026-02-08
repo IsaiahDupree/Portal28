@@ -5996,7 +5996,8 @@
         "Coverage meets target",
         "CI passes"
       ],
-      "passes": false
+      "passes": true,
+      "implemented_at": "2026-02-07"
     },
     {
       "id": "feat-217",
