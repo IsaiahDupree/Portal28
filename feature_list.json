@@ -4,7 +4,7 @@
   "created": "2026-01-13",
   "updated": "2026-01-17",
   "total_features": 263,
-  "completed_features": 171,
+  "completed_features": 172,
   "total_tests": 300,
   "phases": {
     "phase0_mvp": "Core course selling: auth, payments, course delivery, admin CMS, tracking, email",
@@ -3817,9 +3817,9 @@
         "Brand consistent",
         "Correct dimensions"
       ],
-      "passes": false,
-      "implemented_at": null,
-      "notes": "Planned feature per PRD roadmap."
+      "passes": true,
+      "implemented_at": "2026-02-07",
+      "notes": "Fully implemented. Automated thumbnail generation with frame extraction, text overlays, brand styling, and multi-size export. Database tables: thumbnail_templates, thumbnail_jobs, generated_thumbnails. Includes 4 default brand templates (Professional Purple, Bold Green, Minimal Blue, Elegant Beige). Standard platform sizes (YouTube, Instagram, Twitter, Facebook, LinkedIn). 40 tests passing."
     },
     {
       "id": "feat-133",
