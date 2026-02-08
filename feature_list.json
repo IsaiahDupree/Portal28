@@ -6511,7 +6511,7 @@
       "description": "Create person, identity_link, event, email_message, email_event, subscription, deal, person_features, segment tables",
       "category": "growth-data-plane",
       "priority": "P0",
-      "passes": false
+      "passes": true
     },
     {
       "id": "GDP-002",

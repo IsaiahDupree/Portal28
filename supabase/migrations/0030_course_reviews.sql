@@ -72,11 +72,7 @@ create policy "Admins can view all reviews"
   on public.course_reviews
   for select
   using (
-    exists (
-      select 1 from public.user_metadata
-      where user_metadata.user_id = auth.uid()
-      and user_metadata.role = 'admin'
-    )
+    (auth.jwt() -> 'user_metadata' ->> 'is_admin')::boolean = true
   );
 
 -- Admins can moderate reviews
@@ -84,11 +80,7 @@ create policy "Admins can moderate reviews"
   on public.course_reviews
   for update
   using (
-    exists (
-      select 1 from public.user_metadata
-      where user_metadata.user_id = auth.uid()
-      and user_metadata.role = 'admin'
-    )
+    (auth.jwt() -> 'user_metadata' ->> 'is_admin')::boolean = true
   );
 
 -- Create a function to calculate average rating for a course
