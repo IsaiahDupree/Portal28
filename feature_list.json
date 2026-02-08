@@ -4,7 +4,7 @@
   "created": "2026-01-13",
   "updated": "2026-01-17",
   "total_features": 263,
-  "completed_features": 170,
+  "completed_features": 171,
   "total_tests": 300,
   "phases": {
     "phase0_mvp": "Core course selling: auth, payments, course delivery, admin CMS, tracking, email",
@@ -3790,9 +3790,9 @@
         "Thumbnail uploaded",
         "Scheduled publishing works"
       ],
-      "passes": false,
-      "implemented_at": null,
-      "notes": "Planned feature per PRD roadmap."
+      "passes": true,
+      "implemented_at": "2026-02-07",
+      "notes": "Fully implemented. YouTube OAuth integration, video upload automation, metadata management, thumbnail support, and scheduled publishing. Database tables: youtube_tokens, youtube_uploads. 55 tests passing."
     },
     {
       "id": "feat-132",
