@@ -6459,7 +6459,7 @@
       "description": "Track errors, API failures, and Core Web Vitals",
       "category": "tracking",
       "priority": "P2",
-      "passes": false
+      "passes": true
     },
     {
       "id": "TRACK-008",

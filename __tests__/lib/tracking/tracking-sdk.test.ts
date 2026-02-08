@@ -552,6 +552,39 @@ describe('Tracking SDK', () => {
       const callBody = JSON.parse((global.fetch as jest.Mock).mock.calls[0][1].body);
       expect(callBody.event).toBe(Events.ENROLLMENT_FAILED);
     });
+
+    // TRACK-007: Performance and API error tracking
+    it('should track web vitals', () => {
+      sdk.reliability.webVitals({
+        name: 'LCP',
+        value: 1250.5,
+        rating: 'good',
+        id: 'v3-1234567890',
+      });
+
+      const callBody = JSON.parse((global.fetch as jest.Mock).mock.calls[0][1].body);
+      expect(callBody.event).toBe(Events.WEB_VITALS);
+      expect(callBody.properties.metric_name).toBe('LCP');
+      expect(callBody.properties.metric_value).toBe(1250.5);
+      expect(callBody.properties.metric_rating).toBe('good');
+      expect(callBody.properties.metric_id).toBe('v3-1234567890');
+    });
+
+    it('should track API errors', () => {
+      sdk.reliability.apiError({
+        endpoint: '/api/courses',
+        method: 'GET',
+        status: 500,
+        message: 'Internal server error',
+      });
+
+      const callBody = JSON.parse((global.fetch as jest.Mock).mock.calls[0][1].body);
+      expect(callBody.event).toBe(Events.API_ERROR);
+      expect(callBody.properties.api_endpoint).toBe('/api/courses');
+      expect(callBody.properties.api_method).toBe('GET');
+      expect(callBody.properties.status_code).toBe(500);
+      expect(callBody.properties.error_message).toBe('Internal server error');
+    });
   });
 
   describe('Return Session Tracking', () => {

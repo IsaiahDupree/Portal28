@@ -78,6 +78,9 @@ export const Events = {
   ERROR_SHOWN: 'error_shown',
   VIDEO_UPLOAD_FAILED: 'video_upload_failed',
   ENROLLMENT_FAILED: 'enrollment_failed',
+  // TRACK-007: Performance tracking
+  WEB_VITALS: 'web_vitals',
+  API_ERROR: 'api_error',
 } as const;
 
 class TrackingSDK {
@@ -418,6 +421,33 @@ class TrackingSDK {
       this.track(Events.ENROLLMENT_FAILED, {
         course_id: courseId,
         error_message: error,
+      });
+    },
+    // TRACK-007: Performance and API error tracking
+    webVitals: (metric: {
+      name: string;
+      value: number;
+      rating?: string;
+      id?: string;
+    }) => {
+      this.track(Events.WEB_VITALS, {
+        metric_name: metric.name,
+        metric_value: metric.value,
+        metric_rating: metric.rating,
+        metric_id: metric.id,
+      });
+    },
+    apiError: (error: {
+      endpoint: string;
+      method: string;
+      status?: number;
+      message?: string;
+    }) => {
+      this.track(Events.API_ERROR, {
+        api_endpoint: error.endpoint,
+        api_method: error.method,
+        status_code: error.status,
+        error_message: error.message,
       });
     },
   };
