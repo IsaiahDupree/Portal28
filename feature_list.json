@@ -4,7 +4,7 @@
   "created": "2026-01-13",
   "updated": "2026-01-17",
   "total_features": 263,
-  "completed_features": 174,
+  "completed_features": 175,
   "total_tests": 300,
   "phases": {
     "phase0_mvp": "Core course selling: auth, payments, course delivery, admin CMS, tracking, email",
@@ -3898,9 +3898,9 @@
         "Templates apply correctly",
         "Sharing functional"
       ],
-      "passes": false,
-      "implemented_at": null,
-      "notes": "Planned feature per PRD roadmap."
+      "passes": true,
+      "implemented_at": "2026-02-07",
+      "notes": "Template marketplace fully implemented. Public browsing UI at /app/templates with category filtering, download/copy functionality, premium template access control, admin management at /admin/templates, API routes for CRUD and downloads. All acceptance criteria met."
     },
     {
       "id": "feat-136",
