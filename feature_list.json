@@ -6467,7 +6467,7 @@
       "description": "Identify users on login with traits (email, plan, etc.)",
       "category": "tracking",
       "priority": "P1",
-      "passes": false
+      "passes": true
     },
     {
       "id": "META-001",
