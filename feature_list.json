@@ -6091,7 +6091,9 @@
         "Reviews display",
         "Ratings aggregate"
       ],
-      "passes": false
+      "passes": true,
+      "implemented_at": "2026-02-07",
+      "notes": "Full course reviews and ratings system implemented. Features: review submission with 1-5 star ratings (StarRating component), review moderation page for admins (/admin/reviews), RLS policies for access control, average rating calculation RPC function, review display with aggregated stats (ReviewsList component), pending review moderation workflow. All 29 unit tests passing. Migration 0030_course_reviews.sql creates schema with proper constraints and RLS policies."
     },
     {
       "id": "feat-222",
