@@ -6451,7 +6451,7 @@
       "description": "Track return_session, returning_user product events",
       "category": "tracking",
       "priority": "P2",
-      "passes": false
+      "passes": true
     },
     {
       "id": "TRACK-007",
