@@ -12,7 +12,7 @@ create table if not exists public.workspaces (
   id uuid primary key default gen_random_uuid(),
   name text not null,
   slug text unique not null,
-  owner_user_id uuid not null references auth.users(id) on delete cascade,
+  owner_user_id uuid references auth.users(id) on delete cascade,
   logo_url text,
   settings jsonb not null default '{}'::jsonb,
   created_at timestamptz not null default now(),
