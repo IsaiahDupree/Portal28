@@ -1,10 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Check, Copy } from "lucide-react";
 import { cn } from "@/lib/utils";
+import Prism from "prismjs";
+import "prismjs/themes/prism-tomorrow.css";
+import "prismjs/components/prism-javascript";
+import "prismjs/components/prism-typescript";
+import "prismjs/components/prism-jsx";
+import "prismjs/components/prism-tsx";
+import "prismjs/components/prism-css";
+import "prismjs/components/prism-python";
+import "prismjs/components/prism-bash";
+import "prismjs/components/prism-json";
+import "prismjs/components/prism-markdown";
 
 interface CodeBlockProps {
   code: string;
@@ -13,6 +24,8 @@ interface CodeBlockProps {
   showLineNumbers?: boolean;
   highlightLines?: number[];
   className?: string;
+  enableTypingAnimation?: boolean;
+  typingSpeed?: number; // characters per second
 }
 
 export function CodeBlock({
@@ -21,9 +34,50 @@ export function CodeBlock({
   filename,
   showLineNumbers = true,
   highlightLines = [],
-  className
+  className,
+  enableTypingAnimation = false,
+  typingSpeed = 20
 }: CodeBlockProps) {
   const [copied, setCopied] = useState(false);
+  const [displayedCode, setDisplayedCode] = useState(enableTypingAnimation ? "" : code);
+  const [highlightedHtml, setHighlightedHtml] = useState<string>("");
+  const codeRef = useRef<HTMLElement>(null);
+
+  // Typing animation effect
+  useEffect(() => {
+    if (!enableTypingAnimation) {
+      setDisplayedCode(code);
+      return;
+    }
+
+    let currentIndex = 0;
+    const interval = setInterval(() => {
+      if (currentIndex <= code.length) {
+        setDisplayedCode(code.slice(0, currentIndex));
+        currentIndex++;
+      } else {
+        clearInterval(interval);
+      }
+    }, 1000 / typingSpeed);
+
+    return () => clearInterval(interval);
+  }, [code, enableTypingAnimation, typingSpeed]);
+
+  // Syntax highlighting effect
+  useEffect(() => {
+    if (displayedCode && language) {
+      try {
+        const grammar = Prism.languages[language] || Prism.languages.javascript;
+        const highlighted = Prism.highlight(displayedCode, grammar, language);
+        setHighlightedHtml(highlighted);
+      } catch (error) {
+        console.error("Syntax highlighting error:", error);
+        setHighlightedHtml(displayedCode);
+      }
+    } else {
+      setHighlightedHtml(displayedCode);
+    }
+  }, [displayedCode, language]);
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(code);
@@ -31,7 +85,7 @@ export function CodeBlock({
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const lines = code.split("\n");
+  const lines = displayedCode.split("\n");
 
   return (
     <Card className={cn("overflow-hidden bg-slate-950 text-slate-50", className)}>
@@ -70,10 +124,13 @@ export function CodeBlock({
       {/* Code Content */}
       <div className="overflow-x-auto">
         <pre className="p-4 text-sm">
-          <code className="font-mono">
+          <code ref={codeRef} className="font-mono language-{language}">
             {lines.map((line, index) => {
               const lineNumber = index + 1;
               const isHighlighted = highlightLines.includes(lineNumber);
+
+              // Get the highlighted HTML for this specific line
+              const lineHtml = highlightedHtml.split("\n")[index] || line;
 
               return (
                 <div
@@ -88,9 +145,10 @@ export function CodeBlock({
                       {lineNumber}
                     </span>
                   )}
-                  <span className={cn(isHighlighted && "text-blue-100")}>
-                    {line || "\n"}
-                  </span>
+                  <span
+                    className={cn(isHighlighted && "text-blue-100")}
+                    dangerouslySetInnerHTML={{ __html: lineHtml || "&nbsp;" }}
+                  />
                 </div>
               );
             })}

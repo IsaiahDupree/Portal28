@@ -3406,9 +3406,9 @@
         "Multiple languages supported",
         "Readable at video resolution"
       ],
-      "passes": false,
-      "implemented_at": null,
-      "notes": "In progress per PRD. Part of devvlog_v1 format requirements."
+      "passes": true,
+      "implemented_at": "2026-02-07",
+      "notes": "Completed with PrismJS syntax highlighting, typing animation, line highlighting, and copy button. All 21 tests passing."
     },
     {
       "id": "feat-118",
