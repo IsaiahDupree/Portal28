@@ -5627,7 +5627,9 @@
         "Messages send/receive",
         "Real-time updates"
       ],
-      "passes": false
+      "passes": true,
+      "implemented_at": "2026-02-08",
+      "notes": "Direct messaging system fully implemented. Database schema with dm_threads, dm_messages, dm_thread_participants, and dm_typing tables. Supabase Realtime subscriptions for live message delivery and typing indicators. API routes for threads, messages, typing status, and unread counts. React components (DMProvider, DMChat) with real-time updates. RPC functions for thread management and read tracking. E2E tests (10 tests) covering NEW-DM-001. All acceptance criteria met."
     },
     {
       "id": "feat-200",
