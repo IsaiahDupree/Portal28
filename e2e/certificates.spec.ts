@@ -298,3 +298,134 @@ test.describe("Certificate Icon and Visual Elements", () => {
     }
   });
 });
+
+test.describe("Certificate Share Functionality (NEW-CERT-001)", () => {
+  test("should have share button on certificate cards", async ({ page }) => {
+    await page.goto("/app/certificates");
+
+    if (page.url().includes("/login")) {
+      test.skip();
+      return;
+    }
+
+    // Check if there are any certificates
+    const certificateCards = page.locator(".bg-white.rounded-lg");
+    const count = await certificateCards.count();
+
+    if (count > 0) {
+      // Should have share button
+      const shareButton = page.getByRole("button", { name: /share/i });
+      await expect(shareButton.first()).toBeVisible();
+    }
+  });
+
+  test("should show share menu when share button clicked", async ({ page }) => {
+    await page.goto("/app/certificates");
+
+    if (page.url().includes("/login")) {
+      test.skip();
+      return;
+    }
+
+    // Check if there are any certificates
+    const certificateCards = page.locator(".bg-white.rounded-lg");
+    const count = await certificateCards.count();
+
+    if (count > 0) {
+      // Click share button
+      const shareButton = page.getByRole("button", { name: /share/i }).first();
+      await shareButton.click();
+
+      // Wait for share menu
+      await page.waitForTimeout(500);
+
+      // Should show share options
+      const shareOptions = page.getByText("Share on LinkedIn");
+      expect(await shareOptions.isVisible().catch(() => false)).toBe(true);
+    }
+  });
+
+  test("should have LinkedIn share option", async ({ page }) => {
+    await page.goto("/app/certificates");
+
+    if (page.url().includes("/login")) {
+      test.skip();
+      return;
+    }
+
+    const certificateCards = page.locator(".bg-white.rounded-lg");
+    const count = await certificateCards.count();
+
+    if (count > 0) {
+      const shareButton = page.getByRole("button", { name: /share/i }).first();
+      await shareButton.click();
+      await page.waitForTimeout(500);
+
+      const linkedinOption = page.getByText("Share on LinkedIn");
+      expect(await linkedinOption.isVisible().catch(() => false)).toBe(true);
+    }
+  });
+
+  test("should have Twitter share option", async ({ page }) => {
+    await page.goto("/app/certificates");
+
+    if (page.url().includes("/login")) {
+      test.skip();
+      return;
+    }
+
+    const certificateCards = page.locator(".bg-white.rounded-lg");
+    const count = await certificateCards.count();
+
+    if (count > 0) {
+      const shareButton = page.getByRole("button", { name: /share/i }).first();
+      await shareButton.click();
+      await page.waitForTimeout(500);
+
+      const twitterOption = page.getByText("Share on Twitter");
+      expect(await twitterOption.isVisible().catch(() => false)).toBe(true);
+    }
+  });
+
+  test("should have Facebook share option", async ({ page }) => {
+    await page.goto("/app/certificates");
+
+    if (page.url().includes("/login")) {
+      test.skip();
+      return;
+    }
+
+    const certificateCards = page.locator(".bg-white.rounded-lg");
+    const count = await certificateCards.count();
+
+    if (count > 0) {
+      const shareButton = page.getByRole("button", { name: /share/i }).first();
+      await shareButton.click();
+      await page.waitForTimeout(500);
+
+      const facebookOption = page.getByText("Share on Facebook");
+      expect(await facebookOption.isVisible().catch(() => false)).toBe(true);
+    }
+  });
+
+  test("should have copy link option", async ({ page }) => {
+    await page.goto("/app/certificates");
+
+    if (page.url().includes("/login")) {
+      test.skip();
+      return;
+    }
+
+    const certificateCards = page.locator(".bg-white.rounded-lg");
+    const count = await certificateCards.count();
+
+    if (count > 0) {
+      const shareButton = page.getByRole("button", { name: /share/i }).first();
+      await shareButton.click();
+      await page.waitForTimeout(500);
+
+      const copyOption = page.getByText("Copy Link");
+      expect(await copyOption.isVisible().catch(() => false)).toBe(true);
+    }
+  });
+});

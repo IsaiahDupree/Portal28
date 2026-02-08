@@ -2,6 +2,7 @@ import { supabaseServer } from "@/lib/supabase/server";
 import { Award, Download, ExternalLink } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { ShareCertificateButton } from "@/components/certificates/ShareCertificateButton";
 
 export default async function CertificatesPage() {
   const supabase = supabaseServer();
@@ -101,6 +102,12 @@ export default async function CertificatesPage() {
                     <ExternalLink className="w-4 h-4 mr-2" />
                     Verify
                   </Link>
+
+                  <ShareCertificateButton
+                    certificateNumber={certificate.certificate_number}
+                    courseTitle={certificate.course_title}
+                    verificationToken={certificate.verification_token}
+                  />
                 </div>
               </div>
             </div>

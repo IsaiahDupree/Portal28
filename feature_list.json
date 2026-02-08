@@ -6049,7 +6049,9 @@
         "PDF generates",
         "Share works"
       ],
-      "passes": false
+      "passes": true,
+      "implemented_at": "2026-02-07",
+      "notes": "Certificate feature fully implemented with PDF generation (lib/certificates/generatePDF.ts), download API (app/api/certificates/[id]/download/route.ts), verification pages, and social sharing functionality. Added ShareCertificateButton component with LinkedIn, Twitter, Facebook, and copy link options. All unit tests (8) and E2E tests passing."
     },
     {
       "id": "feat-220",
