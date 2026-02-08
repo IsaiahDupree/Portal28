@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { Webhook } from "svix";
 import { processEmailEvent } from "@/lib/email/analytics";
 import { processGDPEmailEvent } from "@/lib/growth-data-plane/email-events";
+import { processWebhookWithLogging } from "@/lib/webhooks/logger";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -80,45 +81,61 @@ export async function POST(req: NextRequest) {
   const emailId = payload.data?.email_id;
   const toAddresses = payload.data?.to ?? [];
 
-  // Process each recipient
-  for (const email of toAddresses) {
-    try {
-      // Process using legacy email analytics system
-      await processEmailEvent({
-        event_type: internalEventType,
-        email,
-        resend_email_id: emailId,
-        // Click data
-        clicked_link: payload.data?.click?.link,
-        user_agent: payload.data?.click?.userAgent || payload.data?.open?.userAgent,
-        ip_address: payload.data?.click?.ipAddress || payload.data?.open?.ipAddress,
-        // Bounce data
-        bounce_type: payload.data?.bounce?.type,
-        bounce_reason: payload.data?.bounce?.message,
-        // Raw payload for debugging
-        raw_payload: payload.data as Record<string, unknown>
-      });
-
-      // Also process using Growth Data Plane (GDP-004, GDP-005)
-      if (emailId && ["delivered", "opened", "clicked", "bounced", "complained"].includes(internalEventType)) {
-        await processGDPEmailEvent({
+  // Log and process the webhook with automatic retry handling
+  const { error } = await processWebhookWithLogging(
+    {
+      source: "resend",
+      eventType: resendEventType,
+      eventId: emailId,
+      payload,
+      headers: {
+        "svix-id": svixId,
+        "svix-timestamp": svixTimestamp,
+        "svix-signature": svixSignature,
+      },
+    },
+    async () => {
+      // Process each recipient
+      for (const email of toAddresses) {
+        // Process using legacy email analytics system
+        await processEmailEvent({
+          event_type: internalEventType,
           email,
-          event_type: internalEventType as "delivered" | "opened" | "clicked" | "bounced" | "complained",
           resend_email_id: emailId,
-          subject: payload.data?.subject,
-          from_email: payload.data?.from,
-          link_url: payload.data?.click?.link,
+          // Click data
+          clicked_link: payload.data?.click?.link,
           user_agent: payload.data?.click?.userAgent || payload.data?.open?.userAgent,
           ip_address: payload.data?.click?.ipAddress || payload.data?.open?.ipAddress,
-          metadata: {
-            bounce_type: payload.data?.bounce?.type,
-            bounce_message: payload.data?.bounce?.message,
-          },
+          // Bounce data
+          bounce_type: payload.data?.bounce?.type,
+          bounce_reason: payload.data?.bounce?.message,
+          // Raw payload for debugging
+          raw_payload: payload.data as Record<string, unknown>
         });
+
+        // Also process using Growth Data Plane (GDP-004, GDP-005)
+        if (emailId && ["delivered", "opened", "clicked", "bounced", "complained"].includes(internalEventType)) {
+          await processGDPEmailEvent({
+            email,
+            event_type: internalEventType as "delivered" | "opened" | "clicked" | "bounced" | "complained",
+            resend_email_id: emailId,
+            subject: payload.data?.subject,
+            from_email: payload.data?.from,
+            link_url: payload.data?.click?.link,
+            user_agent: payload.data?.click?.userAgent || payload.data?.open?.userAgent,
+            ip_address: payload.data?.click?.ipAddress || payload.data?.open?.ipAddress,
+            metadata: {
+              bounce_type: payload.data?.bounce?.type,
+              bounce_message: payload.data?.bounce?.message,
+            },
+          });
+        }
       }
-    } catch (err) {
-      console.error(`Failed to process event for ${email}:`, err);
     }
+  );
+
+  if (error) {
+    console.error("[Resend Webhook] Processing failed:", error);
   }
 
   return NextResponse.json({ received: true, processed: toAddresses.length });

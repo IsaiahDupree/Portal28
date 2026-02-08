@@ -4,6 +4,7 @@ import { supabaseAdmin } from "@/lib/supabase/admin";
 import { sendCapiPurchase } from "@/lib/meta/capi";
 import { sendCourseAccessEmail } from "@/lib/email/sendCourseAccessEmail";
 import { enrollInAutomation } from "@/lib/email/automation-scheduler";
+import { processWebhookWithLogging } from "@/lib/webhooks/logger";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -21,6 +22,33 @@ export async function POST(req: Request) {
     const message = err instanceof Error ? err.message : "Unknown error";
     return NextResponse.json({ error: `Webhook Error: ${message}` }, { status: 400 });
   }
+
+  // Log and process the webhook with automatic retry handling
+  const { error } = await processWebhookWithLogging(
+    {
+      source: "stripe",
+      eventType: event.type,
+      eventId: event.id,
+      payload: event,
+      headers: {
+        "stripe-signature": sig || "",
+      },
+    },
+    async () => {
+      await processStripeEvent(event);
+    }
+  );
+
+  if (error) {
+    console.error("[Stripe Webhook] Processing failed:", error);
+    // Still return 200 to prevent Stripe from retrying
+    // Our internal retry mechanism will handle it
+  }
+
+  return NextResponse.json({ received: true });
+}
+
+async function processStripeEvent(event: Stripe.Event) {
 
   if (event.type === "checkout.session.completed") {
     const session = event.data.object as Stripe.Checkout.Session;
@@ -351,6 +379,4 @@ export async function POST(req: Request) {
       }
     }
   }
-
-  return NextResponse.json({ received: true });
 }
