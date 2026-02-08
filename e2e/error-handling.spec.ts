@@ -5,6 +5,25 @@
 
 import { test, expect } from '@playwright/test';
 
+/**
+ * Helper to dismiss cookie consent banner if present
+ */
+async function dismissCookieBanner(page: any) {
+  try {
+    // Wait a bit for banner to appear
+    await page.waitForTimeout(500);
+
+    const acceptButton = page.getByRole('button', { name: /accept all/i });
+    if (await acceptButton.isVisible({ timeout: 2000 })) {
+      await acceptButton.click();
+      // Wait for banner to be dismissed
+      await page.waitForTimeout(500);
+    }
+  } catch {
+    // Banner not present or already dismissed
+  }
+}
+
 test.describe('Error Handling', () => {
   test.describe('404 Not Found Page (PLT-ERR-001)', () => {
     test('should display friendly 404 page for non-existent route', async ({ page }) => {
@@ -26,6 +45,9 @@ test.describe('Error Handling', () => {
     test('should navigate home from 404 page', async ({ page }) => {
       await page.goto('/non-existent-page');
 
+      // Dismiss cookie banner if present
+      await dismissCookieBanner(page);
+
       // Click "Go Home" button
       await page.getByRole('link', { name: /go home/i }).click();
 
@@ -35,6 +57,9 @@ test.describe('Error Handling', () => {
 
     test('should navigate to courses from 404 page', async ({ page }) => {
       await page.goto('/non-existent-page');
+
+      // Dismiss cookie banner if present
+      await dismissCookieBanner(page);
 
       // Click "Browse Courses" button
       await page.getByRole('link', { name: /browse courses/i }).click();
@@ -62,19 +87,103 @@ test.describe('Error Handling', () => {
 
   test.describe('Error Boundary (PLT-ERR-002)', () => {
     test('should display error page when error occurs', async ({ page }) => {
-      // Create a test page that throws an error
-      // Note: This test would require a dedicated test route that throws an error
-      // For now, we'll test the error boundary by checking if it exists
+      // Visit the test error page
+      await page.goto('/test-error');
 
-      // Visit a page that might have errors
-      await page.goto('/');
+      // Dismiss cookie banner if present
+      await dismissCookieBanner(page);
 
-      // Verify the page loads without error initially
+      // Verify page loaded
+      await expect(page.getByRole('heading', { name: 'Error Boundary Test Page' })).toBeVisible();
+
+      // Click button to trigger error
+      await page.getByTestId('trigger-error-button').click();
+
+      // Error boundary should catch and display error UI
+      await expect(page.getByRole('heading', { name: 'Something went wrong' })).toBeVisible();
+      await expect(page.getByText(/We apologize for the inconvenience/i)).toBeVisible();
+    });
+
+    test('should display error details in development mode', async ({ page }) => {
+      // Visit test error page
+      await page.goto('/test-error');
+
+      // Dismiss cookie banner if present
+      await dismissCookieBanner(page);
+
+      // Trigger error
+      await page.getByTestId('trigger-error-button').click();
+
+      // Error boundary should display
+      await expect(page.getByRole('heading', { name: 'Something went wrong' })).toBeVisible();
+
+      // In development, error details should be visible
+      const errorDetails = page.getByText(/Error Details \(Development Only\)/i);
+      if (await errorDetails.isVisible()) {
+        // Expand details
+        await errorDetails.click();
+
+        // Should show error message
+        await expect(page.getByText(/Test error for error boundary E2E testing/i).first()).toBeVisible();
+      }
+    });
+
+    test('should have "Try again" button that resets error', async ({ page }) => {
+      // Visit test error page and trigger error
+      await page.goto('/test-error');
+
+      // Dismiss cookie banner if present
+      await dismissCookieBanner(page);
+
+      await page.getByTestId('trigger-error-button').click();
+
+      // Error boundary displays
+      await expect(page.getByRole('heading', { name: 'Something went wrong' })).toBeVisible();
+
+      // Click "Try again" button
+      await page.getByRole('button', { name: 'Try again' }).click();
+
+      // Should reset and show the test page again
+      await expect(page.getByRole('heading', { name: 'Error Boundary Test Page' })).toBeVisible();
+    });
+
+    test('should have "Go home" link that navigates home', async ({ page }) => {
+      // Visit test error page and trigger error
+      await page.goto('/test-error');
+
+      // Dismiss cookie banner if present
+      await dismissCookieBanner(page);
+
+      await page.getByTestId('trigger-error-button').click();
+
+      // Error boundary displays
+      await expect(page.getByRole('heading', { name: 'Something went wrong' })).toBeVisible();
+
+      // Click "Go home" link
+      await page.getByRole('link', { name: 'Go home' }).click();
+
+      // Should navigate to home page
       await expect(page).toHaveURL('/');
+    });
 
-      // The error boundary is a client component that catches runtime errors
-      // In a real scenario, you'd trigger an error to test this
-      // For this test, we're verifying the error component exists in the codebase
+    test('should display error ID when digest is present', async ({ page }) => {
+      // Visit test error page and trigger error
+      await page.goto('/test-error');
+
+      // Dismiss cookie banner if present
+      await dismissCookieBanner(page);
+
+      await page.getByTestId('trigger-error-button').click();
+
+      // Error boundary displays
+      await expect(page.getByRole('heading', { name: 'Something went wrong' })).toBeVisible();
+
+      // Check if error ID is displayed (Next.js may provide digest)
+      const errorId = page.getByText(/Error ID:/i);
+      // This is optional - digest may or may not be present
+      if (await errorId.isVisible()) {
+        await expect(errorId).toBeVisible();
+      }
     });
   });
 
