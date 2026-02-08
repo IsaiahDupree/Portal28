@@ -4499,8 +4499,8 @@
         "SFX aligned to reveals",
         "Seeder uses WPM model"
       ],
-      "passes": false,
-      "implemented_at": null,
+      "passes": true,
+      "implemented_at": "2026-02-07",
       "notes": "Pending per PRD. src/format/reveal-recorder.ts planned."
     },
     {
