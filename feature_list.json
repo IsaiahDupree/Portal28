@@ -6417,7 +6417,8 @@
       "description": "Track landing_view, cta_click, pricing_view with UTM params",
       "category": "tracking",
       "priority": "P1",
-      "passes": false
+      "passes": true,
+      "implemented_at": "2026-02-08"
     },
     {
       "id": "TRACK-003",

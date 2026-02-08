@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { tracking } from "@/lib/tracking";
 
 export function AttributionCapture() {
   useEffect(() => {
@@ -23,6 +24,20 @@ export function AttributionCapture() {
         body: JSON.stringify(payload)
       }).catch(() => {});
     }
+
+    // Track landing page view with UTM parameters (TRACK-002)
+    const utmParams = {
+      utm_source: payload.utm_source,
+      utm_medium: payload.utm_medium,
+      utm_campaign: payload.utm_campaign,
+      utm_content: payload.utm_content,
+      utm_term: payload.utm_term,
+      fbclid: payload.fbclid,
+      landing_page: payload.landing_page,
+      referrer: document.referrer,
+    };
+
+    tracking.acquisition.landingView(utmParams);
   }, []);
 
   return null;

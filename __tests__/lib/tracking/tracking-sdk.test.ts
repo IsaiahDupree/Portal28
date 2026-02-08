@@ -179,6 +179,30 @@ describe('Tracking SDK', () => {
       expect(callBody.properties.source).toBe('google');
     });
 
+    // TRACK-002: Landing view with UTM parameters
+    it('should track landing view with UTM parameters', () => {
+      sdk.acquisition.landingView({
+        utm_source: 'facebook',
+        utm_medium: 'cpc',
+        utm_campaign: 'summer_sale',
+        utm_content: 'ad_variant_a',
+        utm_term: 'brand_strategy',
+        landing_page: '/',
+        referrer: 'https://facebook.com',
+      });
+
+      const callBody = JSON.parse((global.fetch as jest.Mock).mock.calls[0][1].body);
+      expect(callBody.event).toBe(Events.LANDING_VIEW);
+      expect(callBody.properties.utm_source).toBe('facebook');
+      expect(callBody.properties.utm_medium).toBe('cpc');
+      expect(callBody.properties.utm_campaign).toBe('summer_sale');
+      expect(callBody.properties.utm_content).toBe('ad_variant_a');
+      expect(callBody.properties.utm_term).toBe('brand_strategy');
+      expect(callBody.properties.landing_page).toBe('/');
+      expect(callBody.properties.referrer).toBe('https://facebook.com');
+    });
+
+    // TRACK-002: CTA click with location tracking
     it('should track CTA click', () => {
       sdk.acquisition.ctaClick('hero-signup', { position: 'top' });
 
@@ -188,11 +212,41 @@ describe('Tracking SDK', () => {
       expect(callBody.properties.position).toBe('top');
     });
 
+    // TRACK-002: CTA click with multiple properties
+    it('should track CTA click with location and context', () => {
+      sdk.acquisition.ctaClick('hero_enter_the_room', {
+        location: 'hero',
+        href: '/courses',
+      });
+
+      const callBody = JSON.parse((global.fetch as jest.Mock).mock.calls[0][1].body);
+      expect(callBody.event).toBe(Events.CTA_CLICK);
+      expect(callBody.properties.cta_name).toBe('hero_enter_the_room');
+      expect(callBody.properties.location).toBe('hero');
+      expect(callBody.properties.href).toBe('/courses');
+    });
+
+    // TRACK-002: Pricing view with page context
     it('should track pricing view', () => {
       sdk.acquisition.pricingView({ plan: 'pro' });
 
       const callBody = JSON.parse((global.fetch as jest.Mock).mock.calls[0][1].body);
       expect(callBody.event).toBe(Events.PRICING_VIEW);
+    });
+
+    // TRACK-002: Pricing view with URL and referrer
+    it('should track pricing view with page context', () => {
+      sdk.acquisition.pricingView({
+        page: '/courses',
+        url: 'http://localhost:2828/courses',
+        referrer: 'http://localhost:2828/',
+      });
+
+      const callBody = JSON.parse((global.fetch as jest.Mock).mock.calls[0][1].body);
+      expect(callBody.event).toBe(Events.PRICING_VIEW);
+      expect(callBody.properties.page).toBe('/courses');
+      expect(callBody.properties.url).toBe('http://localhost:2828/courses');
+      expect(callBody.properties.referrer).toBe('http://localhost:2828/');
     });
 
     it('should track course preview', () => {

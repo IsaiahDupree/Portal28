@@ -4,6 +4,7 @@ import { getPublishedCourses } from "@/lib/db/queries";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Sparkles, ArrowRight } from "lucide-react";
+import { PricingViewTracker } from "@/components/tracking/PricingViewTracker";
 
 // Force dynamic rendering to avoid build-time fetch issues
 export const dynamic = "force-dynamic";
@@ -23,6 +24,7 @@ export default async function CoursesPage() {
 
   return (
     <div className="space-y-8">
+      <PricingViewTracker />
       <div className="max-w-2xl">
         <p className="text-sm uppercase tracking-widest text-primary font-medium mb-2">
           The Curriculum
