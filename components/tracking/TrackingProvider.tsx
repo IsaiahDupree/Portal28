@@ -89,6 +89,7 @@ export function TrackingProvider({ children }: TrackingProviderProps) {
         setHasIdentified(true);
       } else if (event === 'SIGNED_OUT') {
         setHasIdentified(false);
+        tracking.reset(); // GDP-009: Reset tracking SDK and PostHog on logout
       }
     });
 

@@ -124,6 +124,16 @@ class TrackingSDK {
       ...identification.metadata,
     };
 
+    // GDP-009: PostHog Identity Stitching
+    // Identify user with PostHog using person_id from database
+    import('@/lib/posthog/client')
+      .then(({ identifyUser }) => {
+        identifyUser(identification.userId, this.userMetadata);
+      })
+      .catch(() => {
+        // Silently fail if PostHog not available
+      });
+
     // Send identify call to backend
     this.sendEvent({
       event: '_identify',
@@ -521,13 +531,22 @@ class TrackingSDK {
   }
 
   /**
-   * Reset the SDK (for testing)
+   * Reset the SDK (for testing and logout)
    */
   reset(): void {
     this.userId = null;
     this.userMetadata = {};
     this.queue = [];
     this.initialized = false;
+
+    // GDP-009: Reset PostHog identity on logout
+    import('@/lib/posthog/client')
+      .then(({ resetIdentity }) => {
+        resetIdentity();
+      })
+      .catch(() => {
+        // Silently fail if PostHog not available
+      });
   }
 }
 

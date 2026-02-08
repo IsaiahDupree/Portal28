@@ -1,5 +1,6 @@
 import "./globals.css";
 import { MetaPixel } from "@/lib/meta/MetaPixel";
+import { PostHogProvider } from "@/lib/posthog/PostHogProvider";
 import { CookieConsentBanner } from "@/components/legal/CookieConsentBanner";
 import { AttributionCapture } from "./attrib-capture";
 import { Metadata } from "next";
@@ -71,6 +72,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body>
         <MetaPixel />
+        <PostHogProvider />
         <AttributionCapture />
         {children}
         <CookieConsentBanner />
