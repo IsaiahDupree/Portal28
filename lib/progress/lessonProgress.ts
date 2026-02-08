@@ -11,6 +11,8 @@ export interface LessonProgress {
   progress_percent: number;
   video_position_seconds: number | null;
   video_duration_seconds: number | null;
+  time_spent_seconds: number;
+  last_activity_timestamp: string | null;
   started_at: string | null;
   completed_at: string | null;
   last_accessed_at: string;
@@ -24,6 +26,10 @@ export interface CourseProgress {
   total_lessons: number;
   completion_percent: number;
   last_accessed_at: string | null;
+  total_time_spent_seconds: number | null;
+  avg_quiz_score_percent: number | null;
+  quizzes_attempted: number | null;
+  quizzes_passed: number | null;
 }
 
 export async function getLessonProgress(
@@ -132,4 +138,24 @@ export async function markLessonStarted(
   return updateLessonProgress(userId, lessonId, courseId, {
     status: "in_progress",
   });
+}
+
+export async function updateTimeSpent(
+  userId: string,
+  lessonId: string,
+  courseId: string,
+  secondsToAdd: number
+): Promise<void> {
+  const supabase = supabaseServer();
+
+  const { error } = await supabase.rpc("update_lesson_time_spent", {
+    p_user_id: userId,
+    p_lesson_id: lessonId,
+    p_course_id: courseId,
+    p_seconds_to_add: secondsToAdd,
+  });
+
+  if (error) {
+    console.error("Failed to update time spent:", error);
+  }
 }

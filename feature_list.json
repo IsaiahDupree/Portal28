@@ -5925,7 +5925,9 @@
         "Metrics accurate",
         "Dashboard updated"
       ],
-      "passes": false
+      "passes": true,
+      "implemented_at": "2026-02-07",
+      "notes": "Student progress tracking improvements implemented. Added time_spent_seconds and last_activity_timestamp to lesson_progress table. Enhanced course_progress view with total_time_spent_seconds, avg_quiz_score_percent, quizzes_attempted, and quizzes_passed. Created user_progress_summary view. Updated dashboard to display time spent and quiz score metrics. Added /api/progress/time-spent endpoint and update_lesson_time_spent RPC function. 20 unit tests passing, 110 E2E tests passing."
     },
     {
       "id": "feat-214",

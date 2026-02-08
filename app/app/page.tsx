@@ -9,7 +9,7 @@ import { Progress } from "@/components/ui/progress";
 import { PageHeader } from "@/components/ui/page-header";
 import { StatCard, StatCardGrid } from "@/components/ui/stat-card";
 import { EmptyState } from "@/components/ui/empty-state";
-import { BookOpen, Users, MessageSquare, Trophy, ArrowRight } from "lucide-react";
+import { BookOpen, Users, MessageSquare, Trophy, ArrowRight, Clock, Award } from "lucide-react";
 
 export default async function AppHome() {
   const supabase = supabaseServer();
@@ -41,11 +41,24 @@ export default async function AppHome() {
   // Calculate overall progress
   let totalLessons = 0;
   let totalCompleted = 0;
+  let totalTimeSpent = 0;
+  let totalQuizScores = 0;
+  let quizScoreCount = 0;
+
   allProgress.forEach(p => {
     totalLessons += p.total_lessons;
     totalCompleted += p.lessons_completed;
+    totalTimeSpent += p.total_time_spent_seconds || 0;
+    if (p.avg_quiz_score_percent !== null) {
+      totalQuizScores += p.avg_quiz_score_percent;
+      quizScoreCount++;
+    }
   });
+
   const overallProgress = totalLessons > 0 ? Math.round((totalCompleted / totalLessons) * 100) : 0;
+  const avgQuizScore = quizScoreCount > 0 ? Math.round(totalQuizScores / quizScoreCount) : null;
+  const totalTimeHours = Math.floor(totalTimeSpent / 3600);
+  const totalTimeMinutes = Math.floor((totalTimeSpent % 3600) / 60);
 
   // Create progress map for courses
   const progressMap = new Map(allProgress.map(p => [p.course_id, p.completion_percent]));
@@ -67,22 +80,22 @@ export default async function AppHome() {
           icon={BookOpen}
         />
         <StatCard
-          title="Community"
-          value="Active"
-          description="Member status"
-          icon={Users}
-        />
-        <StatCard
-          title="Forums"
-          value={0}
-          description="New discussions"
-          icon={MessageSquare}
-        />
-        <StatCard
           title="Progress"
           value={`${overallProgress}%`}
           description="Overall completion"
           icon={Trophy}
+        />
+        <StatCard
+          title="Time Spent"
+          value={totalTimeHours > 0 ? `${totalTimeHours}h ${totalTimeMinutes}m` : `${totalTimeMinutes}m`}
+          description="Total learning time"
+          icon={Clock}
+        />
+        <StatCard
+          title="Quiz Average"
+          value={avgQuizScore !== null ? `${avgQuizScore}%` : "N/A"}
+          description="Average quiz score"
+          icon={Award}
         />
       </StatCardGrid>
 
