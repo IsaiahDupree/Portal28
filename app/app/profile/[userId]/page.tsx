@@ -3,6 +3,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { AchievementBadge } from "@/components/achievements/AchievementBadge";
 
 interface ProfilePageProps {
   params: {
@@ -55,6 +56,16 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
 
   const completedCourses = enrollments?.map(e => (e.courses as any)) || [];
 
+  // Get user's achievements (top 6 most recent unlocked)
+  const { data: achievementsData } = await supabase
+    .rpc('get_user_achievements', {
+      p_user_id: userId
+    });
+
+  const unlockedAchievements = (achievementsData || [])
+    .filter((a: any) => a.is_unlocked)
+    .slice(0, 6);
+
   return (
     <div className="container mx-auto max-w-4xl py-12 px-4">
       {/* Profile Header */}
@@ -99,6 +110,34 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
           </div>
         </div>
       </div>
+
+      {/* Achievements Section */}
+      {unlockedAchievements.length > 0 && (
+        <div className="bg-white rounded-lg shadow-sm border p-8 mb-6">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold">
+              {isOwnProfile ? "Your Achievements" : "Achievements"}
+            </h2>
+            <Link href={isOwnProfile ? "/app/achievements" : "#"}>
+              <Button variant="outline" size="sm">
+                View All
+              </Button>
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {unlockedAchievements.map((achievement: any) => (
+              <AchievementBadge
+                key={achievement.achievement_id}
+                icon={achievement.icon}
+                name={achievement.achievement_name}
+                description={achievement.description}
+                tier={achievement.tier}
+                isUnlocked={true}
+              />
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Enrolled Courses (if any) */}
       {completedCourses.length > 0 && (
