@@ -2400,9 +2400,9 @@
         "Digest option works",
         "Preferences respected"
       ],
-      "passes": false,
-      "implemented_at": null,
-      "notes": "Enhance existing notifications with email delivery options."
+      "passes": true,
+      "implemented_at": "2026-02-07",
+      "notes": "Implemented forum reply notifications with email support, notification preferences UI, and digest options. Email template created (ForumReplyEmail.tsx), notification utility created (sendForumReplyNotification.ts), integrated into forum post API, notification settings page created with digest frequency options. Unit tests passing (7/7)."
     },
     {
       "id": "feat-082",
