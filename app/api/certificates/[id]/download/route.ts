@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseServer } from "@/lib/supabase/server";
 import { generateCertificatePDF } from "@/lib/certificates/generatePDF";
+import { trackCertificateDownload } from "@/lib/tracking/server";
 
 /**
  * GET /api/certificates/[id]/download
@@ -56,6 +57,13 @@ export async function GET(
       courseTitle: certificate.course_title,
       completionDate,
       verificationUrl,
+    });
+
+    // TRACK-004: Track certificate download
+    await trackCertificateDownload({
+      certificateId: id,
+      courseId: certificate.course_id,
+      userId: user.id,
     });
 
     // Return PDF with proper headers

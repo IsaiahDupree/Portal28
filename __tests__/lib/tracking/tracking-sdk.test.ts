@@ -359,6 +359,81 @@ describe('Tracking SDK', () => {
       const callBody = JSON.parse((global.fetch as jest.Mock).mock.calls[0][1].body);
       expect(callBody.event).toBe(Events.CERTIFICATE_ISSUED);
     });
+
+    // TRACK-004: Product-specific value events
+    it('should track product created', () => {
+      sdk.coreValue.productCreated({
+        productId: 'product-123',
+        productType: 'template',
+        title: 'My Template',
+        category: 'design',
+      });
+
+      const callBody = JSON.parse((global.fetch as jest.Mock).mock.calls[0][1].body);
+      expect(callBody.event).toBe(Events.PRODUCT_CREATED);
+      expect(callBody.properties.product_id).toBe('product-123');
+      expect(callBody.properties.product_type).toBe('template');
+      expect(callBody.properties.title).toBe('My Template');
+      expect(callBody.properties.category).toBe('design');
+    });
+
+    it('should track product completed', () => {
+      sdk.coreValue.productCompleted({
+        productId: 'product-123',
+        productType: 'membership',
+        userId: 'user-456',
+      });
+
+      const callBody = JSON.parse((global.fetch as jest.Mock).mock.calls[0][1].body);
+      expect(callBody.event).toBe(Events.PRODUCT_COMPLETED);
+      expect(callBody.properties.product_id).toBe('product-123');
+      expect(callBody.properties.product_type).toBe('membership');
+      expect(callBody.properties.user_id).toBe('user-456');
+    });
+
+    it('should track product downloaded', () => {
+      sdk.coreValue.productDownloaded({
+        productId: 'product-123',
+        productType: 'digital_product',
+        fileName: 'ebook.pdf',
+        fileSize: 1024000,
+      });
+
+      const callBody = JSON.parse((global.fetch as jest.Mock).mock.calls[0][1].body);
+      expect(callBody.event).toBe(Events.PRODUCT_DOWNLOADED);
+      expect(callBody.properties.product_id).toBe('product-123');
+      expect(callBody.properties.product_type).toBe('digital_product');
+      expect(callBody.properties.file_name).toBe('ebook.pdf');
+      expect(callBody.properties.file_size).toBe(1024000);
+    });
+
+    it('should track template downloaded', () => {
+      sdk.coreValue.templateDownloaded('template-123', 'template.zip');
+
+      const callBody = JSON.parse((global.fetch as jest.Mock).mock.calls[0][1].body);
+      expect(callBody.event).toBe(Events.TEMPLATE_DOWNLOADED);
+      expect(callBody.properties.template_id).toBe('template-123');
+      expect(callBody.properties.file_name).toBe('template.zip');
+    });
+
+    it('should track resource downloaded', () => {
+      sdk.coreValue.resourceDownloaded('resource-123', 'worksheet.pdf', 512000);
+
+      const callBody = JSON.parse((global.fetch as jest.Mock).mock.calls[0][1].body);
+      expect(callBody.event).toBe(Events.RESOURCE_DOWNLOADED);
+      expect(callBody.properties.resource_id).toBe('resource-123');
+      expect(callBody.properties.file_name).toBe('worksheet.pdf');
+      expect(callBody.properties.file_size).toBe(512000);
+    });
+
+    it('should track certificate downloaded', () => {
+      sdk.coreValue.certificateDownloaded('cert-123', 'course-456');
+
+      const callBody = JSON.parse((global.fetch as jest.Mock).mock.calls[0][1].body);
+      expect(callBody.event).toBe(Events.CERTIFICATE_DOWNLOADED);
+      expect(callBody.properties.certificate_id).toBe('cert-123');
+      expect(callBody.properties.course_id).toBe('course-456');
+    });
   });
 
   describe('Monetization Events', () => {

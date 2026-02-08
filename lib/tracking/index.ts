@@ -55,6 +55,13 @@ export const Events = {
   ENROLLMENT_COMPLETED: 'enrollment_completed',
   LESSON_COMPLETED: 'lesson_completed',
   CERTIFICATE_ISSUED: 'certificate_issued',
+  // TRACK-004: Product-specific value events
+  PRODUCT_CREATED: 'product_created',
+  PRODUCT_COMPLETED: 'product_completed',
+  PRODUCT_DOWNLOADED: 'product_downloaded',
+  TEMPLATE_DOWNLOADED: 'template_downloaded',
+  RESOURCE_DOWNLOADED: 'resource_downloaded',
+  CERTIFICATE_DOWNLOADED: 'certificate_downloaded',
 
   // Monetization
   CHECKOUT_STARTED: 'checkout_started',
@@ -248,6 +255,63 @@ class TrackingSDK {
       this.track(Events.CERTIFICATE_ISSUED, {
         course_id: courseId,
         certificate_id: certificateId,
+      });
+    },
+    // TRACK-004: Product-specific value events
+    productCreated: (product: {
+      productId: string;
+      productType: string;
+      title: string;
+      category?: string;
+    }) => {
+      this.track(Events.PRODUCT_CREATED, {
+        product_id: product.productId,
+        product_type: product.productType,
+        title: product.title,
+        category: product.category,
+      });
+    },
+    productCompleted: (product: {
+      productId: string;
+      productType: string;
+      userId?: string;
+    }) => {
+      this.track(Events.PRODUCT_COMPLETED, {
+        product_id: product.productId,
+        product_type: product.productType,
+        user_id: product.userId,
+      });
+    },
+    productDownloaded: (product: {
+      productId: string;
+      productType: string;
+      fileName?: string;
+      fileSize?: number;
+    }) => {
+      this.track(Events.PRODUCT_DOWNLOADED, {
+        product_id: product.productId,
+        product_type: product.productType,
+        file_name: product.fileName,
+        file_size: product.fileSize,
+      });
+    },
+    templateDownloaded: (templateId: string, fileName: string) => {
+      this.track(Events.TEMPLATE_DOWNLOADED, {
+        template_id: templateId,
+        file_name: fileName,
+      });
+    },
+    resourceDownloaded: (resourceId: string, fileName: string, fileSize?: number) => {
+      this.track(Events.RESOURCE_DOWNLOADED, {
+        resource_id: resourceId,
+        file_name: fileName,
+        file_size: fileSize,
+      });
+    },
+    certificateDownloaded: (certificateId: string, courseId: string) => {
+      this.track(Events.CERTIFICATE_DOWNLOADED, {
+        certificate_id: certificateId,
+        course_id: courseId,
       });
     },
   };

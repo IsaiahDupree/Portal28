@@ -6435,7 +6435,7 @@
       "description": "Track product-specific value events (created, completed, downloaded)",
       "category": "tracking",
       "priority": "P1",
-      "passes": false
+      "passes": true
     },
     {
       "id": "TRACK-005",

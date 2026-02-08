@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
+import { trackTemplateDownload } from '@/lib/tracking/server'
 
 const DownloadSchema = z.object({
   type: z.enum(['download', 'copy']).default('download'),
@@ -73,6 +74,15 @@ export async function POST(
       .select('file_url, file_name, content')
       .eq('id', templateId)
       .single()
+
+    // TRACK-004: Track template download
+    if (template?.file_name) {
+      await trackTemplateDownload({
+        templateId,
+        fileName: template.file_name,
+        userId: user.id,
+      })
+    }
 
     return NextResponse.json({
       success: true,

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseServer } from "@/lib/supabase/server";
+import { trackResourceDownload } from "@/lib/tracking/server";
 
 export async function GET(req: NextRequest) {
   const supabase = supabaseServer();
@@ -49,6 +50,14 @@ export async function GET(req: NextRequest) {
 
   // Get the filename from the path
   const filename = pathParts[pathParts.length - 1];
+
+  // TRACK-004: Track resource download
+  await trackResourceDownload({
+    resourceId: item.id,
+    fileName: filename,
+    fileSize: fileData.size,
+    userId: auth.user.id,
+  });
 
   // Return the file as a blob
   return new NextResponse(fileData, {
