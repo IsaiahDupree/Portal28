@@ -4,7 +4,7 @@
   "created": "2026-01-13",
   "updated": "2026-01-17",
   "total_features": 263,
-  "completed_features": 169,
+  "completed_features": 170,
   "total_tests": 300,
   "phases": {
     "phase0_mvp": "Core course selling: auth, payments, course delivery, admin CMS, tracking, email",
@@ -3709,9 +3709,9 @@
         "Failures logged",
         "Successful outputs collected"
       ],
-      "passes": false,
-      "implemented_at": null,
-      "notes": "In progress per PRD roadmap. Batch video generation API."
+      "passes": true,
+      "implemented_at": "2026-02-07",
+      "notes": "Fully implemented. Database tables: video_batch_jobs, video_batch_items. API routes for creating, managing, and processing batch video jobs. Sequential processing with progress tracking, error handling, and cancellation support. 34 tests passing."
     },
     {
       "id": "feat-129",
