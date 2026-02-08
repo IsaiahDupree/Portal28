@@ -5563,7 +5563,8 @@
         "Schema migrated",
         "RLS policies set"
       ],
-      "passes": false
+      "passes": true,
+      "implemented_at": "2026-02-07"
     },
     {
       "id": "feat-197",
@@ -5583,7 +5584,8 @@
         "Dashboard renders",
         "Stats accurate"
       ],
-      "passes": false
+      "passes": true,
+      "implemented_at": "2026-02-07"
     },
     {
       "id": "feat-198",
