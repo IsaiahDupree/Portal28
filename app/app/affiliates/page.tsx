@@ -40,12 +40,19 @@ export default function AffiliateDashboard() {
   const [copied, setCopied] = useState(false);
   const [payoutEmail, setPayoutEmail] = useState("");
   const [payoutMethod, setPayoutMethod] = useState("stripe");
+  const [payoutRequests, setPayoutRequests] = useState<any[]>([]);
+  const [availableBalance, setAvailableBalance] = useState(0);
+  const [requestingPayout, setRequestingPayout] = useState(false);
+  const [payoutAmount, setPayoutAmount] = useState("");
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:2828";
 
   useEffect(() => {
     fetchAffiliateData();
-  }, []);
+    if (affiliateData) {
+      fetchPayoutData();
+    }
+  }, [affiliateData?.affiliate?.id]);
 
   async function fetchAffiliateData() {
     try {
@@ -96,6 +103,51 @@ export default function AffiliateDashboard() {
       setError("Failed to register as affiliate");
     } finally {
       setRegistering(false);
+    }
+  }
+
+  async function fetchPayoutData() {
+    try {
+      const response = await fetch("/api/affiliates/payout/request");
+      if (response.ok) {
+        const data = await response.json();
+        setPayoutRequests(data.payoutRequests || []);
+        setAvailableBalance(data.availableBalance || 0);
+      }
+    } catch (err) {
+      console.error("Error fetching payout data:", err);
+    }
+  }
+
+  async function handleRequestPayout() {
+    if (!payoutAmount) return;
+
+    try {
+      setRequestingPayout(true);
+      setError(null);
+
+      const amountInCents = Math.round(parseFloat(payoutAmount) * 100);
+
+      const response = await fetch("/api/affiliates/payout/request", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ amount: amountInCents }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setPayoutAmount("");
+        await fetchPayoutData();
+        alert("Payout request submitted successfully!");
+      } else {
+        setError(data.error || "Failed to request payout");
+      }
+    } catch (err) {
+      console.error("Error requesting payout:", err);
+      setError("Failed to request payout");
+    } finally {
+      setRequestingPayout(false);
     }
   }
 
@@ -274,6 +326,106 @@ export default function AffiliateDashboard() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Payout Request */}
+      {affiliateData.affiliate.status === "active" && (
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle>Request Payout</CardTitle>
+            <CardDescription>
+              Minimum payout: $50.00 | Available: ${(availableBalance / 100).toFixed(2)}
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex gap-2">
+              <div className="flex-1">
+                <Label htmlFor="payout_amount">Amount ($)</Label>
+                <Input
+                  id="payout_amount"
+                  type="number"
+                  min="50"
+                  step="0.01"
+                  placeholder="50.00"
+                  value={payoutAmount}
+                  onChange={(e) => setPayoutAmount(e.target.value)}
+                  disabled={availableBalance < 5000}
+                />
+              </div>
+              <div className="flex items-end">
+                <Button
+                  onClick={handleRequestPayout}
+                  disabled={
+                    requestingPayout ||
+                    !payoutAmount ||
+                    parseFloat(payoutAmount) < 50 ||
+                    parseFloat(payoutAmount) * 100 > availableBalance
+                  }
+                >
+                  {requestingPayout ? "Requesting..." : "Request Payout"}
+                </Button>
+              </div>
+            </div>
+
+            {error && <div className="text-sm text-destructive">{error}</div>}
+
+            {availableBalance < 5000 && (
+              <p className="text-sm text-muted-foreground">
+                You need at least $50.00 in available balance to request a payout.
+              </p>
+            )}
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Payout History */}
+      <Card className="mb-6">
+        <CardHeader>
+          <CardTitle>Payout History</CardTitle>
+        </CardHeader>
+        <CardContent>
+          {payoutRequests.length === 0 ? (
+            <p className="text-sm text-muted-foreground">No payout requests yet</p>
+          ) : (
+            <div className="space-y-4">
+              {payoutRequests.map((request: any) => (
+                <div key={request.id} className="flex justify-between items-center">
+                  <div>
+                    <p className="font-medium">${(request.amount / 100).toFixed(2)}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {new Date(request.created_at).toLocaleDateString()} via{" "}
+                      {request.payout_method}
+                    </p>
+                    {request.rejection_reason && (
+                      <p className="text-sm text-destructive mt-1">
+                        Reason: {request.rejection_reason}
+                      </p>
+                    )}
+                  </div>
+                  <div className="text-right">
+                    <span
+                      className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ${
+                        request.status === "completed"
+                          ? "bg-green-50 text-green-700"
+                          : request.status === "approved"
+                          ? "bg-blue-50 text-blue-700"
+                          : request.status === "processing"
+                          ? "bg-purple-50 text-purple-700"
+                          : request.status === "rejected"
+                          ? "bg-red-50 text-red-700"
+                          : request.status === "failed"
+                          ? "bg-red-50 text-red-700"
+                          : "bg-yellow-50 text-yellow-700"
+                      }`}
+                    >
+                      {request.status}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
 
       {/* Recent Commissions */}
       <Card>

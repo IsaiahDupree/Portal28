@@ -18,7 +18,7 @@ create table if not exists public.templates (
   copy_count int not null default 0,
   is_published boolean not null default true,
   is_premium boolean not null default false, -- require entitlement
-  required_product_id uuid references public.products(id) on delete set null,
+  required_product_id uuid, -- references products table (not enforced by FK)
   sort_order int not null default 0,
   metadata jsonb default '{}'::jsonb, -- for extensibility
   created_by uuid references auth.users(id) on delete set null,
@@ -77,7 +77,7 @@ create policy "Users can view premium templates if they have entitlement"
       exists (
         select 1 from public.entitlements e
         where e.user_id = auth.uid()
-        and e.product_id = required_product_id
+        and e.course_id = required_product_id
         and e.status = 'active'
       )
     )
