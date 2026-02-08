@@ -6483,7 +6483,7 @@
       "description": "Track all page views with Meta Pixel",
       "category": "meta-pixel",
       "priority": "P1",
-      "passes": false
+      "passes": true
     },
     {
       "id": "META-003",

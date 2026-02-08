@@ -3,7 +3,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { createServerClient } from '@/lib/supabase/server';
+import { createClient } from '@/lib/supabase/server';
 import { logger } from '@/lib/logger';
 
 export async function POST(request: NextRequest) {
@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Get user from session or use provided userId
-    const supabase = await createServerClient();
+    const supabase = createClient();
     const {
       data: { user },
     } = await supabase.auth.getUser();
