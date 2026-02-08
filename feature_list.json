@@ -6229,7 +6229,8 @@
         "WCAG 2.1 AA compliance",
         "Issues logged"
       ],
-      "passes": false
+      "passes": true,
+      "implemented_at": "2026-02-08"
     },
     {
       "id": "feat-228",

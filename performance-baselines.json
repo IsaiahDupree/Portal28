@@ -1,0 +1,12 @@
+{
+  "Course Catalog Query": 80,
+  "Search Query": 150,
+  "Analytics Aggregation": 450,
+  "MRR Calculation": 250,
+  "Homepage Load": 800,
+  "Course Listing Load": 1200,
+  "Course Detail Load": 1800,
+  "Search API": 400,
+  "Checkout API": 2500,
+  "Analytics API": 900
+}

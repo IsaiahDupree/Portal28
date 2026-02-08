@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import AxeBuilder from "@axe-core/playwright";
 
 /**
  * Accessibility E2E Tests (WCAG Compliance)
@@ -14,8 +15,8 @@ import { test, expect } from "@playwright/test";
  * - WCAG 2.1 Guidelines: https://www.w3.org/WAI/WCAG21/quickref/
  *
  * SETUP:
- * For comprehensive testing, install: npm install --save-dev @axe-core/playwright
- * Tests will run basic checks without it, but axe-core provides deeper analysis.
+ * ✅ @axe-core/playwright is installed for comprehensive accessibility testing
+ * Tests use axe-core to provide automated WCAG 2.1 AA compliance checks.
  */
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:2828";
@@ -109,6 +110,36 @@ test.describe("Accessibility - WCAG Compliance", () => {
   });
 
   test.describe("A11Y-002: Screen Reader Compatibility", () => {
+    test("should pass automated axe-core scan on homepage", async ({ page }) => {
+      await page.goto("/");
+
+      const accessibilityScanResults = await new AxeBuilder({ page })
+        .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
+        .analyze();
+
+      expect(accessibilityScanResults.violations).toEqual([]);
+    });
+
+    test("should pass automated axe-core scan on courses page", async ({ page }) => {
+      await page.goto("/courses");
+
+      const accessibilityScanResults = await new AxeBuilder({ page })
+        .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
+        .analyze();
+
+      expect(accessibilityScanResults.violations).toEqual([]);
+    });
+
+    test("should pass automated axe-core scan on login page", async ({ page }) => {
+      await page.goto("/login");
+
+      const accessibilityScanResults = await new AxeBuilder({ page })
+        .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
+        .analyze();
+
+      expect(accessibilityScanResults.violations).toEqual([]);
+    });
+
     test("should have proper heading hierarchy on homepage", async ({ page }) => {
       await page.goto("/");
 
@@ -176,6 +207,16 @@ test.describe("Accessibility - WCAG Compliance", () => {
   });
 
   test.describe("A11Y-003: Color Contrast Ratios", () => {
+    test("should meet color contrast requirements via axe-core", async ({ page }) => {
+      await page.goto("/");
+
+      const accessibilityScanResults = await new AxeBuilder({ page })
+        .withTags(['color-contrast'])
+        .analyze();
+
+      expect(accessibilityScanResults.violations).toEqual([]);
+    });
+
     test("should have sufficient color contrast on primary buttons", async ({ page }) => {
       await page.goto("/login");
 
