@@ -6499,7 +6499,7 @@
       "description": "Implement Conversions API for server-side event tracking",
       "category": "meta-pixel",
       "priority": "P1",
-      "passes": false
+      "passes": true
     },
     {
       "id": "META-005",
@@ -6507,7 +6507,7 @@
       "description": "Use event_id to deduplicate browser and server events",
       "category": "meta-pixel",
       "priority": "P1",
-      "passes": false
+      "passes": true
     },
     {
       "id": "META-006",
@@ -6515,7 +6515,7 @@
       "description": "Hash email/phone with SHA256 for CAPI user matching",
       "category": "meta-pixel",
       "priority": "P1",
-      "passes": false
+      "passes": true
     },
     {
       "id": "META-007",
