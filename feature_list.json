@@ -6531,7 +6531,7 @@
       "description": "Set up conversion optimization for key events",
       "category": "meta-pixel",
       "priority": "P2",
-      "passes": false
+      "passes": true
     },
     {
       "id": "GDP-001",
