@@ -6621,7 +6621,8 @@
       "description": "Compute active_days, core_actions, pricing_views, email_opens from events",
       "category": "growth-data-plane",
       "priority": "P1",
-      "passes": false
+      "passes": true,
+      "implemented_at": "2026-02-08"
     },
     {
       "id": "GDP-012",

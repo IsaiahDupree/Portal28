@@ -17,6 +17,11 @@
     {
       "path": "/api/cron/publish-scheduled",
       "schedule": "* * * * *"
+    },
+    {
+      "path": "/api/cron/compute-person-features",
+      "schedule": "0 2 * * *",
+      "comment": "GDP-011: Compute person features daily at 2am"
     }
   ],
   "headers": [
