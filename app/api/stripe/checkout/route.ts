@@ -12,15 +12,27 @@ const Body = z.object({
   courseId: z.string().uuid(),
   event_id: z.string().min(8),
   bumpKeys: z.array(z.string()).optional(),
+  currency: z.enum(['USD', 'EUR', 'GBP', 'CAD', 'AUD', 'JPY', 'INR', 'BRL']).optional(),
 });
 
 export async function POST(req: Request) {
   const parsed = Body.safeParse(await req.json());
   if (!parsed.success) return NextResponse.json({ error: "Bad request" }, { status: 400 });
 
-  const { courseId, event_id, bumpKeys = [] } = parsed.data;
+  const { courseId, event_id, bumpKeys = [], currency = 'USD' } = parsed.data;
   const supabase = supabaseServer();
   const { data: auth } = await supabase.auth.getUser();
+
+  // If no currency provided, get user's preference
+  let userCurrency = currency;
+  if (!currency && auth.user) {
+    const { data: pref } = await supabase
+      .from("user_currency_preferences")
+      .select("currency_code")
+      .eq("user_id", auth.user.id)
+      .single();
+    userCurrency = pref?.currency_code || 'USD';
+  }
 
   const { data: course } = await supabase
     .from("courses")
@@ -32,9 +44,22 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Course not purchasable" }, { status: 400 });
   }
 
+  // Try to find a price in the user's preferred currency
+  // First check if there's a course_prices entry for this currency
+  const { data: coursePrice } = await supabase
+    .from("course_prices")
+    .select("stripe_price_id, currency")
+    .eq("course_id", courseId)
+    .eq("currency", userCurrency)
+    .eq("is_active", true)
+    .single();
+
+  // Use currency-specific price if available, otherwise fall back to default
+  const stripePriceId = coursePrice?.stripe_price_id || course.stripe_price_id;
+
   // Build line items array starting with the main course
   const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = [
-    { price: course.stripe_price_id, quantity: 1 }
+    { price: stripePriceId, quantity: 1 }
   ];
 
   // Fetch and add order bump products if any were selected
@@ -86,7 +111,8 @@ export async function POST(req: Request) {
     email: auth.user?.email ?? null,
     stripe_session_id: session.id,
     status: "pending",
-    meta_event_id: event_id
+    meta_event_id: event_id,
+    currency: userCurrency
   });
 
   return NextResponse.json({ url: session.url });
