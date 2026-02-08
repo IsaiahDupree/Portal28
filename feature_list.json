@@ -3485,9 +3485,9 @@
         "Hash styled correctly",
         "Professional appearance"
       ],
-      "passes": false,
-      "implemented_at": null,
-      "notes": "Part of devvlog_v1 format. GitCommit component."
+      "passes": true,
+      "implemented_at": "2026-02-07",
+      "notes": "Completed with commit message, hash animation, branch indicator, and author avatar. All 20 tests passing (VID-GIT-001, VID-GIT-002)."
     },
     {
       "id": "feat-121",
