@@ -5,6 +5,7 @@ import { sendCapiPurchase } from "@/lib/meta/capi";
 import { sendCourseAccessEmail } from "@/lib/email/sendCourseAccessEmail";
 import { enrollInAutomation } from "@/lib/email/automation-scheduler";
 import { processWebhookWithLogging } from "@/lib/webhooks/logger";
+import { trackServerEvent } from "@/lib/tracking/server";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -255,6 +256,20 @@ async function processStripeEvent(event: Stripe.Event) {
             p_revenue_cents: session.amount_total ?? 0
           });
         }
+
+        // TRACK-005: Track purchase completed event
+        await trackServerEvent('purchase_completed', {
+          course_id: courseId,
+          bundle_course_ids: bundleCourseIds,
+          product_id: courseId || (bundleCourseIds ? bundleCourseIds[0] : null),
+          amount: amountTotal,
+          currency: currency.toLowerCase(),
+          payment_method: 'card',
+          promo_code: promoCode,
+          discount_amount: discountAmount ? discountAmount / 100 : null,
+          email_send_id: emailSendId,
+          email_campaign: emailCampaign,
+        }, userId || undefined);
       }
     }
   }
@@ -291,6 +306,19 @@ async function processStripeEvent(event: Stripe.Event) {
         trial_start: subscription.trial_start ? new Date(subscription.trial_start * 1000).toISOString() : null,
         trial_end: subscription.trial_end ? new Date(subscription.trial_end * 1000).toISOString() : null
       }, { onConflict: "stripe_subscription_id" });
+
+      // TRACK-005: Track subscription started event (only for new subscriptions)
+      if (event.type === "customer.subscription.created") {
+        await trackServerEvent('subscription_started', {
+          plan_id: priceData?.id,
+          amount: priceCents / 100,
+          interval: interval,
+          tier: tier,
+          trial_days: subscription.trial_end && subscription.trial_start
+            ? Math.floor((subscription.trial_end - subscription.trial_start) / (60 * 60 * 24))
+            : 0,
+        }, userId);
+      }
 
       // Create/update membership entitlement
       if (subscription.status === "active" || subscription.status === "trialing") {

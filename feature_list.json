@@ -6443,7 +6443,7 @@
       "description": "Track checkout_started, purchase_completed, subscription events",
       "category": "tracking",
       "priority": "P1",
-      "passes": false
+      "passes": true
     },
     {
       "id": "TRACK-006",

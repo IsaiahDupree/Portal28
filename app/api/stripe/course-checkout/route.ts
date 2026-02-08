@@ -4,6 +4,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
 import { supabaseServer } from "@/lib/supabase/server";
+import { trackServerEvent } from "@/lib/tracking/server";
 
 export const runtime = "nodejs";
 
@@ -57,6 +58,17 @@ export async function POST(req: NextRequest) {
         source: source ?? "course_page"
       });
     }
+
+    // TRACK-005: Track checkout started event
+    // Get price amount from Stripe
+    const price = await stripe.prices.retrieve(priceId);
+    await trackServerEvent('checkout_started', {
+      course_id: courseSlug,
+      product_id: courseSlug,
+      amount: price.unit_amount ? price.unit_amount / 100 : 0,
+      currency: price.currency || 'usd',
+      source: source ?? "course_page",
+    }, userId ?? undefined);
 
     return NextResponse.json({ url: session.url, sessionId: session.id });
   } catch (error) {

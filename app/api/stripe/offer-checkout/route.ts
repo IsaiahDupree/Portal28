@@ -3,6 +3,7 @@ import Stripe from "stripe";
 import { z } from "zod";
 import { supabaseServer } from "@/lib/supabase/server";
 import { capiTrack } from "@/lib/meta/capiTrack";
+import { trackServerEvent } from "@/lib/tracking/server";
 
 export const runtime = "nodejs";
 
@@ -175,6 +176,19 @@ export async function POST(req: NextRequest) {
     },
     client: { ip, ua },
   });
+
+  // TRACK-005: Track checkout started event for offers
+  if (priceId) {
+    const price = await stripe.prices.retrieve(priceId);
+    await trackServerEvent('checkout_started', {
+      offer_key: offerKey,
+      offer_title: offer.title,
+      offer_kind: kind,
+      amount: price.unit_amount ? price.unit_amount / 100 : 0,
+      currency: price.currency || 'usd',
+      placement: placementKey,
+    }, user?.id);
+  }
 
   return NextResponse.json({ url: session.url });
 }
