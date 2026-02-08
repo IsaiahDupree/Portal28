@@ -4,6 +4,7 @@ import { AttributionCapture } from "../attrib-capture";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Sparkles, Target, Mic2, ArrowRight } from "lucide-react";
+import { NewsletterSignup } from "@/components/newsletter/NewsletterSignup";
 
 // Enable static generation with ISR
 export const revalidate = 3600; // Revalidate every hour
@@ -133,6 +134,28 @@ export default function HomePage() {
             </div>
           </div>
         </div>
+      </section>
+
+      {/* Newsletter */}
+      <section className="py-8 sm:py-12">
+        <Card>
+          <CardContent className="py-12 sm:py-16 px-6">
+            <div className="mx-auto max-w-xl text-center space-y-6">
+              <h2 className="text-2xl sm:text-3xl font-bold">
+                Stay in the Loop
+              </h2>
+              <p className="text-muted-foreground">
+                Join our newsletter for insights on brand strategy, AI-powered content creation, and exclusive updates from Portal 28.
+              </p>
+              <NewsletterSignup
+                className="mt-6"
+                source="homepage_newsletter"
+                placeholder="Enter your email"
+                buttonText="Subscribe"
+              />
+            </div>
+          </CardContent>
+        </Card>
       </section>
 
       {/* CTA */}

@@ -2811,9 +2811,9 @@
         "Confirmation sent",
         "Unsubscribe works"
       ],
-      "passes": false,
-      "implemented_at": null,
-      "notes": "API route /api/newsletter exists but needs Resend audience integration."
+      "passes": true,
+      "implemented_at": "2026-02-07",
+      "notes": "Newsletter subscription fully implemented. API route with Resend audience integration exists, NewsletterSignup component created, integrated into homepage, unsubscribe page and API created. E2E tests exist. All acceptance criteria met: signup form works, email added to Resend audience list, welcome email sent via sendLeadWelcome, unsubscribe handling implemented."
     },
     {
       "id": "feat-097",
