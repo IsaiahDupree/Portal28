@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Webhook } from "svix";
 import { processEmailEvent } from "@/lib/email/analytics";
+import { processGDPEmailEvent } from "@/lib/growth-data-plane/email-events";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -82,6 +83,7 @@ export async function POST(req: NextRequest) {
   // Process each recipient
   for (const email of toAddresses) {
     try {
+      // Process using legacy email analytics system
       await processEmailEvent({
         event_type: internalEventType,
         email,
@@ -96,6 +98,24 @@ export async function POST(req: NextRequest) {
         // Raw payload for debugging
         raw_payload: payload.data as Record<string, unknown>
       });
+
+      // Also process using Growth Data Plane (GDP-004, GDP-005)
+      if (emailId && ["delivered", "opened", "clicked", "bounced", "complained"].includes(internalEventType)) {
+        await processGDPEmailEvent({
+          email,
+          event_type: internalEventType as "delivered" | "opened" | "clicked" | "bounced" | "complained",
+          resend_email_id: emailId,
+          subject: payload.data?.subject,
+          from_email: payload.data?.from,
+          link_url: payload.data?.click?.link,
+          user_agent: payload.data?.click?.userAgent || payload.data?.open?.userAgent,
+          ip_address: payload.data?.click?.ipAddress || payload.data?.open?.ipAddress,
+          metadata: {
+            bounce_type: payload.data?.bounce?.type,
+            bounce_message: payload.data?.bounce?.message,
+          },
+        });
+      }
     } catch (err) {
       console.error(`Failed to process event for ${email}:`, err);
     }
