@@ -4527,8 +4527,8 @@
         "Cooldown enforced",
         "Priority respected"
       ],
-      "passes": false,
-      "implemented_at": null,
+      "passes": true,
+      "implemented_at": "2026-02-07",
       "notes": "Pending per PRD. src/sfx/macro-cues.ts and policy-engine.ts."
     },
     {
