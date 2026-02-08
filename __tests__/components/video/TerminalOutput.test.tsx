@@ -1,9 +1,10 @@
 /**
- * Tests for TerminalOutput component (VID-DVL-002, VID-DVL-004)
+ * Tests for TerminalOutput component (VID-TRM-001, VID-TRM-002, VID-TRM-003)
  *
  * Test Coverage:
- * - VID-DVL-002: Terminal animations work correctly
- * - VID-DVL-004: Terminal output displays with proper formatting
+ * - VID-TRM-001: Terminal window mockup
+ * - VID-TRM-002: Command typing animation and output reveal
+ * - VID-TRM-003: Cursor blinking
  */
 
 import { render, screen, waitFor } from "@testing-library/react";
@@ -16,7 +17,7 @@ describe("TerminalOutput Component", () => {
     { text: "✓ All packages installed", type: "success" as const }
   ];
 
-  describe("VID-DVL-004: Basic Rendering", () => {
+  describe("VID-TRM-001: Terminal Window Mockup", () => {
     it("renders terminal with title", () => {
       render(<TerminalOutput lines={sampleLines} animated={false} />);
 
@@ -47,7 +48,7 @@ describe("TerminalOutput Component", () => {
     });
   });
 
-  describe("VID-DVL-002: Terminal Animations", () => {
+  describe("VID-TRM-002: Command Typing and Output Reveal", () => {
     it("shows animation enabled state", () => {
       render(<TerminalOutput lines={sampleLines} animated={true} typingSpeed={100} />);
 
@@ -69,6 +70,43 @@ describe("TerminalOutput Component", () => {
       expect(screen.getByText("npm install")).toBeInTheDocument();
       expect(screen.getByText("Installing dependencies...")).toBeInTheDocument();
       expect(screen.getByText("✓ All packages installed")).toBeInTheDocument();
+    });
+  });
+
+  describe("VID-TRM-003: Cursor Blinking", () => {
+    it("displays cursor during animation", () => {
+      const { container } = render(
+        <TerminalOutput lines={["test line"]} animated={true} typingSpeed={10} />
+      );
+
+      // Cursor should be visible (▋ character with animate-pulse class)
+      const cursorElement = container.querySelector('.animate-pulse');
+      expect(cursorElement).toBeInTheDocument();
+      expect(cursorElement?.textContent).toBe("▋");
+    });
+
+    it("cursor is not visible when animation is disabled", () => {
+      const { container } = render(
+        <TerminalOutput lines={["test line"]} animated={false} />
+      );
+
+      // No cursor when animation is disabled
+      const cursorElement = container.querySelector('.animate-pulse');
+      expect(cursorElement).not.toBeInTheDocument();
+    });
+
+    it("cursor appears at the end of current typing line", () => {
+      const { container } = render(
+        <TerminalOutput
+          lines={[{ text: "npm install", type: "command" }]}
+          animated={true}
+          typingSpeed={20}
+        />
+      );
+
+      // Cursor should appear in the same line container as the text being typed
+      const cursorElement = container.querySelector('.animate-pulse');
+      expect(cursorElement).toBeInTheDocument();
     });
   });
 

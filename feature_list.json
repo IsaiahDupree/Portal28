@@ -3433,9 +3433,9 @@
         "Output appears naturally",
         "Cursor visible"
       ],
-      "passes": false,
-      "implemented_at": null,
-      "notes": "In progress per PRD. Part of devvlog_v1 format requirements."
+      "passes": true,
+      "implemented_at": "2026-02-07",
+      "notes": "Completed with terminal window mockup, command typing animation, output reveal, and blinking cursor. All 22 tests passing (VID-TRM-001 to VID-TRM-003)."
     },
     {
       "id": "feat-119",

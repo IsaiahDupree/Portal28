@@ -117,8 +117,8 @@ export function TerminalOutput({
           </div>
         ))}
 
-        {/* Current animating line */}
-        {animated && currentLineIndex < normalizedLines.length && currentLineText && (
+        {/* Current animating line with cursor */}
+        {animated && currentLineIndex < normalizedLines.length && (
           <div className={cn("min-h-[1.5rem]", getLineColor(normalizedLines[currentLineIndex].type))}>
             {normalizedLines[currentLineIndex].type === "command" && showPrompt && (
               <span className="text-blue-400 mr-2">{promptSymbol}</span>
