@@ -13,6 +13,10 @@
     {
       "path": "/api/cron/send-certificate-emails",
       "schedule": "0 9 * * *"
+    },
+    {
+      "path": "/api/cron/publish-scheduled",
+      "schedule": "* * * * *"
     }
   ],
   "headers": [
