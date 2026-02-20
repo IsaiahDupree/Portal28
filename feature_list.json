@@ -6874,13 +6874,14 @@
       "description": "API response times",
       "category": "testing",
       "priority": "P2",
-      "passes": false,
+      "passes": true,
       "effort": "4h",
       "criteria": [
         "List < 500ms",
         "Detail < 300ms",
         "Search < 500ms"
-      ]
+      ],
+      "implemented_at": "2026-02-19"
     },
     {
       "id": "feat-WC-018",
