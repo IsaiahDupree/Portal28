@@ -6799,7 +6799,7 @@
       "description": "Playwright CRUD tests",
       "category": "testing",
       "priority": "P2",
-      "passes": false,
+      "passes": true,
       "effort": "4h",
       "criteria": [
         "Create",
