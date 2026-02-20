@@ -6726,14 +6726,15 @@
       "description": "Full workflow: sign-up through core action",
       "category": "testing",
       "priority": "P2",
-      "passes": false,
+      "passes": true,
       "effort": "4h",
       "criteria": [
         "Account",
         "Onboard",
         "Action",
         "Verify"
-      ]
+      ],
+      "implemented_at": "2026-02-19"
     },
     {
       "id": "feat-WC-008",
