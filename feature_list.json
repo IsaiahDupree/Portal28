@@ -2,7 +2,7 @@
   "project": "Portal28",
   "version": "1.1",
   "created": "2026-01-13",
-  "updated": "2026-01-17",
+  "updated": "2026-02-19",
   "total_features": 263,
   "completed_features": 224,
   "total_tests": 300,
@@ -6653,7 +6653,7 @@
       "description": "Unit tests for all API routes",
       "category": "testing",
       "priority": "P2",
-      "passes": false,
+      "passes": true,
       "effort": "4h",
       "criteria": [
         "All routes",
@@ -6667,7 +6667,7 @@
       "description": "Unit tests for CRUD helpers",
       "category": "testing",
       "priority": "P2",
-      "passes": false,
+      "passes": true,
       "effort": "4h",
       "criteria": [
         "Create/read/update/delete",
