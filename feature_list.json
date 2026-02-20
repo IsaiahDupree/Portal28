@@ -6711,13 +6711,14 @@
       "description": "Unit tests for stores/context",
       "category": "testing",
       "priority": "P2",
-      "passes": false,
+      "passes": true,
       "effort": "4h",
       "criteria": [
         "Initial state",
         "Actions",
         "Selectors"
-      ]
+      ],
+      "implemented_at": "2026-02-19"
     },
     {
       "id": "feat-WC-007",
