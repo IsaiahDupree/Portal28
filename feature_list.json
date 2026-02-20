@@ -6756,7 +6756,7 @@
       "description": "CSV/JSON import and export",
       "category": "testing",
       "priority": "P2",
-      "passes": false,
+      "passes": true,
       "effort": "4h",
       "criteria": [
         "Upload",
