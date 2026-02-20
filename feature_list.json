@@ -6785,7 +6785,7 @@
       "description": "Playwright auth tests",
       "category": "testing",
       "priority": "P2",
-      "passes": false,
+      "passes": true,
       "effort": "4h",
       "criteria": [
         "Login",
