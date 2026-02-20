@@ -6681,7 +6681,7 @@
       "description": "Unit tests for validation rules",
       "category": "testing",
       "priority": "P2",
-      "passes": false,
+      "passes": true,
       "effort": "4h",
       "criteria": [
         "Required",
