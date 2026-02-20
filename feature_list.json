@@ -6814,13 +6814,14 @@
       "description": "Playwright settings tests",
       "category": "testing",
       "priority": "P2",
-      "passes": false,
+      "passes": true,
       "effort": "4h",
       "criteria": [
         "Profile",
         "Preferences",
         "Persistence"
-      ]
+      ],
+      "implemented_at": "2026-02-20"
     },
     {
       "id": "feat-WC-014",
