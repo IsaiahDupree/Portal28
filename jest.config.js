@@ -18,6 +18,18 @@ const config = {
     "app/**/*.{js,ts,tsx}",
     "!**/*.d.ts",
     "!**/node_modules/**",
+    "!**/.next/**",
+    "!**/coverage/**",
+    "!**/playwright-report/**",
+  ],
+  coverageDirectory: "coverage/jest",
+  coverageReporters: [
+    "text",
+    "text-summary",
+    "html",
+    "lcov",
+    "json-summary",
+    "cobertura",
   ],
   coverageThreshold: {
     global: {
@@ -27,6 +39,16 @@ const config = {
       statements: 50,
     },
   },
+  coveragePathIgnorePatterns: [
+    "/node_modules/",
+    "/.next/",
+    "/e2e/",
+    "/coverage/",
+    "/playwright-report/",
+    "\\.d\\.ts$",
+    "\\.config\\.(js|ts)$",
+    "/migrations/",
+  ],
 };
 
 export default createJestConfig(config);

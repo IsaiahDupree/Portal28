@@ -6992,13 +6992,14 @@
       "description": "Coverage config and thresholds",
       "category": "testing",
       "priority": "P2",
-      "passes": false,
+      "passes": true,
       "effort": "4h",
       "criteria": [
         "Config",
         "HTML report",
         "Thresholds"
-      ]
+      ],
+      "implemented_at": "2026-02-19"
     },
     {
       "id": "feat-WC-026",

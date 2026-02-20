@@ -1,0 +1,43 @@
+# Coverage Configuration for Portal28
+# This file documents coverage thresholds and reporting configuration
+
+[coverage:run]
+# Source code directories to analyze
+source =
+    lib
+    components
+    app
+
+# Files to omit from coverage
+omit =
+    */node_modules/*
+    */.next/*
+    */e2e/*
+    */coverage/*
+    */playwright-report/*
+    */__tests__/*
+    */test-results/*
+    */*.d.ts
+    */*.config.js
+    */*.config.ts
+
+[coverage:report]
+# Minimum coverage thresholds (percentage)
+# These match the Jest configuration
+precision = 2
+show_missing = true
+skip_covered = false
+
+[coverage:html]
+# HTML report directory
+directory = coverage/html
+
+[coverage:json]
+# JSON report output
+output = coverage/coverage.json
+
+# Thresholds (enforced in Jest config)
+# branches: 50%
+# functions: 50%
+# lines: 50%
+# statements: 50%
