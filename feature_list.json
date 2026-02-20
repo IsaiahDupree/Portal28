@@ -6631,6 +6631,533 @@
       "category": "growth-data-plane",
       "priority": "P1",
       "passes": true
+    },
+    {
+      "id": "feat-WC-001",
+      "name": "Unit tests for auth flows",
+      "description": "Unit tests for sign-in, sign-up, password reset",
+      "category": "testing",
+      "priority": "P2",
+      "passes": true,
+      "effort": "4h",
+      "criteria": [
+        "Sign-in",
+        "Sign-up",
+        "Reset",
+        "Session"
+      ]
+    },
+    {
+      "id": "feat-WC-002",
+      "name": "Unit tests for API route handlers",
+      "description": "Unit tests for all API routes",
+      "category": "testing",
+      "priority": "P2",
+      "passes": false,
+      "effort": "4h",
+      "criteria": [
+        "All routes",
+        "Error cases",
+        "Auth middleware"
+      ]
+    },
+    {
+      "id": "feat-WC-003",
+      "name": "Unit tests for database queries",
+      "description": "Unit tests for CRUD helpers",
+      "category": "testing",
+      "priority": "P2",
+      "passes": false,
+      "effort": "4h",
+      "criteria": [
+        "Create/read/update/delete",
+        "Pagination",
+        "Search"
+      ]
+    },
+    {
+      "id": "feat-WC-004",
+      "name": "Unit tests for form validation",
+      "description": "Unit tests for validation rules",
+      "category": "testing",
+      "priority": "P2",
+      "passes": false,
+      "effort": "4h",
+      "criteria": [
+        "Required",
+        "Email",
+        "Password",
+        "Custom"
+      ]
+    },
+    {
+      "id": "feat-WC-005",
+      "name": "Unit tests for utility functions",
+      "description": "Unit tests for formatting and helpers",
+      "category": "testing",
+      "priority": "P2",
+      "passes": false,
+      "effort": "4h",
+      "criteria": [
+        "Date",
+        "Currency",
+        "String",
+        "Edge cases"
+      ]
+    },
+    {
+      "id": "feat-WC-006",
+      "name": "Unit tests for state management",
+      "description": "Unit tests for stores/context",
+      "category": "testing",
+      "priority": "P2",
+      "passes": false,
+      "effort": "4h",
+      "criteria": [
+        "Initial state",
+        "Actions",
+        "Selectors"
+      ]
+    },
+    {
+      "id": "feat-WC-007",
+      "name": "Integration tests for primary workflow",
+      "description": "Full workflow: sign-up through core action",
+      "category": "testing",
+      "priority": "P2",
+      "passes": false,
+      "effort": "4h",
+      "criteria": [
+        "Account",
+        "Onboard",
+        "Action",
+        "Verify"
+      ]
+    },
+    {
+      "id": "feat-WC-008",
+      "name": "Integration tests for payment flow",
+      "description": "Stripe checkout and webhook test",
+      "category": "testing",
+      "priority": "P2",
+      "passes": false,
+      "effort": "4h",
+      "criteria": [
+        "Checkout",
+        "Webhook",
+        "Subscription"
+      ]
+    },
+    {
+      "id": "feat-WC-009",
+      "name": "Integration tests for import/export",
+      "description": "CSV/JSON import and export",
+      "category": "testing",
+      "priority": "P2",
+      "passes": false,
+      "effort": "4h",
+      "criteria": [
+        "Upload",
+        "Map",
+        "Import",
+        "Export"
+      ]
+    },
+    {
+      "id": "feat-WC-010",
+      "name": "Integration tests for search/filter",
+      "description": "Search, filter, and pagination",
+      "category": "testing",
+      "priority": "P2",
+      "passes": false,
+      "effort": "4h",
+      "criteria": [
+        "Text search",
+        "Filters",
+        "Pagination"
+      ]
+    },
+    {
+      "id": "feat-WC-011",
+      "name": "E2E tests for auth with Playwright",
+      "description": "Playwright auth tests",
+      "category": "testing",
+      "priority": "P2",
+      "passes": false,
+      "effort": "4h",
+      "criteria": [
+        "Login",
+        "Signup",
+        "Protected routes"
+      ]
+    },
+    {
+      "id": "feat-WC-012",
+      "name": "E2E tests for CRUD operations",
+      "description": "Playwright CRUD tests",
+      "category": "testing",
+      "priority": "P2",
+      "passes": false,
+      "effort": "4h",
+      "criteria": [
+        "Create",
+        "View",
+        "Edit",
+        "Delete"
+      ]
+    },
+    {
+      "id": "feat-WC-013",
+      "name": "E2E tests for settings",
+      "description": "Playwright settings tests",
+      "category": "testing",
+      "priority": "P2",
+      "passes": false,
+      "effort": "4h",
+      "criteria": [
+        "Profile",
+        "Preferences",
+        "Persistence"
+      ]
+    },
+    {
+      "id": "feat-WC-014",
+      "name": "E2E tests for responsive layouts",
+      "description": "Playwright breakpoint tests",
+      "category": "testing",
+      "priority": "P2",
+      "passes": false,
+      "effort": "4h",
+      "criteria": [
+        "Mobile",
+        "Tablet",
+        "Desktop"
+      ]
+    },
+    {
+      "id": "feat-WC-015",
+      "name": "E2E tests for error states",
+      "description": "Playwright error/edge tests",
+      "category": "testing",
+      "priority": "P2",
+      "passes": false,
+      "effort": "4h",
+      "criteria": [
+        "404",
+        "Error boundary",
+        "Empty state"
+      ]
+    },
+    {
+      "id": "feat-WC-016",
+      "name": "Performance test: page load < 3s",
+      "description": "Page load optimization",
+      "category": "testing",
+      "priority": "P2",
+      "passes": false,
+      "effort": "4h",
+      "criteria": [
+        "LCP < 2.5s",
+        "FID < 100ms",
+        "CLS < 0.1"
+      ]
+    },
+    {
+      "id": "feat-WC-017",
+      "name": "Performance test: API < 500ms",
+      "description": "API response times",
+      "category": "testing",
+      "priority": "P2",
+      "passes": false,
+      "effort": "4h",
+      "criteria": [
+        "List < 500ms",
+        "Detail < 300ms",
+        "Search < 500ms"
+      ]
+    },
+    {
+      "id": "feat-WC-018",
+      "name": "Performance test: DB queries",
+      "description": "Query optimization",
+      "category": "testing",
+      "priority": "P2",
+      "passes": false,
+      "effort": "4h",
+      "criteria": [
+        "No seq scans",
+        "Indexes",
+        "Plans checked"
+      ]
+    },
+    {
+      "id": "feat-WC-019",
+      "name": "Load test: concurrent users",
+      "description": "50+ concurrent user simulation",
+      "category": "testing",
+      "priority": "P2",
+      "passes": false,
+      "effort": "4h",
+      "criteria": [
+        "No errors",
+        "Response < 2x",
+        "No leaks"
+      ]
+    },
+    {
+      "id": "feat-WC-020",
+      "name": "Accessibility audit with axe-core",
+      "description": "Automated a11y scan",
+      "category": "testing",
+      "priority": "P2",
+      "passes": false,
+      "effort": "4h",
+      "criteria": [
+        "No critical",
+        "No serious",
+        "ARIA correct"
+      ]
+    },
+    {
+      "id": "feat-WC-021",
+      "name": "Visual regression tests",
+      "description": "Screenshot comparison",
+      "category": "testing",
+      "priority": "P2",
+      "passes": false,
+      "effort": "4h",
+      "criteria": [
+        "Dashboard",
+        "Lists",
+        "Forms",
+        "Settings"
+      ]
+    },
+    {
+      "id": "feat-WC-022",
+      "name": "API contract tests",
+      "description": "Response shape validation",
+      "category": "testing",
+      "priority": "P2",
+      "passes": false,
+      "effort": "4h",
+      "criteria": [
+        "Shapes match",
+        "Errors typed",
+        "Pagination"
+      ]
+    },
+    {
+      "id": "feat-WC-023",
+      "name": "Security test: auth bypass",
+      "description": "Unauthenticated rejection",
+      "category": "testing",
+      "priority": "P2",
+      "passes": false,
+      "effort": "4h",
+      "criteria": [
+        "401 on API",
+        "Redirect pages",
+        "No leaks"
+      ]
+    },
+    {
+      "id": "feat-WC-024",
+      "name": "Security test: injection prevention",
+      "description": "XSS and SQL injection tests",
+      "category": "testing",
+      "priority": "P2",
+      "passes": false,
+      "effort": "4h",
+      "criteria": [
+        "Script sanitized",
+        "SQL blocked"
+      ]
+    },
+    {
+      "id": "feat-WC-025",
+      "name": "Test coverage reports",
+      "description": "Coverage config and thresholds",
+      "category": "testing",
+      "priority": "P2",
+      "passes": false,
+      "effort": "4h",
+      "criteria": [
+        "Config",
+        "HTML report",
+        "Thresholds"
+      ]
+    },
+    {
+      "id": "feat-WC-026",
+      "name": "Snapshot tests for components",
+      "description": "Snapshot critical components",
+      "category": "testing",
+      "priority": "P2",
+      "passes": false,
+      "effort": "4h",
+      "criteria": [
+        "Dashboard",
+        "Forms",
+        "Modals"
+      ]
+    },
+    {
+      "id": "feat-WC-027",
+      "name": "Test seed script",
+      "description": "Idempotent test data seeding",
+      "category": "testing",
+      "priority": "P2",
+      "passes": false,
+      "effort": "4h",
+      "criteria": [
+        "Accounts",
+        "Entities",
+        "Relations"
+      ]
+    },
+    {
+      "id": "feat-WC-028",
+      "name": "Mock service layer",
+      "description": "Mock external services",
+      "category": "testing",
+      "priority": "P2",
+      "passes": false,
+      "effort": "4h",
+      "criteria": [
+        "Auth",
+        "DB",
+        "Payment",
+        "Email"
+      ]
+    },
+    {
+      "id": "feat-WC-029",
+      "name": "CI test configuration",
+      "description": "Tests in CI pipeline",
+      "category": "testing",
+      "priority": "P2",
+      "passes": false,
+      "effort": "4h",
+      "criteria": [
+        "Commands",
+        "Env vars",
+        "Parallel",
+        "Reports"
+      ]
+    },
+    {
+      "id": "feat-WC-030",
+      "name": "Regression test suite",
+      "description": "Tests for fixed bugs",
+      "category": "testing",
+      "priority": "P2",
+      "passes": false,
+      "effort": "4h",
+      "criteria": [
+        "Per-bug tests",
+        "Edge cases",
+        "Prevent regressions"
+      ]
+    },
+    {
+      "id": "feat-WC-031",
+      "name": "CSRF protection on mutations",
+      "description": "CSRF tokens on POST/PUT/DELETE",
+      "category": "security",
+      "priority": "P2",
+      "passes": false,
+      "effort": "4h",
+      "criteria": [
+        "Token gen",
+        "Validation",
+        "Cookie"
+      ]
+    },
+    {
+      "id": "feat-WC-032",
+      "name": "Rate limiting on auth endpoints",
+      "description": "Rate limit sign-in/up/reset",
+      "category": "security",
+      "priority": "P2",
+      "passes": false,
+      "effort": "4h",
+      "criteria": [
+        "Per-IP",
+        "Per-account",
+        "429",
+        "Backoff"
+      ]
+    },
+    {
+      "id": "feat-WC-033",
+      "name": "Rate limiting on API endpoints",
+      "description": "Rate limit all APIs",
+      "category": "security",
+      "priority": "P2",
+      "passes": false,
+      "effort": "4h",
+      "criteria": [
+        "Per-user",
+        "Per-tier",
+        "Headers"
+      ]
+    },
+    {
+      "id": "feat-WC-034",
+      "name": "Input sanitization",
+      "description": "Sanitize all user inputs",
+      "category": "security",
+      "priority": "P2",
+      "passes": false,
+      "effort": "4h",
+      "criteria": [
+        "Strip HTML",
+        "Escape chars",
+        "Trim",
+        "Length"
+      ]
+    },
+    {
+      "id": "feat-WC-035",
+      "name": "SQL injection prevention audit",
+      "description": "Verify parameterized queries",
+      "category": "security",
+      "priority": "P2",
+      "passes": false,
+      "effort": "4h",
+      "criteria": [
+        "No concatenation",
+        "Parameterized"
+      ]
+    },
+    {
+      "id": "feat-WC-036",
+      "name": "Secure HTTP headers",
+      "description": "CSP, HSTS, X-Frame-Options",
+      "category": "security",
+      "priority": "P2",
+      "passes": false,
+      "effort": "4h",
+      "criteria": [
+        "CSP",
+        "HSTS",
+        "X-Frame",
+        "X-Content-Type"
+      ]
+    },
+    {
+      "id": "feat-WC-037",
+      "name": "Environment variable security",
+      "description": "No secrets in client bundles",
+      "category": "security",
+      "priority": "P2",
+      "passes": false,
+      "effort": "4h",
+      "criteria": [
+        "No client secrets",
+        "No .env in git"
+      ]
     }
   ]
 }
