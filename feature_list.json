@@ -6696,7 +6696,7 @@
       "description": "Unit tests for formatting and helpers",
       "category": "testing",
       "priority": "P2",
-      "passes": false,
+      "passes": true,
       "effort": "4h",
       "criteria": [
         "Date",
