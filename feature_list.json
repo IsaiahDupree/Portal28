@@ -6964,7 +6964,7 @@
       "description": "Unauthenticated rejection",
       "category": "testing",
       "priority": "P2",
-      "passes": false,
+      "passes": true,
       "effort": "4h",
       "criteria": [
         "401 on API",
