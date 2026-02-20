@@ -6742,7 +6742,7 @@
       "description": "Stripe checkout and webhook test",
       "category": "testing",
       "priority": "P2",
-      "passes": false,
+      "passes": true,
       "effort": "4h",
       "criteria": [
         "Checkout",
