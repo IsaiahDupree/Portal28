@@ -41,6 +41,16 @@ export async function middleware(req: NextRequest) {
   res.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
   res.headers.set("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
 
+  const pathname = req.nextUrl.pathname;
+  const hasAuthCookie = req.cookies
+    .getAll()
+    .some(({ name }) => name.includes("auth-token"));
+
+  // Anonymous homepage requests do not need Supabase. Let crawlers and other
+  // public visitors reach the page even when preview deployments have no DB
+  // credentials; protected routes still require the auth check below.
+  if (pathname === "/" && !hasAuthCookie) return res;
+
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -59,8 +69,6 @@ export async function middleware(req: NextRequest) {
 
   const { data } = await supabase.auth.getUser();
   const user = data.user;
-
-  const pathname = req.nextUrl.pathname;
 
   if (pathname.startsWith("/app")) {
     if (!user) return NextResponse.redirect(new URL("/login", req.url));
