@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Metadata } from "next";
 import { getCourseBySlug, getCourseOutline } from "@/lib/db/queries";
+import { SITE_URL } from "@/lib/site-url";
 import { BuyButton } from "./BuyButton";
 import { ViewContentTracker } from "./ViewContentTracker";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -26,10 +27,12 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   return {
     title: `${course.title} | Portal28 Academy`,
     description: course.description || `Learn ${course.title} with Portal28 Academy`,
+    alternates: { canonical: `${SITE_URL}/courses/${course.slug}` },
     openGraph: {
       title: `${course.title} | Portal28 Academy`,
       description: course.description || `Learn ${course.title} with Portal28 Academy`,
       type: "website",
+      url: `${SITE_URL}/courses/${course.slug}`,
       images: course.hero_image ? [course.hero_image] : [],
     },
   };
