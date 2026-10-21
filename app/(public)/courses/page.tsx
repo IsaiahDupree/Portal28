@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Metadata } from "next";
+import { SITE_URL } from "@/lib/site-url";
 import { getPublishedCourses } from "@/lib/db/queries";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -9,6 +10,7 @@ import { Sparkles, ArrowRight } from "lucide-react";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
+  alternates: { canonical: `${SITE_URL}/courses` },
   title: "Courses | Portal28 Academy",
   description: "Browse our curriculum of brand strategy, storytelling, and content creation courses. These aren't courses—they're leverage points.",
   openGraph: {

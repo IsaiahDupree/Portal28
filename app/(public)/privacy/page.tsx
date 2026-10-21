@@ -1,6 +1,8 @@
 import { Metadata } from "next";
+import { SITE_URL } from "@/lib/site-url";
 
 export const metadata: Metadata = {
+  alternates: { canonical: `${SITE_URL}/privacy` },
   title: "Privacy Policy | Portal28 Academy",
   description: "Privacy Policy for Portal28 Academy. Learn how we collect, use, and protect your personal information.",
   openGraph: {

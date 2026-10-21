@@ -1,8 +1,10 @@
 import { Metadata } from "next";
+import { SITE_URL } from "@/lib/site-url";
 import { Card, CardContent } from "@/components/ui/card";
 import { Sparkles, BookOpen, Target } from "lucide-react";
 
 export const metadata: Metadata = {
+  alternates: { canonical: `${SITE_URL}/about` },
   title: "About Portal 28 | Portal28 Academy",
   description: "Learn about Portal 28 Academy, founded by Sarah Ashley. Where strategy meets intuition and storytelling becomes leverage.",
   openGraph: {
