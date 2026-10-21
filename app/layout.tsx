@@ -1,11 +1,10 @@
 import "./globals.css";
 import { MetaPixel } from "@/lib/meta/MetaPixel";
 import { Metadata } from "next";
+import { SITE_URL } from "@/lib/site-url";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL || "https://portal28.academy"
-  ),
+  metadataBase: new URL(SITE_URL),
   icons: {
     icon: "/icon.svg",
     apple: "/icon.svg",
@@ -27,13 +26,13 @@ export const metadata: Metadata = {
     "business strategy",
     "marketing",
   ],
-  authors: [{ name: "Sarah Ashley", url: "https://portal28.academy" }],
+  authors: [{ name: "Sarah Ashley", url: `${SITE_URL}/about` }],
   creator: "Portal Copy Co.",
   publisher: "Portal28 Academy",
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: process.env.NEXT_PUBLIC_SITE_URL || "https://portal28.academy",
+    url: SITE_URL,
     title: "Portal28 Academy | Where Power Gets Built",
     description:
       "Portal 28 is a private clubhouse for founders, creators, and CEOs. Master brand strategy, storytelling, and AI-powered content creation.",

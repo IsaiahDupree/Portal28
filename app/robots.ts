@@ -1,8 +1,7 @@
 import { MetadataRoute } from "next";
+import { SITE_URL } from "@/lib/site-url";
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://portal28.academy";
-
   return {
     rules: [
       {
@@ -13,9 +12,23 @@ export default function robots(): MetadataRoute.Robots {
           "/admin/*", // Admin pages
           "/api/*", // API routes
           "/preview/*", // Preview routes
+          "/login",
+          "/signup",
+        ],
+      },
+      {
+        userAgent: "OAI-SearchBot",
+        allow: "/",
+        disallow: [
+          "/app/*",
+          "/admin/*",
+          "/api/*",
+          "/preview/*",
+          "/login",
+          "/signup",
         ],
       },
     ],
-    sitemap: `${baseUrl}/sitemap.xml`,
+    sitemap: `${SITE_URL}/sitemap.xml`,
   };
 }

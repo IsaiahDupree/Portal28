@@ -1,3 +1,5 @@
+import { SITE_URL } from "@/lib/site-url";
+
 /**
  * Structured Data (JSON-LD) utilities for SEO
  * Helps search engines understand the content better
@@ -35,25 +37,22 @@ export function generateOrganizationSchema() {
  */
 export function generateCourseSchema(course: {
   title: string;
-  description: string;
+  description?: string | null;
   slug: string;
   price?: number;
 }) {
-  const baseUrl =
-    process.env.NEXT_PUBLIC_SITE_URL || "https://portal28.academy";
-
   return {
     "@context": "https://schema.org",
     "@type": "Course",
     name: course.title,
-    description: course.description,
-    url: `${baseUrl}/courses/${course.slug}`,
+    ...(course.description ? { description: course.description } : {}),
+    url: `${SITE_URL}/courses/${course.slug}`,
     provider: {
       "@type": "Organization",
       name: "Portal28 Academy",
-      url: baseUrl,
+      url: SITE_URL,
     },
-    ...(course.price
+    ...(course.price !== undefined
       ? {
           offers: {
             "@type": "Offer",

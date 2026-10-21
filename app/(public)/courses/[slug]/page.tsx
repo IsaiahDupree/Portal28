@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { Metadata } from "next";
 import { getCourseBySlug, getCourseOutline } from "@/lib/db/queries";
+import { SITE_URL } from "@/lib/site-url";
+import { generateCourseSchema } from "@/lib/seo/structured-data";
 import { BuyButton } from "./BuyButton";
 import { ViewContentTracker } from "./ViewContentTracker";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -26,10 +28,12 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   return {
     title: `${course.title} | Portal28 Academy`,
     description: course.description || `Learn ${course.title} with Portal28 Academy`,
+    alternates: { canonical: `${SITE_URL}/courses/${course.slug}` },
     openGraph: {
       title: `${course.title} | Portal28 Academy`,
       description: course.description || `Learn ${course.title} with Portal28 Academy`,
       type: "website",
+      url: `${SITE_URL}/courses/${course.slug}`,
       images: course.hero_image ? [course.hero_image] : [],
     },
   };
@@ -57,9 +61,20 @@ export default async function CourseSalesPage({ params }: { params: { slug: stri
 
   const outline = await getCourseOutline(course.id);
   const totalLessons = outline.reduce((sum, module) => sum + module.lessons.length, 0);
+  const courseSchema = generateCourseSchema({
+    title: course.title,
+    description: course.description,
+    slug: course.slug,
+  });
 
   return (
     <div className="space-y-12">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(courseSchema).replace(/</g, "\\u003c"),
+        }}
+      />
       <ViewContentTracker courseId={course.id} price={course.price_cents} />
       {/* Breadcrumb */}
       <div>
@@ -83,6 +98,9 @@ export default async function CourseSalesPage({ params }: { params: { slug: stri
               {course.description}
             </p>
           )}
+          <p className="mt-3 text-sm text-muted-foreground">
+            Course by <Link className="underline underline-offset-4" href="/about">Portal28 Academy</Link>
+          </p>
         </div>
 
         {/* Course Stats */}
