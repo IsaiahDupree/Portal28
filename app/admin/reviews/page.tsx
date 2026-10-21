@@ -2,7 +2,7 @@ import { supabaseServer } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { ReviewModerationList } from "./ReviewModerationList";
 
-export default async function ReviewsModeration Page() {
+export default async function ReviewsModerationPage() {
   const supabase = supabaseServer();
 
   // Check authentication

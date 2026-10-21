@@ -156,7 +156,8 @@ export async function POST(
         status: "sent",
         sent_at: new Date().toISOString(),
         completed_sending_at: new Date().toISOString(),
-        resend_batch_id: batchResponse.data?.id || null,
+        // Resend's batch endpoint returns per-email IDs, not a batch ID.
+        resend_batch_id: null,
         total_sent: recipients.length
       })
       .eq("id", params.id);
@@ -188,7 +189,7 @@ export async function POST(
     return NextResponse.json({
       success: true,
       sent_count: recipients.length,
-      batch_id: batchResponse.data?.id
+      batch_id: null
     });
 
   } catch (error: any) {

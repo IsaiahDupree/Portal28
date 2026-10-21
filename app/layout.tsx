@@ -4,6 +4,7 @@ import { PostHogProvider } from "@/lib/posthog/PostHogProvider";
 import { CookieConsentBanner } from "@/components/legal/CookieConsentBanner";
 import { AttributionCapture } from "./attrib-capture";
 import { Metadata } from "next";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   metadataBase: new URL(
@@ -76,6 +77,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <AttributionCapture />
         {children}
         <CookieConsentBanner />
+        <Toaster richColors />
       </body>
     </html>
   );
