@@ -1,4 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
+import { cache } from "react";
 
 // Create a static Supabase client for cached queries (no cookies needed)
 function getStaticSupabase() {
@@ -18,6 +19,17 @@ export async function getPublishedCourses() {
   if (error) throw new Error(error.message);
   return data ?? [];
 }
+
+/** Share catalog availability and published course data across metadata and page rendering. */
+export const getPublicCourseCatalog = cache(async () => {
+  try {
+    const courses = await getPublishedCourses();
+    return { available: true as const, courses };
+  } catch (error) {
+    console.error("Unable to load the public course catalog.", error);
+    return { available: false as const, courses: [] };
+  }
+});
 
 export async function getCourseBySlug(slug: string) {
   const supabase = getStaticSupabase();

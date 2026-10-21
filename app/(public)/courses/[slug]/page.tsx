@@ -22,6 +22,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   if (!course || course.status !== "published") {
     return {
       title: "Course Not Found | Portal28 Academy",
+      robots: { index: false, follow: true },
     };
   }
 
