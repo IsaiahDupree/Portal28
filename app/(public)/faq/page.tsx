@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { SITE_URL } from "@/lib/site-url";
 import {
   Accordion,
   AccordionContent,
@@ -7,6 +8,7 @@ import {
 } from "@/components/ui/accordion";
 
 export const metadata: Metadata = {
+  alternates: { canonical: `${SITE_URL}/faq` },
   title: "FAQ | Portal28 Academy",
   description: "Frequently asked questions about Portal 28 Academy, courses, memberships, and access.",
   openGraph: {

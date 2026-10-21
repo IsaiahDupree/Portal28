@@ -1,6 +1,8 @@
 import { Metadata } from "next";
+import { SITE_URL } from "@/lib/site-url";
 
 export const metadata: Metadata = {
+  alternates: { canonical: `${SITE_URL}/terms` },
   title: "Terms of Service | Portal28 Academy",
   description: "Terms of Service for Portal28 Academy. Read our terms and conditions for using the platform.",
   openGraph: {
