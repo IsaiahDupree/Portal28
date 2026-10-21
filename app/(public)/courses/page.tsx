@@ -19,7 +19,15 @@ export const metadata: Metadata = {
 };
 
 export default async function CoursesPage() {
-  const courses = await getPublishedCourses();
+  let courses: Awaited<ReturnType<typeof getPublishedCourses>> = [];
+  let catalogUnavailable = false;
+
+  try {
+    courses = await getPublishedCourses();
+  } catch (error) {
+    catalogUnavailable = true;
+    console.error("Unable to load the public course catalog.", error);
+  }
 
   return (
     <div className="space-y-8">
@@ -36,7 +44,17 @@ export default async function CoursesPage() {
         </p>
       </div>
 
-      {courses.length === 0 ? (
+      {catalogUnavailable ? (
+        <Card className="text-center py-16 border-dashed">
+          <CardContent>
+            <Sparkles className="h-12 w-12 mx-auto text-muted-foreground/50 mb-4" />
+            <h2 className="font-semibold text-xl mb-2">Course listings are temporarily unavailable.</h2>
+            <p className="text-muted-foreground">
+              Please visit the <Link className="underline" href="/about">about page</Link> for more information.
+            </p>
+          </CardContent>
+        </Card>
+      ) : courses.length === 0 ? (
         <Card className="text-center py-16 border-dashed">
           <CardContent>
             <Sparkles className="h-12 w-12 mx-auto text-muted-foreground/50 mb-4" />
