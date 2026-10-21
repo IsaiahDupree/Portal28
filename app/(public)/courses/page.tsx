@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Metadata } from "next";
 import { SITE_URL } from "@/lib/site-url";
-import { getPublishedCourses } from "@/lib/db/queries";
+import { getPublicCourseCatalog } from "@/lib/db/queries";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Sparkles, ArrowRight } from "lucide-react";
@@ -9,27 +9,27 @@ import { Sparkles, ArrowRight } from "lucide-react";
 // Force dynamic rendering to avoid build-time fetch issues
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
-  alternates: { canonical: `${SITE_URL}/courses` },
-  title: "Courses | Portal28 Academy",
-  description: "Browse our curriculum of brand strategy, storytelling, and content creation courses. These aren't courses—they're leverage points.",
-  openGraph: {
+export async function generateMetadata(): Promise<Metadata> {
+  const catalog = await getPublicCourseCatalog();
+  const indexCatalog = catalog.available && catalog.courses.length > 0;
+
+  return {
+    alternates: { canonical: `${SITE_URL}/courses` },
     title: "Courses | Portal28 Academy",
-    description: "Browse our curriculum of brand strategy, storytelling, and content creation courses.",
-    type: "website",
-  },
-};
+    description: "Browse our curriculum of brand strategy, storytelling, and content creation courses. These aren't courses—they're leverage points.",
+    robots: { index: indexCatalog, follow: true },
+    openGraph: {
+      title: "Courses | Portal28 Academy",
+      description: "Browse our curriculum of brand strategy, storytelling, and content creation courses.",
+      type: "website",
+    },
+  };
+}
 
 export default async function CoursesPage() {
-  let courses: Awaited<ReturnType<typeof getPublishedCourses>> = [];
-  let catalogUnavailable = false;
-
-  try {
-    courses = await getPublishedCourses();
-  } catch (error) {
-    catalogUnavailable = true;
-    console.error("Unable to load the public course catalog.", error);
-  }
+  const catalog = await getPublicCourseCatalog();
+  const { courses } = catalog;
+  const catalogUnavailable = !catalog.available;
 
   return (
     <div className="space-y-8">
