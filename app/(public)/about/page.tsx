@@ -5,7 +5,7 @@ import { Sparkles, BookOpen, Target } from "lucide-react";
 
 export const metadata: Metadata = {
   alternates: { canonical: `${SITE_URL}/about` },
-  title: "About Portal 28 | Portal28 Academy",
+  title: "About Portal 28",
   description: "Learn about Portal 28 Academy, founded by Sarah Ashley. Where strategy meets intuition and storytelling becomes leverage.",
   openGraph: {
     title: "About Portal 28 | Portal28 Academy",

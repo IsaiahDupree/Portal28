@@ -15,7 +15,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
   return {
     alternates: { canonical: `${SITE_URL}/courses` },
-    title: "Courses | Portal28 Academy",
+    title: "Courses",
     description: "Browse our curriculum of brand strategy, storytelling, and content creation courses. These aren't courses—they're leverage points.",
     robots: { index: indexCatalog, follow: true },
     openGraph: {

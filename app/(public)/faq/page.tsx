@@ -9,7 +9,7 @@ import {
 
 export const metadata: Metadata = {
   alternates: { canonical: `${SITE_URL}/faq` },
-  title: "FAQ | Portal28 Academy",
+  title: "FAQ",
   description: "Frequently asked questions about Portal 28 Academy, courses, memberships, and access.",
   openGraph: {
     title: "FAQ | Portal28 Academy",

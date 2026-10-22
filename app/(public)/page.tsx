@@ -11,7 +11,7 @@ export const revalidate = 3600; // Revalidate every hour
 
 export const metadata: Metadata = {
   alternates: { canonical: SITE_URL },
-  title: "Portal28 Academy | Where Power Gets Built",
+  title: "Where Power Gets Built",
   description: "Portal 28 is a private clubhouse for founders, creators, and CEOs who know they're meant to operate at a higher level. Master brand strategy, storytelling, and AI-powered content creation.",
   openGraph: {
     title: "Portal28 Academy | Where Power Gets Built",

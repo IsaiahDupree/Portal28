@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     apple: "/icon.svg",
   },
   title: {
-    default: "Portal28 Academy | Where Power Gets Built",
+    default: "Where Power Gets Built",
     template: "%s | Portal28 Academy",
   },
   description:
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: SITE_URL,
-    title: "Portal28 Academy | Where Power Gets Built",
+    title: "Where Power Gets Built | Portal28 Academy",
     description:
       "Portal 28 is a private clubhouse for founders, creators, and CEOs. Master brand strategy, storytelling, and AI-powered content creation.",
     siteName: "Portal28 Academy",

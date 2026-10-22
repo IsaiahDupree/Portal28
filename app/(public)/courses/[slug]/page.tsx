@@ -22,13 +22,13 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 
   if (!course || course.status !== "published") {
     return {
-      title: "Course Not Found | Portal28 Academy",
+      title: "Course Not Found",
       robots: { index: false, follow: true },
     };
   }
 
   return {
-    title: `${course.title} | Portal28 Academy`,
+    title: course.title,
     description: course.description || `Learn ${course.title} with Portal28 Academy`,
     alternates: { canonical: `${SITE_URL}/courses/${course.slug}` },
     openGraph: {
