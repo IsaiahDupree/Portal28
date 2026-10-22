@@ -12,7 +12,7 @@ export async function getPublishedCourses() {
   const supabase = getStaticSupabase();
   const { data, error } = await supabase
     .from("courses")
-    .select("id,title,slug,description,hero_image,created_at")
+    .select("id,title,slug,description,hero_image")
     .eq("status", "published")
     .order("created_at", { ascending: false });
 
