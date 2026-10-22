@@ -31,6 +31,7 @@ export default async function NewOfferPage() {
     compare_at_label: null,
     bullets: [],
     payload: {},
+    stripe_price_id: null,
     is_active: true,
   };
 

@@ -10,7 +10,7 @@ export default function robots(): MetadataRoute.Robots {
         disallow: [
           "/app/*", // Protected app pages
           "/admin/*", // Admin pages
-          "/api/*", // API routes
+          "/api/*", // Keep API responses out of search crawls; route handlers must enforce access independently.
           "/preview/*", // Preview routes
           "/login",
           "/signup",
