@@ -10,7 +10,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: [
           "/app/*", // Protected app pages
           "/admin/*", // Admin pages
-          "/api/*", // API routes
           "/preview/*", // Preview routes
           "/login",
           "/signup",
@@ -22,7 +21,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: [
           "/app/*",
           "/admin/*",
-          "/api/*",
           "/preview/*",
           "/login",
           "/signup",

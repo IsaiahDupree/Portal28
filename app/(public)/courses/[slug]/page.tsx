@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { getCourseBySlug, getCourseOutline } from "@/lib/db/queries";
 import { SITE_URL } from "@/lib/site-url";
@@ -44,20 +45,7 @@ export default async function CourseSalesPage({ params }: { params: { slug: stri
   const course = await getCourseBySlug(params.slug);
 
   if (!course || course.status !== "published") {
-    return (
-      <div className="text-center py-20">
-        <h1 className="text-3xl font-bold mb-4">Course not found</h1>
-        <p className="text-muted-foreground mb-6">
-          The course you're looking for doesn't exist or is no longer available.
-        </p>
-        <Button asChild>
-          <Link href="/courses">
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Courses
-          </Link>
-        </Button>
-      </div>
-    );
+    notFound();
   }
 
   const outline = await getCourseOutline(course.id);
