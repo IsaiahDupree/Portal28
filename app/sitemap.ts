@@ -8,21 +8,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticPages: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
-      lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 1.0,
     },
     {
       url: `${baseUrl}/courses`,
-      lastModified: new Date(),
       changeFrequency: "daily",
       priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/login`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.5,
     },
   ];
 
@@ -31,7 +23,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const courses = await getPublishedCourses();
     const coursePages: MetadataRoute.Sitemap = courses.map((course) => ({
       url: `${baseUrl}/courses/${course.slug}`,
-      lastModified: new Date(),
+      lastModified: course.created_at,
       changeFrequency: "weekly",
       priority: 0.8,
     }));

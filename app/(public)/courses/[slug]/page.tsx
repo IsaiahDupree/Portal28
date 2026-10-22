@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { getCourseBySlug, getCourseOutline } from "@/lib/db/queries";
 import { BuyButton } from "./BuyButton";
@@ -14,6 +15,8 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
+const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://portal28.academy").replace(/\/$/, "");
+
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const course = await getCourseBySlug(params.slug);
 
@@ -26,10 +29,12 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   return {
     title: `${course.title} | Portal28 Academy`,
     description: course.description || `Learn ${course.title} with Portal28 Academy`,
+    alternates: { canonical: `${siteUrl}/courses/${course.slug}` },
     openGraph: {
       title: `${course.title} | Portal28 Academy`,
       description: course.description || `Learn ${course.title} with Portal28 Academy`,
       type: "website",
+      url: `${siteUrl}/courses/${course.slug}`,
       images: course.hero_image ? [course.hero_image] : [],
     },
   };
@@ -39,20 +44,7 @@ export default async function CourseSalesPage({ params }: { params: { slug: stri
   const course = await getCourseBySlug(params.slug);
 
   if (!course || course.status !== "published") {
-    return (
-      <div className="text-center py-20">
-        <h1 className="text-3xl font-bold mb-4">Course not found</h1>
-        <p className="text-muted-foreground mb-6">
-          The course you're looking for doesn't exist or is no longer available.
-        </p>
-        <Button asChild>
-          <Link href="/courses">
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Courses
-          </Link>
-        </Button>
-      </div>
-    );
+    notFound();
   }
 
   const outline = await getCourseOutline(course.id);
@@ -61,6 +53,23 @@ export default async function CourseSalesPage({ params }: { params: { slug: stri
   return (
     <div className="space-y-12">
       <ViewContentTracker courseId={course.id} price={course.price_cents} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Course",
+            name: course.title,
+            description: course.description || undefined,
+            url: `${siteUrl}/courses/${course.slug}`,
+            provider: {
+              "@type": "Organization",
+              name: "Portal28 Academy",
+              url: siteUrl,
+            },
+          }).replace(/</g, "\\u003c"),
+        }}
+      />
       {/* Breadcrumb */}
       <div>
         <Button variant="ghost" size="sm" asChild>
